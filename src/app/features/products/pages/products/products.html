@@ -56,8 +56,21 @@
           #searchInput
           [value]="search()"
           (input)="updateSearch(searchInput.value)"
-          placeholder="Buscar por nombre…" /></label
-      ><span class="muted">{{ products().length }} productos</span>
+          placeholder="Buscar por nombre…"
+      /></label>
+      <select
+        class="category-filter"
+        aria-label="Filtrar por categoría"
+        [value]="categoryFilter()"
+        (change)="updateCategory(categorySelect.value)"
+        #categorySelect
+      >
+        <option value="">Todas las categorías</option>
+        @for (category of categories(); track category.id) {
+          <option [value]="category.id">{{ category.name }}</option>
+        }
+      </select>
+      <span class="muted">{{ products().length }} productos</span>
     </div>
     @if (loading()) {
       <p class="empty">Cargando catálogo…</p>
@@ -80,8 +93,8 @@
                   <div class="product-cell">
                     @if (product.imageUrl; as imageUrl) {
                       <img
-                        src="assets/escudo/light_grey_192.png"
-                        [src]="imageUrl"
+                        src="favicon.ico"
+                        [src]="imageUrl || 'favicon.ico'"
                         [alt]="product.name"
                       />
                     }

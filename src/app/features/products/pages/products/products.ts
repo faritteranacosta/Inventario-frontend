@@ -27,6 +27,7 @@ export class ProductsPage {
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly showForm = signal(false);
   protected readonly search = signal('');
+  protected readonly categoryFilter = signal('');
   protected readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
     description: [''],
@@ -52,23 +53,33 @@ export class ProductsPage {
   protected load(): void {
     this.loading.set(true);
     this.errorMessage.set(null);
-    this.productsApi.list({ search: this.search() || undefined }).subscribe({
-      next: (products) => {
-        this.products.set(products);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.errorMessage.set('No pudimos cargar los productos.');
-        this.notifications.error(
-          'No se pudieron cargar los productos. Revisa la conexión con la API.',
-        );
-        this.loading.set(false);
-      },
-    });
+    this.productsApi
+      .list({
+        search: this.search() || undefined,
+        categoryId: this.categoryFilter() || undefined,
+      })
+      .subscribe({
+        next: (products) => {
+          this.products.set(products);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.errorMessage.set('No pudimos cargar los productos.');
+          this.notifications.error(
+            'No se pudieron cargar los productos. Revisa la conexión con la API.',
+          );
+          this.loading.set(false);
+        },
+      });
   }
 
   protected updateSearch(value: string): void {
     this.search.set(value);
+    this.load();
+  }
+
+  protected updateCategory(value: string): void {
+    this.categoryFilter.set(value);
     this.load();
   }
 

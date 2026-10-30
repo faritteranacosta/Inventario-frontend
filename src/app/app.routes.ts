@@ -38,6 +38,12 @@ export const routes: Routes = [
           import('./features/dashboard/pages/dashboard/dashboard').then((m) => m.DashboardPage),
       },
       {
+        path: 'categories',
+        title: 'Categorías · Inventario SaaS',
+        loadComponent: () =>
+          import('./features/categories/pages/categories/categories').then((m) => m.CategoriesPage),
+      },
+      {
         path: 'products',
         title: 'Productos · Inventario SaaS',
         loadComponent: () =>
