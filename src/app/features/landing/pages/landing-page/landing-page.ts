@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 interface Feature {
   readonly icon: 'box' | 'chart' | 'bolt' | 'bell';
@@ -10,6 +11,7 @@ interface Feature {
 @Component({
   selector: 'app-landing-page',
   standalone: true,
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
