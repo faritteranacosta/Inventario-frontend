@@ -6,6 +6,7 @@ AGENTS.md
 GUIDE-FRONTEND.md
 .angular
 /docs
+agents
 
 # Compiled output
 /dist
@@ -33,6 +34,9 @@ pnpm-debug.log*
 *.sublime-workspace
 .codex
 PRODUCT.md
+.github/agents/
+.github/hooks/
+.github/skills/
 
 
 # Visual Studio Code
