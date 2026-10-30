@@ -11,11 +11,21 @@
       <span>Inventario <strong>SaaS</strong></span>
     </a>
     <nav class="shell__nav" aria-label="Navegación del panel">
-      <a routerLink="/dashboard" routerLinkActive="shell__link--active">Resumen</a>
-      <a routerLink="/products" routerLinkActive="shell__link--active">Productos</a>
-      <a routerLink="/sales" routerLinkActive="shell__link--active">Ventas</a>
+      <a routerLink="/dashboard" routerLinkActive="shell__link--active"
+        ><span aria-hidden="true">⌁</span> Resumen</a
+      >
+      <a routerLink="/products" routerLinkActive="shell__link--active"
+        ><span aria-hidden="true">□</span> Productos</a
+      >
+      <a routerLink="/categories" routerLinkActive="shell__link--active"
+        ><span aria-hidden="true">#</span> Categorías</a
+      >
+      <a routerLink="/sales" routerLinkActive="shell__link--active"
+        ><span aria-hidden="true">↗</span> Ventas</a
+      >
     </nav>
     <div class="shell__account">
+      <span class="shell__tenant">{{ auth.user()?.role ?? 'Usuario' }}</span>
       <span class="shell__user">{{ auth.user()?.email ?? 'Usuario' }}</span>
       <button type="button" (click)="auth.logout()">Cerrar sesión</button>
     </div>

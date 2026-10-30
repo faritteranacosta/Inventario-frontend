@@ -1,13 +1,15 @@
 <main class="dashboard">
   <header class="dashboard__header">
     <div>
-      <p class="dashboard__eyebrow">Resumen operativo</p>
-      <h1>Buenos días, equipo.</h1>
+      <h1>Resumen operativo</h1>
       <p>Una lectura rápida de lo que está pasando en tu negocio.</p>
     </div>
-    <a class="button button--primary" routerLink="/products"
-      >Agregar producto <span aria-hidden="true">+</span></a
-    >
+    <div class="dashboard__actions">
+      <a class="button button--secondary" routerLink="/sales">Registrar venta</a>
+      <a class="button button--primary" routerLink="/products"
+        >Agregar producto <span aria-hidden="true">+</span></a
+      >
+    </div>
   </header>
 
   @if (errorMessage(); as message) {

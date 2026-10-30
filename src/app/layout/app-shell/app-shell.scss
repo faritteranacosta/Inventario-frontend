@@ -11,18 +11,20 @@
 .shell__header {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 2.5rem;
   min-height: 4.5rem;
   padding: 0.75rem max(1.25rem, 5vw);
   border-bottom: 1px solid var(--app-border-color);
-  background: var(--app-surface-0);
+  background: var(--app-surface-900);
+  color: #fff;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 10%);
 }
 
 .shell__brand {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  color: var(--app-text-color);
+  color: #fff;
   font-weight: 800;
   white-space: nowrap;
 }
@@ -35,7 +37,7 @@
 .shell__brand svg {
   width: 2rem;
   height: 2rem;
-  color: var(--app-primary);
+  color: var(--app-accent-300);
 }
 
 .shell__brand strong {
@@ -44,21 +46,27 @@
 
 .shell__nav {
   display: flex;
-  gap: 1.25rem;
+  gap: 0.35rem;
   flex: 1;
 }
 
 .shell__nav a {
-  padding: 0.75rem 0;
-  border-bottom: 2px solid transparent;
-  color: var(--app-text-color-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  color: #cbd5e1;
   font-size: 0.9rem;
   font-weight: 700;
 }
 
 .shell__nav .shell__link--active {
-  border-bottom-color: var(--app-primary);
-  color: var(--app-primary);
+  background: rgb(255 255 255 / 10%);
+  color: #fff;
+}
+.shell__nav a span {
+  color: var(--app-accent-300);
 }
 
 .shell__account {
@@ -70,7 +78,7 @@
 .shell__user {
   max-width: 13rem;
   overflow: hidden;
-  color: var(--app-text-color-secondary);
+  color: #e2e8f0;
   font-size: 0.85rem;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -80,12 +88,21 @@
   border: 1px solid var(--app-border-color);
   border-radius: 0.55rem;
   padding: 0.55rem 0.75rem;
-  background: var(--app-surface-0);
-  color: var(--app-danger);
+  background: transparent;
+  color: #fecaca;
   cursor: pointer;
   font: inherit;
   font-size: 0.85rem;
   font-weight: 700;
+}
+.shell__tenant {
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 999px;
+  padding: 0.3rem 0.55rem;
+  color: var(--app-accent-300);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .shell__content {
@@ -110,6 +127,10 @@
   }
 
   .shell__user {
+    display: none;
+  }
+
+  .shell__tenant {
     display: none;
   }
 }

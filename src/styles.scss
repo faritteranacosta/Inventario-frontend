@@ -35,4 +35,19 @@ a {
   &:hover {
     text-decoration: underline;
   }
+
+  button,
+  input,
+  select,
+  textarea {
+    &:focus-visible {
+      outline: 3px solid var(--app-accent-300);
+      outline-offset: 2px;
+    }
+  }
+
+  ::selection {
+    background: var(--app-primary-200);
+    color: var(--app-primary-900);
+  }
 }

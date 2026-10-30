@@ -120,6 +120,10 @@ textarea:focus {
   flex: 1;
   max-width: 24rem;
 }
+.category-filter {
+  width: auto;
+  min-width: 12rem;
+}
 .muted,
 .empty,
 td small {
@@ -209,5 +213,8 @@ th {
   }
   .search {
     max-width: none;
+  }
+  .category-filter {
+    width: 100%;
   }
 }
