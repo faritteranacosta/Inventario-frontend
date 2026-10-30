@@ -104,6 +104,11 @@
   font-weight: 800;
   text-transform: uppercase;
 }
+.shell__role {
+  color: #e2e8f0;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
 
 .shell__content {
   min-height: calc(100vh - 4.5rem);
@@ -131,6 +136,10 @@
   }
 
   .shell__tenant {
+    display: none;
+  }
+
+  .shell__role {
     display: none;
   }
 }

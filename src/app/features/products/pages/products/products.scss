@@ -175,12 +175,78 @@ th {
   background: #fff7ed;
   color: #9a3412;
 }
+.stock--zero {
+  background: #fee2e2;
+  color: #991b1b;
+}
 .icon-button {
   border: 0;
   background: transparent;
   color: var(--app-danger);
   cursor: pointer;
   font: inherit;
+}
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.danger {
+  color: var(--app-danger);
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgb(15 23 42 / 55%);
+}
+.image-modal {
+  display: grid;
+  gap: 1rem;
+  width: min(100%, 34rem);
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  background: var(--app-surface-0);
+  box-shadow: 0 16px 40px rgb(15 23 42 / 20%);
+}
+.modal-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.modal-heading h2 {
+  margin: 0;
+}
+.modal-heading p {
+  color: var(--app-text-color-secondary);
+}
+.modal-heading > button {
+  border: 0;
+  background: transparent;
+  color: var(--app-text-color-secondary);
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+.image-preview {
+  width: 100%;
+  max-height: 12rem;
+  border-radius: 0.6rem;
+  object-fit: contain;
+  background: var(--app-surface-50);
+}
+.image-modal label {
+  display: grid;
+  gap: 0.4rem;
+}
+.button--secondary {
+  border: 1px solid var(--app-border-color);
+  background: var(--app-surface-0);
+  color: var(--app-primary-700);
 }
 .empty {
   padding: 2rem 0;

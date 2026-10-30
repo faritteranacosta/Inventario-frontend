@@ -1,0 +1,49 @@
+<main class="tenants-page">
+  <header class="page-header">
+    <div>
+      <h1>Negocios</h1>
+      <p>Administración global separada del negocio activo de la sesión.</p>
+    </div>
+  </header>
+  @if (errorMessage(); as message) {
+    <div class="notice" role="alert">
+      {{ message }} <button type="button" (click)="load()">Reintentar</button>
+    </div>
+  }
+  <section class="create-panel">
+    <h2>Crear negocio</h2>
+    <form [formGroup]="form" (ngSubmit)="create()">
+      <label for="tenant-name">Nombre<input id="tenant-name" formControlName="name" /></label
+      ><button type="submit">Crear</button>
+    </form>
+  </section>
+  @if (selected(); as tenant) {
+    <section class="detail">
+      <h2>{{ tenant.name }}</h2>
+      <p>ID: {{ tenant.id }}</p>
+      <p>Creado: {{ tenant.createdAtUtc | date: 'medium' }}</p>
+    </section>
+  }
+  <section class="listing">
+    <h2>Negocios registrados</h2>
+    @if (loading()) {
+      <p>Cargando negocios…</p>
+    } @else if (tenants().length) {
+      @for (tenant of tenants(); track tenant.id) {
+        <article>
+          <div>
+            <strong>{{ tenant.name }}</strong
+            ><small>{{ tenant.id }}</small>
+          </div>
+          <div>
+            <button type="button" (click)="view(tenant)">Ver</button
+            ><button type="button" class="danger" (click)="remove(tenant)">Eliminar</button>
+          </div>
+        </article>
+      }
+    } @else {
+      <p>No hay negocios registrados.</p>
+    }
+  </section>
+  <p class="limitation">La API actual no ofrece actualización de negocios.</p>
+</main>

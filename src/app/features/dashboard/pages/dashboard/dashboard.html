@@ -12,6 +12,39 @@
     </div>
   </header>
 
+  <section class="filters" aria-label="Filtros del resumen">
+    <label for="dashboard-from"
+      >Desde<input
+        id="dashboard-from"
+        type="date"
+        [value]="from()"
+        (change)="from.set(fromInput.value)"
+        #fromInput
+    /></label>
+    <label for="dashboard-to"
+      >Hasta<input
+        id="dashboard-to"
+        type="date"
+        [value]="to()"
+        (change)="to.set(toInput.value)"
+        #toInput
+    /></label>
+    <label for="dashboard-group"
+      >Agrupar por<select
+        id="dashboard-group"
+        [value]="groupBy()"
+        (change)="groupBy.set(groupInput.value === 'month' ? 'month' : 'day')"
+        #groupInput
+      >
+        <option value="day">Día</option>
+        <option value="month">Mes</option>
+      </select></label
+    >
+    <button class="button button--secondary" type="button" (click)="load()">
+      Actualizar resumen
+    </button>
+  </section>
+
   @if (errorMessage(); as message) {
     <div class="notice notice--error" role="alert">{{ message }}</div>
   }
@@ -56,6 +89,28 @@
               <small>{{ item.period | date: 'dd MMM' }}</small>
             </div>
           }
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Periodo</th>
+                <th>Operaciones</th>
+                <th>Ingresos</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of data.items; track item.period) {
+                <tr>
+                  <td>
+                    {{ item.period | date: (groupBy() === 'month' ? 'MMMM yyyy' : 'dd MMM yyyy') }}
+                  </td>
+                  <td>{{ item.count }}</td>
+                  <td>{{ item.total | currency }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
         </div>
       } @else {
         <p class="empty">Todavía no hay ventas para mostrar.</p>

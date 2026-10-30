@@ -19,6 +19,7 @@ export class LoginPage {
 
   protected readonly pending = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
+  protected readonly sessionExpired = this.route.snapshot.queryParamMap.get('reason') === 'expired';
   protected readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
@@ -36,10 +37,27 @@ export class LoginPage {
         const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/dashboard';
         void this.router.navigateByUrl(returnUrl);
       },
-      error: () => {
+      error: (error: unknown) => {
         this.pending.set(false);
-        this.errorMessage.set('No pudimos iniciar sesión. Revisa tus datos e inténtalo de nuevo.');
+        this.errorMessage.set(
+          apiMessage(error, 'No pudimos iniciar sesión. Revisa tus datos e inténtalo de nuevo.'),
+        );
       },
     });
   }
+}
+
+function apiMessage(error: unknown, fallback: string): string {
+  if (typeof error === 'object' && error !== null && 'error' in error) {
+    const body = error.error;
+    if (
+      typeof body === 'object' &&
+      body !== null &&
+      'message' in body &&
+      typeof body.message === 'string'
+    ) {
+      return body.message;
+    }
+  }
+  return fallback;
 }

@@ -1,46 +1,171 @@
 <main class="sales-page">
   <header class="page-header">
     <div>
-      <p class="eyebrow">Operación</p>
       <h1>Ventas</h1>
-      <p>Consulta las ventas registradas en tu negocio.</p>
+      <p>Registra operaciones y consulta su trazabilidad.</p>
     </div>
-    <button class="button" type="button" (click)="load()">Actualizar</button>
+    <button
+      class="button button--primary"
+      type="button"
+      (click)="activeView.set(activeView() === 'new' ? 'history' : 'new')"
+    >
+      {{ activeView() === 'new' ? 'Ver historial' : 'Registrar venta' }}
+    </button>
   </header>
 
   @if (errorMessage(); as message) {
     <div class="notice" role="alert">
-      <span>{{ message }}</span>
-      <button type="button" (click)="load()">Reintentar</button>
+      {{ message }} <button type="button" (click)="load()">Reintentar</button>
     </div>
   }
 
-  <section class="listing">
-    @if (loading()) {
-      <p class="empty">Cargando ventas…</p>
-    } @else if (sales().length) {
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Productos</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (sale of sales(); track sale.id) {
-              <tr>
-                <td>{{ sale.saleDateUtc | date: 'medium' }}</td>
-                <td>{{ sale.items.length }}</td>
-                <td>{{ sale.total | currency }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
+  @if (activeView() === 'new') {
+    <section class="sale-builder" aria-labelledby="new-sale-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="new-sale-title">Nueva venta</h2>
+          <p>El precio se toma del catálogo y la API valida el stock.</p>
+        </div>
+        <button class="link-button" type="button" (click)="cancel()">Cancelar</button>
       </div>
-    } @else {
-      <p class="empty">Todavía no hay ventas registradas.</p>
-    }
-  </section>
+      <label class="product-search" for="product-search"
+        >Buscar producto<input
+          id="product-search"
+          [value]="productSearch()"
+          (input)="productSearch.set(search.value)"
+          #search
+          placeholder="Escribe un nombre…"
+      /></label>
+      <div class="product-picker">
+        @for (product of filteredProducts(); track product.id) {
+          <button type="button" [disabled]="hasLine(product.id)" (click)="add(product)">
+            <span>{{ product.name }}</span
+            ><small>{{ product.stock }} disponibles · {{ product.price | currency }}</small>
+          </button>
+        } @empty {
+          <p>No hay productos disponibles para agregar.</p>
+        }
+      </div>
+      @if (lines().length) {
+        <div class="sale-lines">
+          @for (line of lines(); track line.product.id) {
+            <div class="sale-line">
+              <div>
+                <strong>{{ line.product.name }}</strong
+                ><small>Máximo {{ line.product.stock }}</small>
+              </div>
+              <input
+                type="number"
+                min="1"
+                [max]="line.product.stock"
+                [ngModel]="line.quantity"
+                (ngModelChange)="updateQuantity(line.product.id, $event)"
+                [attr.aria-label]="'Cantidad de ' + line.product.name"
+              /><strong>{{ lineTotal(line) | currency }}</strong
+              ><button
+                type="button"
+                (click)="removeLine(line.product.id)"
+                [attr.aria-label]="'Quitar ' + line.product.name"
+              >
+                Quitar
+              </button>
+            </div>
+          }
+          <div class="sale-total">
+            <span>Total estimado</span><strong>{{ total() | currency }}</strong>
+          </div>
+        </div>
+      }
+      <button
+        class="button button--primary"
+        type="button"
+        [disabled]="saving() || !lines().length"
+        (click)="submit()"
+      >
+        {{ saving() ? 'Procesando…' : 'Confirmar venta' }}
+      </button>
+    </section>
+  } @else {
+    <section class="filters" aria-label="Filtros de ventas">
+      <label for="from"
+        >Desde<input
+          id="from"
+          type="date"
+          [value]="from()"
+          (change)="from.set(fromInput.value)"
+          #fromInput
+      /></label>
+      <label for="to"
+        >Hasta<input id="to" type="date" [value]="to()" (change)="to.set(toInput.value)" #toInput
+      /></label>
+      <button class="button" type="button" (click)="load()">Aplicar filtros</button>
+    </section>
+    <section class="listing">
+      @if (loading()) {
+        <p class="empty">Cargando ventas…</p>
+      } @else if (sales().length) {
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Identificador</th>
+                <th>Fecha</th>
+                <th>Líneas</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (sale of sales(); track sale.id) {
+                <tr>
+                  <td>
+                    <code>{{ sale.id }}</code>
+                  </td>
+                  <td>{{ sale.saleDateUtc | date: 'medium' }}</td>
+                  <td>{{ sale.items.length }}</td>
+                  <td>{{ sale.total | currency }}</td>
+                  <td>
+                    <button class="link-button" type="button" (click)="detail(sale.id)">
+                      Ver detalle
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p class="empty">No hay ventas para el periodo seleccionado.</p>
+      }
+    </section>
+  }
+
+  @if (selectedSale(); as sale) {
+    <div class="modal-backdrop" role="presentation">
+      <section
+        class="detail-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="sale-detail-title"
+      >
+        <div class="section-heading">
+          <div>
+            <h2 id="sale-detail-title">Detalle de venta</h2>
+            <p>{{ sale.saleDateUtc | date: 'medium' }}</p>
+          </div>
+          <button class="link-button" type="button" (click)="selectedSale.set(null)">Cerrar</button>
+        </div>
+        @for (item of sale.items; track item.productId) {
+          <div class="detail-line">
+            <code>{{ item.productId }}</code
+            ><span>{{ item.quantity }} × {{ item.unitPrice | currency }}</span
+            ><strong>{{ item.total | currency }}</strong>
+          </div>
+        }
+        <div class="sale-total">
+          <span>Total</span><strong>{{ sale.total | currency }}</strong>
+        </div>
+      </section>
+    </div>
+  }
 </main>

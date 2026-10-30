@@ -110,6 +110,13 @@
   background: #fef2f2;
   color: #991b1b;
 }
+.auth-card__info {
+  margin-bottom: 1rem;
+  border-radius: 0.65rem;
+  padding: 0.8rem 1rem;
+  background: var(--app-primary-50);
+  color: var(--app-primary-800);
+}
 .button {
   border: 0;
   border-radius: 0.65rem;

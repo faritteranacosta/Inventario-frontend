@@ -55,9 +55,14 @@ export class CategoriesPage {
   }
 
   protected edit(category: CategoryResponse): void {
-    this.editingId.set(category.id);
-    this.form.reset({ name: category.name, description: category.description ?? '' });
-    this.showForm.set(true);
+    this.api.get(category.id).subscribe({
+      next: (detail) => {
+        this.editingId.set(detail.id);
+        this.form.reset({ name: detail.name, description: detail.description ?? '' });
+        this.showForm.set(true);
+      },
+      error: () => this.errorMessage.set('La categoría ya no está disponible. Actualiza la lista.'),
+    });
   }
 
   protected save(): void {

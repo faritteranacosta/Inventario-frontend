@@ -1,0 +1,29 @@
+<main class="onboarding-page">
+  <section class="onboarding-card">
+    <a routerLink="/" class="brand">Inventario <strong>SaaS</strong></a>
+    @if (created(); as tenant) {
+      <h1>Negocio creado</h1>
+      <p>
+        <strong>{{ tenant.name }}</strong> está listo para recibir su primer usuario.
+      </p>
+      <dl>
+        <dt>Identificador del negocio</dt>
+        <dd>{{ tenant.id }}</dd>
+      </dl>
+      <button type="button" (click)="register()">Continuar al registro</button>
+    } @else {
+      <h1>Crea tu negocio</h1>
+      <p>Comienza con un espacio separado para tu operación.</p>
+      @if (errorMessage(); as message) {
+        <div class="notice" role="alert">{{ message }}</div>
+      }
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <label for="name">Nombre del negocio<input id="name" formControlName="name" /></label>
+        <button type="submit" [disabled]="pending()">
+          {{ pending() ? 'Creando…' : 'Crear negocio' }}
+        </button>
+      </form>
+      <a routerLink="/login">Ya tengo una cuenta</a>
+    }
+  </section>
+</main>

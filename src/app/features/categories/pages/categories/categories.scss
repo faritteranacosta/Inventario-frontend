@@ -27,6 +27,10 @@ h3 {
 .category-item p {
   color: var(--app-text-color-secondary);
 }
+.category-item small {
+  color: var(--app-text-color-secondary);
+  font-size: 0.78rem;
+}
 .button,
 .category-item__actions button,
 .link-button,

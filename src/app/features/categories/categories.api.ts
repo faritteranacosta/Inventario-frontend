@@ -13,6 +13,10 @@ export class CategoriesApi {
     return this.http.get<unknown>(this.url).pipe(map(toCategoryList));
   }
 
+  get(id: string): Observable<CategoryResponse> {
+    return this.http.get<CategoryResponse>(`${this.url}/${id}`);
+  }
+
   create(request: CategoryRequest): Observable<CategoryResponse> {
     return this.http.post<CategoryResponse>(this.url, request);
   }

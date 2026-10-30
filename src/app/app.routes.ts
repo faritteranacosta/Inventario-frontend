@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth/auth.guard';
+import { adminGuard } from './core/auth/admin.guard';
 
 /**
  * Rutas de la aplicación. Las páginas se cargan de forma diferida
@@ -27,6 +28,24 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/pages/login/login').then((m) => m.LoginPage),
   },
   {
+    path: 'register',
+    title: 'Crear usuario · Inventario SaaS',
+    loadComponent: () =>
+      import('./features/auth/pages/register/register').then((m) => m.RegisterPage),
+  },
+  {
+    path: 'onboarding',
+    title: 'Crear negocio · Inventario SaaS',
+    loadComponent: () =>
+      import('./features/tenants/pages/onboarding/onboarding').then((m) => m.OnboardingPage),
+  },
+  {
+    path: 'forbidden',
+    title: 'Acceso denegado · Inventario SaaS',
+    loadComponent: () =>
+      import('./features/auth/pages/forbidden/forbidden').then((m) => m.ForbiddenPage),
+  },
+  {
     path: '',
     canActivate: [authGuard],
     loadComponent: () => import('./layout/app-shell/app-shell').then((m) => m.AppShellComponent),
@@ -39,6 +58,7 @@ export const routes: Routes = [
       },
       {
         path: 'categories',
+        canActivate: [adminGuard],
         title: 'Categorías · Inventario SaaS',
         loadComponent: () =>
           import('./features/categories/pages/categories/categories').then((m) => m.CategoriesPage),
@@ -55,7 +75,21 @@ export const routes: Routes = [
         loadComponent: () => import('./features/sales/pages/sales/sales').then((m) => m.SalesPage),
       },
       {
+        path: 'users',
+        canActivate: [adminGuard],
+        title: 'Usuarios · Inventario SaaS',
+        loadComponent: () => import('./features/users/pages/users/users').then((m) => m.UsersPage),
+      },
+      {
+        path: 'tenants',
+        canActivate: [adminGuard],
+        title: 'Negocios · Inventario SaaS',
+        loadComponent: () =>
+          import('./features/tenants/pages/tenants/tenants').then((m) => m.TenantsPage),
+      },
+      {
         path: 'admin/form-demo',
+        canActivate: [adminGuard],
         title: 'Panel administrativo',
         loadComponent: () =>
           import('./features/admin/pages/form-demo/form-demo').then((m) => m.FormDemoPage),
