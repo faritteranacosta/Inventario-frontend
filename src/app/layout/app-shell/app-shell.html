@@ -29,16 +29,42 @@
       }
     </nav>
     <div class="shell__account">
-      <span
-        class="shell__tenant"
-        [attr.title]="'Tenant activo: ' + (auth.user()?.tenantId ?? 'no disponible')"
-        >Negocio · {{ auth.user()?.tenantId?.slice(0, 8) ?? '—' }}</span
-      >
-      <span class="shell__role">{{ auth.user()?.role ?? 'Usuario' }}</span>
+      @if (auth.memberships().length > 1) {
+        <label class="shell__tenant-selector" for="active-tenant">
+          <span class="sr-only">Negocio activo</span>
+          <select
+            id="active-tenant"
+            [value]="auth.activeTenantId() ?? ''"
+            [disabled]="contextLoading()"
+            (change)="selectTenant(tenantSelect.value)"
+            #tenantSelect
+          >
+            @for (membership of auth.memberships(); track membership.id) {
+              @if (membership.status === 'Active') {
+                <option [value]="membership.tenantId">{{ membership.tenantName }}</option>
+              }
+            }
+          </select>
+        </label>
+      } @else {
+        <span
+          class="shell__tenant"
+          [attr.title]="'Tenant activo: ' + (auth.activeTenantId() ?? 'no disponible')"
+          >Negocio · {{ auth.activeTenantId()?.slice(0, 8) ?? '—' }}</span
+        >
+      }
+      <span class="shell__role">{{
+        auth.isPlatformAdmin()
+          ? 'PlatformAdmin'
+          : (auth.activeMembership()?.role ?? auth.user()?.role ?? 'Usuario')
+      }}</span>
       <span class="shell__user">{{ auth.user()?.email ?? 'Usuario' }}</span>
       <button type="button" (click)="auth.logout()">Cerrar sesión</button>
     </div>
   </header>
+  @if (contextError(); as message) {
+    <div class="shell__context-error" role="alert">{{ message }}</div>
+  }
   <main class="shell__content">
     <router-outlet />
   </main>
