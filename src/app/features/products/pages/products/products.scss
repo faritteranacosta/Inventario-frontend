@@ -42,11 +42,24 @@ h1 {
   color: #fff;
 }
 .notice {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 1rem;
+  border: 1px solid #fecaca;
   border-radius: 0.65rem;
   padding: 1rem;
   background: #fef2f2;
   color: #991b1b;
+}
+.notice button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
 }
 .form-panel,
 .listing {

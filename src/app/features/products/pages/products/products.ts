@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoriesApi } from '../../../categories/categories.api';
 import { CategoryResponse, ProductResponse } from '../../../../core/models/api.models';
 import { ProductsApi } from '../../products.api';
+import { NotificationService } from '../../../../core/notifications/notification.service';
 
 @Component({
   selector: 'app-products',
@@ -17,6 +18,7 @@ export class ProductsPage {
   private readonly productsApi = inject(ProductsApi);
   private readonly categoriesApi = inject(CategoriesApi);
   private readonly fb = inject(FormBuilder);
+  private readonly notifications = inject(NotificationService);
 
   protected readonly products = signal<readonly ProductResponse[]>([]);
   protected readonly categories = signal<readonly CategoryResponse[]>([]);
@@ -38,12 +40,18 @@ export class ProductsPage {
     this.load();
     this.categoriesApi.list().subscribe({
       next: (categories) => this.categories.set(categories),
-      error: () => this.errorMessage.set('No pudimos cargar las categorías.'),
+      error: () => {
+        this.errorMessage.set('No pudimos cargar las categorías.');
+        this.notifications.error(
+          'No se pudieron cargar las categorías. Revisa la conexión con la API.',
+        );
+      },
     });
   }
 
   protected load(): void {
     this.loading.set(true);
+    this.errorMessage.set(null);
     this.productsApi.list({ search: this.search() || undefined }).subscribe({
       next: (products) => {
         this.products.set(products);
@@ -51,6 +59,9 @@ export class ProductsPage {
       },
       error: () => {
         this.errorMessage.set('No pudimos cargar los productos.');
+        this.notifications.error(
+          'No se pudieron cargar los productos. Revisa la conexión con la API.',
+        );
         this.loading.set(false);
       },
     });
@@ -87,11 +98,15 @@ export class ProductsPage {
           });
           this.showForm.set(false);
           this.saving.set(false);
+          this.notifications.success('Producto guardado correctamente.');
           this.load();
         },
         error: () => {
           this.saving.set(false);
           this.errorMessage.set('No pudimos guardar el producto.');
+          this.notifications.error(
+            'No se pudo guardar el producto. Revisa los datos e inténtalo nuevamente.',
+          );
         },
       });
   }
@@ -103,8 +118,14 @@ export class ProductsPage {
   protected remove(product: ProductResponse): void {
     if (!confirm(`¿Eliminar ${product.name}?`)) return;
     this.productsApi.remove(product.id).subscribe({
-      next: () => this.load(),
-      error: () => this.errorMessage.set('No pudimos eliminar el producto.'),
+      next: () => {
+        this.notifications.success('Producto eliminado correctamente.');
+        this.load();
+      },
+      error: () => {
+        this.errorMessage.set('No pudimos eliminar el producto.');
+        this.notifications.error('No se pudo eliminar el producto.');
+      },
     });
   }
 }
