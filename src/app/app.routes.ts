@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth/auth.guard';
 import { adminGuard } from './core/auth/admin.guard';
+import { platformGuard } from './core/auth/platform.guard';
 
 /**
  * Rutas de la aplicación. Las páginas se cargan de forma diferida
@@ -82,7 +83,7 @@ export const routes: Routes = [
       },
       {
         path: 'tenants',
-        canActivate: [adminGuard],
+        canActivate: [platformGuard],
         title: 'Negocios · Inventario SaaS',
         loadComponent: () =>
           import('./features/tenants/pages/tenants/tenants').then((m) => m.TenantsPage),

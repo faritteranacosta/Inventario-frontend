@@ -1,43 +1,68 @@
 <main class="tenants-page">
   <header class="page-header">
     <div>
+      <p class="eyebrow">Administración de plataforma</p>
       <h1>Negocios</h1>
-      <p>Administración global separada del negocio activo de la sesión.</p>
+      <p>Gestiona negocios y accesos globales sin confundirlos con el contexto operativo.</p>
     </div>
   </header>
+
   @if (errorMessage(); as message) {
     <div class="notice" role="alert">
       {{ message }} <button type="button" (click)="load()">Reintentar</button>
     </div>
   }
+
   <section class="create-panel">
     <h2>Crear negocio</h2>
     <form [formGroup]="form" (ngSubmit)="create()">
-      <label for="tenant-name">Nombre<input id="tenant-name" formControlName="name" /></label
-      ><button type="submit">Crear</button>
+      <label for="tenant-name">Nombre<input id="tenant-name" formControlName="name" /></label>
+      <label for="admin-email"
+        >Correo del primer Admin<input id="admin-email" type="email" formControlName="adminEmail"
+      /></label>
+      <label for="admin-password"
+        >Contraseña inicial<input
+          id="admin-password"
+          type="password"
+          formControlName="adminPassword"
+      /></label>
+      <button type="submit" [disabled]="busy()">Crear negocio</button>
     </form>
   </section>
-  @if (selected(); as tenant) {
-    <section class="detail">
-      <h2>{{ tenant.name }}</h2>
-      <p>ID: {{ tenant.id }}</p>
-      <p>Creado: {{ tenant.createdAtUtc | date: 'medium' }}</p>
-    </section>
-  }
+
   <section class="listing">
-    <h2>Negocios registrados</h2>
+    <div class="section-heading">
+      <h2>Negocios registrados</h2>
+      <button type="button" (click)="load()">Actualizar</button>
+    </div>
     @if (loading()) {
       <p>Cargando negocios…</p>
     } @else if (tenants().length) {
       @for (tenant of tenants(); track tenant.id) {
-        <article>
+        <article [class.selected]="selected()?.id === tenant.id">
           <div>
-            <strong>{{ tenant.name }}</strong
-            ><small>{{ tenant.id }}</small>
+            <strong>{{ tenant.name }}</strong>
+            <small>{{ tenant.id }}</small>
+            <span class="status" [class.status--suspended]="tenant.status === 'Suspended'">{{
+              tenant.status
+            }}</span>
           </div>
-          <div>
-            <button type="button" (click)="view(tenant)">Ver</button
-            ><button type="button" class="danger" (click)="remove(tenant)">Eliminar</button>
+          <dl>
+            <div>
+              <dt>Usuarios</dt>
+              <dd>{{ tenant.userCount }}</dd>
+            </div>
+            <div>
+              <dt>Admins</dt>
+              <dd>{{ tenant.adminCount }}</dd>
+            </div>
+          </dl>
+          <div class="actions">
+            <button type="button" (click)="view(tenant)">Ver detalle</button>
+            <button type="button" (click)="toggleStatus(tenant)">
+              {{ tenant.status === 'Active' ? 'Suspender' : 'Reactivar' }}
+            </button>
+            <button type="button" class="danger" (click)="remove(tenant)">Eliminar</button>
           </div>
         </article>
       }
@@ -45,5 +70,54 @@
       <p>No hay negocios registrados.</p>
     }
   </section>
-  <p class="limitation">La API actual no ofrece actualización de negocios.</p>
+
+  @if (selected(); as tenant) {
+    <section class="detail">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Detalle del negocio</p>
+          <h2>{{ tenant.name }}</h2>
+        </div>
+        <span class="status" [class.status--suspended]="tenant.status === 'Suspended'">{{
+          tenant.status
+        }}</span>
+      </div>
+      <p class="muted">ID: {{ tenant.id }} · Creado: {{ tenant.createdAtUtc | date: 'medium' }}</p>
+      <h3>Membresías</h3>
+      <form class="member-form" [formGroup]="memberForm" (ngSubmit)="createMember()">
+        <label for="member-email"
+          >Correo<input id="member-email" type="email" formControlName="email"
+        /></label>
+        <label for="member-password"
+          >Contraseña<input id="member-password" type="password" formControlName="password"
+        /></label>
+        <label for="member-role"
+          >Rol
+          <select id="member-role" formControlName="role">
+            <option value="User">User</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </label>
+        <button type="submit">Agregar acceso</button>
+      </form>
+      @if (members().length) {
+        @for (member of members(); track member.id) {
+          <article class="member">
+            <div>
+              <strong>{{ member.email }}</strong
+              ><small>{{ member.role }} · {{ member.status }}</small>
+            </div>
+            <div class="actions">
+              <button type="button" (click)="updateMember(member)">
+                {{ member.status === 'Active' ? 'Suspender' : 'Activar' }}
+              </button>
+              <button type="button" class="danger" (click)="revokeMember(member)">Revocar</button>
+            </div>
+          </article>
+        }
+      } @else {
+        <p class="muted">Este negocio todavía no tiene membresías.</p>
+      }
+    </section>
+  }
 </main>

@@ -10,21 +10,41 @@ h1 {
   margin: 0;
   font-size: clamp(2rem, 5vw, 3.75rem);
 }
+.eyebrow {
+  margin: 0 0 0.35rem;
+  color: var(--app-primary);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 .page-header p,
-.limitation {
+.muted {
   color: var(--app-text-color-secondary);
 }
 .create-panel,
 .detail,
 .listing {
+  margin-top: 1rem;
+  padding: 1.5rem;
   border: 1px solid var(--app-border-color);
   border-radius: 1rem;
-  padding: 1.5rem;
-  margin-top: 1rem;
   background: var(--app-surface-0);
 }
-h2 {
+h2,
+h3 {
   margin-top: 0;
+}
+.section-heading,
+article,
+.actions,
+dl {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.section-heading {
+  justify-content: space-between;
 }
 form {
   display: flex;
@@ -33,15 +53,16 @@ form {
 }
 label {
   display: grid;
-  gap: 0.35rem;
   flex: 1;
+  gap: 0.35rem;
   font-weight: 700;
 }
 input,
+select,
 button {
+  padding: 0.7rem;
   border: 1px solid var(--app-border-color);
   border-radius: 0.55rem;
-  padding: 0.7rem;
   font: inherit;
 }
 button {
@@ -50,22 +71,29 @@ button {
   cursor: pointer;
   font-weight: 700;
 }
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
 .notice {
   margin: 1rem 0;
   padding: 1rem;
   background: #fef2f2;
   color: #991b1b;
 }
-.notice button {
+.notice button,
+.danger {
   background: transparent;
-  color: inherit;
+  color: var(--app-danger);
 }
 article {
-  display: flex;
   justify-content: space-between;
-  gap: 1rem;
-  border-top: 1px solid var(--app-border-color);
   padding: 1rem 0;
+  border-top: 1px solid var(--app-border-color);
+}
+article.selected {
+  border-left: 0.25rem solid var(--app-primary);
+  padding-left: 0.75rem;
 }
 article small {
   display: block;
@@ -73,18 +101,47 @@ article small {
   color: var(--app-text-color-secondary);
   overflow-wrap: anywhere;
 }
-article div:last-child {
-  display: flex;
-  gap: 0.5rem;
-  align-items: start;
+dl {
+  margin: 0;
 }
-.danger {
-  background: transparent;
-  color: var(--app-danger);
+dt {
+  color: var(--app-text-color-secondary);
+  font-size: 0.75rem;
 }
-@media (max-width: 600px) {
+dd {
+  margin: 0;
+  font-weight: 800;
+}
+.status {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+.status--suspended {
+  background: #fef3c7;
+  color: #92400e;
+}
+.member-form {
+  margin-bottom: 1rem;
+}
+.member {
+  padding: 0.75rem 0;
+}
+@media (max-width: 800px) {
   form,
-  article {
+  article,
+  .member-form {
     display: grid;
+  }
+  .actions {
+    flex-wrap: wrap;
+  }
+  dl {
+    justify-content: start;
   }
 }
