@@ -1,0 +1,110 @@
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CategoriesApi } from '../../../categories/categories.api';
+import { CategoryResponse, ProductResponse } from '../../../../core/models/api.models';
+import { ProductsApi } from '../../products.api';
+
+@Component({
+  selector: 'app-products',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './products.html',
+  styleUrl: './products.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ProductsPage {
+  private readonly productsApi = inject(ProductsApi);
+  private readonly categoriesApi = inject(CategoriesApi);
+  private readonly fb = inject(FormBuilder);
+
+  protected readonly products = signal<readonly ProductResponse[]>([]);
+  protected readonly categories = signal<readonly CategoryResponse[]>([]);
+  protected readonly loading = signal(true);
+  protected readonly saving = signal(false);
+  protected readonly errorMessage = signal<string | null>(null);
+  protected readonly showForm = signal(false);
+  protected readonly search = signal('');
+  protected readonly form = this.fb.nonNullable.group({
+    name: ['', [Validators.required, Validators.minLength(2)]],
+    description: [''],
+    price: [0, [Validators.required, Validators.min(0)]],
+    stock: [0, [Validators.required, Validators.min(0)]],
+    categoryId: ['', Validators.required],
+    imageUrl: [''],
+  });
+
+  constructor() {
+    this.load();
+    this.categoriesApi.list().subscribe({
+      next: (categories) => this.categories.set(categories),
+      error: () => this.errorMessage.set('No pudimos cargar las categorías.'),
+    });
+  }
+
+  protected load(): void {
+    this.loading.set(true);
+    this.productsApi.list({ search: this.search() || undefined }).subscribe({
+      next: (products) => {
+        this.products.set(products);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('No pudimos cargar los productos.');
+        this.loading.set(false);
+      },
+    });
+  }
+
+  protected updateSearch(value: string): void {
+    this.search.set(value);
+    this.load();
+  }
+
+  protected save(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.saving.set(true);
+    this.errorMessage.set(null);
+    const value = this.form.getRawValue();
+    this.productsApi
+      .create({
+        ...value,
+        description: value.description || null,
+        imageUrl: value.imageUrl || null,
+      })
+      .subscribe({
+        next: () => {
+          this.form.reset({
+            name: '',
+            description: '',
+            price: 0,
+            stock: 0,
+            categoryId: '',
+            imageUrl: '',
+          });
+          this.showForm.set(false);
+          this.saving.set(false);
+          this.load();
+        },
+        error: () => {
+          this.saving.set(false);
+          this.errorMessage.set('No pudimos guardar el producto.');
+        },
+      });
+  }
+
+  protected categoryName(id: string): string {
+    return this.categories().find((category) => category.id === id)?.name ?? 'Sin categoría';
+  }
+
+  protected remove(product: ProductResponse): void {
+    if (!confirm(`¿Eliminar ${product.name}?`)) return;
+    this.productsApi.remove(product.id).subscribe({
+      next: () => this.load(),
+      error: () => this.errorMessage.set('No pudimos eliminar el producto.'),
+    });
+  }
+}

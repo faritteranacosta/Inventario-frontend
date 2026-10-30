@@ -25,6 +25,31 @@ La aplicación estará disponible en `http://localhost:4200`.
 | `npm run format:check` | Verificación de formato |
 | `npm run validate` | Lint, formato y pruebas |
 
+## Flujo de ramas y automatización
+
+`main` es la rama principal y protegida. Cada funcionalidad se desarrolla en
+una rama `feat/*` y se integra mediante pull request.
+
+Los hooks de Husky protegen el flujo local:
+
+- `pre-commit` ejecuta `lint-staged` sobre los archivos preparados.
+- `commit-msg` valida Conventional Commits.
+- `pre-push` ejecuta `npm run validate`.
+
+GitHub Actions ejecuta CI en cada pull request hacia `main` con instalación
+reproducible (`npm ci`), lint, formato, pruebas y build. Después de integrar un
+pull request en `main`, el mismo workflow construye la aplicación y la publica
+en GitHub Pages. En los ajustes del repositorio debe habilitarse Pages con
+`GitHub Actions` como fuente de despliegue.
+
+Para una release, `scripts/release.sh` valida el proyecto, incrementa la versión
+SemVer y crea el commit y tag correspondiente:
+
+```bash
+bash scripts/release.sh patch
+git push origin main --follow-tags
+```
+
 ## Estructura
 
 ```text
