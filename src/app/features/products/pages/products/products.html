@@ -19,7 +19,7 @@
 
   @if (showForm()) {
     <section class="form-panel" aria-labelledby="product-form-title">
-      <h2 id="product-form-title">Agregar producto</h2>
+      <h2 id="product-form-title">{{ editingId() ? 'Editar producto' : 'Agregar producto' }}</h2>
       <form [formGroup]="form" (ngSubmit)="save()" novalidate>
         <label>Nombre <input formControlName="name" /></label>
         <label>Precio <input type="number" min="0" formControlName="price" /></label>
@@ -41,7 +41,7 @@
         /></label>
         <div class="form-actions wide">
           <button class="button button--primary" type="submit" [disabled]="saving()">
-            {{ saving() ? 'Guardando…' : 'Guardar producto' }}
+            {{ saving() ? 'Guardando…' : editingId() ? 'Actualizar producto' : 'Guardar producto' }}
           </button>
         </div>
       </form>
@@ -83,6 +83,7 @@
               <th>Categoría</th>
               <th>Precio</th>
               <th>Stock</th>
+              <th>Creado</th>
               <th><span class="sr-only">Acciones</span></th>
             </tr>
           </thead>
@@ -93,8 +94,8 @@
                   <div class="product-cell">
                     @if (product.imageUrl; as imageUrl) {
                       <img
-                        src="favicon.ico"
-                        [src]="imageUrl || 'favicon.ico'"
+                        src="assets/escudo/light_grey_192.png"
+                        [src]="imageUrl"
                         [alt]="product.name"
                       />
                     }
@@ -111,15 +112,19 @@
                     product.stock
                   }}</span>
                 </td>
+                <td>{{ product.createdAtUtc | date: 'dd MMM yyyy' }}</td>
                 <td>
-                  <button
-                    class="icon-button"
-                    type="button"
-                    (click)="remove(product)"
-                    [attr.aria-label]="'Eliminar ' + product.name"
-                  >
-                    Eliminar
-                  </button>
+                  <div class="row-actions">
+                    <button class="icon-button" type="button" (click)="edit(product)">
+                      Editar
+                    </button>
+                    <button class="icon-button" type="button" (click)="openImage(product)">
+                      Imagen
+                    </button>
+                    <button class="icon-button danger" type="button" (click)="remove(product)">
+                      Eliminar
+                    </button>
+                  </div>
                 </td>
               </tr>
             }
@@ -130,4 +135,62 @@
       <p class="empty">No hay productos que coincidan con tu búsqueda.</p>
     }
   </section>
+
+  @if (imageProduct(); as product) {
+    <div class="modal-backdrop" role="presentation">
+      <section class="image-modal" role="dialog" aria-modal="true" aria-labelledby="image-title">
+        <div class="modal-heading">
+          <div>
+            <h2 id="image-title">Imagen de {{ product.name }}</h2>
+            <p>Usa una URL o carga una imagen desde tu dispositivo.</p>
+          </div>
+          <button type="button" (click)="closeImage()" aria-label="Cerrar">×</button>
+        </div>
+        @if (imagePreview(); as preview) {
+          <img
+            class="image-preview"
+            src="assets/escudo/light_grey_192.png"
+            [src]="preview"
+            [alt]="'Vista previa de ' + product.name"
+          />
+        }
+        @if (imageError(); as message) {
+          <div class="notice" role="alert">{{ message }}</div>
+        }
+        <label for="image-url"
+          >URL de imagen<input
+            #imageUrl
+            id="image-url"
+            type="url"
+            [value]="product.imageUrl ?? ''"
+            placeholder="https://…"
+        /></label>
+        <button
+          class="button button--primary"
+          type="button"
+          [disabled]="uploading()"
+          (click)="saveImageUrl(imageUrl.value)"
+        >
+          Guardar URL
+        </button>
+        <label for="image-file"
+          >Archivo o cámara<input
+            id="image-file"
+            type="file"
+            accept="image/*"
+            capture="environment"
+            (change)="selectImage(fileInput.files?.[0])"
+            #fileInput
+        /></label>
+        <button
+          class="button button--secondary"
+          type="button"
+          [disabled]="uploading()"
+          (click)="uploadFile()"
+        >
+          {{ uploading() ? 'Cargando…' : 'Cargar archivo' }}
+        </button>
+      </section>
+    </div>
+  }
 </main>
