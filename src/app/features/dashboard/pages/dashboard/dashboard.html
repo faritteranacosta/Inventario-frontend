@@ -1,0 +1,65 @@
+<main class="dashboard">
+  <header class="dashboard__header">
+    <div>
+      <p class="dashboard__eyebrow">Resumen operativo</p>
+      <h1>Buenos días, equipo.</h1>
+      <p>Una lectura rápida de lo que está pasando en tu negocio.</p>
+    </div>
+    <a class="button button--primary" routerLink="/products"
+      >Agregar producto <span aria-hidden="true">+</span></a
+    >
+  </header>
+
+  @if (errorMessage(); as message) {
+    <div class="notice notice--error" role="alert">{{ message }}</div>
+  }
+
+  @if (loading()) {
+    <p class="muted">Cargando indicadores…</p>
+  } @else if (summary(); as data) {
+    <section class="metrics" aria-label="Indicadores de ventas">
+      <article class="metric metric--accent">
+        <span>Ventas acumuladas</span><strong>{{ data.grandTotal | number: '1.2-2' }}</strong
+        ><small>Valor total registrado</small>
+      </article>
+      <article class="metric">
+        <span>Operaciones</span><strong>{{ data.totalCount }}</strong
+        ><small>Ventas registradas</small>
+      </article>
+      <article class="metric">
+        <span>Promedio por venta</span
+        ><strong>{{
+          data.totalCount ? (data.grandTotal / data.totalCount | number: '1.2-2') : '0.00'
+        }}</strong
+        ><small>Ticket promedio</small>
+      </article>
+    </section>
+    <section class="panel">
+      <div class="panel__heading">
+        <div>
+          <h2>Actividad reciente</h2>
+          <p>Ventas agrupadas por día.</p>
+        </div>
+        <a routerLink="/sales">Ver todas</a>
+      </div>
+      @if (data.items.length) {
+        <div class="bars" aria-label="Gráfica de ventas">
+          @for (item of data.items; track item.period) {
+            <div class="bar">
+              <span class="bar__value">{{ item.total | number: '1.0-0' }}</span>
+              <div
+                class="bar__fill"
+                [style.height.%]="data.grandTotal ? (item.total / data.grandTotal) * 100 : 0"
+              ></div>
+              <small>{{ item.period | date: 'dd MMM' }}</small>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="empty">Todavía no hay ventas para mostrar.</p>
+      }
+    </section>
+  } @else {
+    <p class="empty">No hay información disponible todavía.</p>
+  }
+</main>

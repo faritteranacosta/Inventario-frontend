@@ -1,0 +1,113 @@
+<main class="products-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Catálogo</p>
+      <h1>Productos</h1>
+      <p>Consulta existencias y mantén tu catálogo al día.</p>
+    </div>
+    <button class="button button--primary" type="button" (click)="showForm.set(!showForm())">
+      {{ showForm() ? 'Cerrar formulario' : 'Nuevo producto' }}
+    </button>
+  </header>
+
+  @if (errorMessage(); as message) {
+    <div class="notice" role="alert">{{ message }}</div>
+  }
+
+  @if (showForm()) {
+    <section class="form-panel" aria-labelledby="product-form-title">
+      <h2 id="product-form-title">Agregar producto</h2>
+      <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+        <label>Nombre <input formControlName="name" /></label>
+        <label>Precio <input type="number" min="0" formControlName="price" /></label>
+        <label>Existencias <input type="number" min="0" formControlName="stock" /></label>
+        <label
+          >Categoría
+          <select formControlName="categoryId">
+            <option value="">Selecciona</option>
+            @for (category of categories(); track category.id) {
+              <option [value]="category.id">{{ category.name }}</option>
+            }
+          </select></label
+        >
+        <label class="wide"
+          >Descripción <textarea rows="3" formControlName="description"></textarea>
+        </label>
+        <label class="wide"
+          >URL de imagen <input type="url" formControlName="imageUrl" placeholder="https://…"
+        /></label>
+        <div class="form-actions wide">
+          <button class="button button--primary" type="submit" [disabled]="saving()">
+            {{ saving() ? 'Guardando…' : 'Guardar producto' }}
+          </button>
+        </div>
+      </form>
+    </section>
+  }
+
+  <section class="listing">
+    <div class="listing__toolbar">
+      <label class="search"
+        ><span class="sr-only">Buscar productos</span
+        ><input
+          #searchInput
+          [value]="search()"
+          (input)="updateSearch(searchInput.value)"
+          placeholder="Buscar por nombre…" /></label
+      ><span class="muted">{{ products().length }} productos</span>
+    </div>
+    @if (loading()) {
+      <p class="empty">Cargando catálogo…</p>
+    } @else if (products().length) {
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th><span class="sr-only">Acciones</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of products(); track product.id) {
+              <tr>
+                <td>
+                  <div class="product-cell">
+                    @if (product.imageUrl) {
+                      <img [src]="product.imageUrl" [alt]="product.name" />
+                    }
+                    <div>
+                      <strong>{{ product.name }}</strong
+                      ><small>{{ product.description || 'Sin descripción' }}</small>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ categoryName(product.categoryId) }}</td>
+                <td>{{ product.price | currency }}</td>
+                <td>
+                  <span [class.stock--low]="product.stock < 5" class="stock">{{
+                    product.stock
+                  }}</span>
+                </td>
+                <td>
+                  <button
+                    class="icon-button"
+                    type="button"
+                    (click)="remove(product)"
+                    [attr.aria-label]="'Eliminar ' + product.name"
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="empty">No hay productos que coincidan con tu búsqueda.</p>
+    }
+  </section>
+</main>
