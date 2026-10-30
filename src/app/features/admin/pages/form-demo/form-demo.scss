@@ -32,9 +32,17 @@
   }
 
   &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--app-space-2);
     color: var(--app-primary);
     font-size: var(--app-font-size-sm);
     font-weight: var(--app-font-weight-semibold);
+  }
+
+  &__back svg {
+    width: 1rem;
+    height: 1rem;
   }
 
   &__eyebrow {
@@ -47,14 +55,10 @@
   }
 
   &__mark {
-    display: grid;
+    display: block;
     width: 3rem;
     height: 3rem;
-    place-items: center;
-    border-radius: var(--app-radius-md);
-    background: linear-gradient(135deg, var(--app-primary), var(--app-accent));
-    color: var(--app-primary-contrast);
-    font-size: 1.75rem;
+    color: var(--app-primary);
   }
 
   &__success {
@@ -75,7 +79,6 @@
     border-radius: var(--app-radius-lg);
     padding: clamp(1.25rem, 4vw, 2rem);
     background: var(--app-surface-0);
-    box-shadow: var(--app-shadow-sm);
   }
 
   &__grid {

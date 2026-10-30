@@ -34,13 +34,9 @@
   color: var(--app-accent-300);
 }
 .brand__mark {
-  display: grid;
   width: 2.5rem;
   height: 2.5rem;
-  place-items: center;
-  border-radius: 0.75rem;
-  background: var(--app-primary);
-  font-size: 1.5rem;
+  color: var(--app-accent-300);
 }
 .auth-intro__copy {
   max-width: 34rem;
