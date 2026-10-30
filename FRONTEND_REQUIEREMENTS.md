@@ -175,6 +175,12 @@ La API actual obtiene el tenant desde el contexto autenticado para las
 operaciones de inventario y ventas. El frontend no debe enviar un `tenantId`
 arbitrario como sustituto del contexto de sesión.
 
+El selector de negocio debe mostrar únicamente membresías activas. Al cambiar
+de negocio, debe limpiar la selección anterior, solicitar el nuevo contexto a
+la API y recargar los datos antes de habilitar acciones de operación. El rol
+visible debe corresponder a la membresía activa y no a un rol heredado de otro
+negocio.
+
 ## 5. Páginas y módulos requeridos
 
 ## 5.1 Página de bienvenida o selección de tenant
