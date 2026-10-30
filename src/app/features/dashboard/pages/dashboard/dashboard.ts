@@ -22,6 +22,10 @@ export class DashboardPage {
   protected readonly groupBy = signal<'day' | 'month'>('day');
 
   constructor() {
+    this.load();
+  }
+
+  protected load(): void {
     if (this.from() && this.to() && this.from() > this.to()) {
       this.errorMessage.set('La fecha inicial no puede ser posterior a la fecha final.');
       return;

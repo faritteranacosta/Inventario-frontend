@@ -22,6 +22,12 @@
     <h2 id="login-title">Inicia sesión</h2>
     <p class="auth-card__hint">Accede al panel de tu negocio.</p>
 
+    @if (sessionExpired) {
+      <div class="auth-card__info" role="status">
+        Tu sesión expiró. Vuelve a iniciar sesión para continuar.
+      </div>
+    }
+
     @if (errorMessage(); as message) {
       <div class="auth-card__error" role="alert">{{ message }}</div>
     }
@@ -49,6 +55,9 @@
       </button>
     </form>
 
-    <p class="auth-card__footer">¿Necesitas acceso? Solicítalo al administrador de tu negocio.</p>
+    <p class="auth-card__footer">
+      <a routerLink="/onboarding">Crear un negocio</a> ·
+      <a routerLink="/register">Registrar usuario</a>
+    </p>
   </section>
 </main>

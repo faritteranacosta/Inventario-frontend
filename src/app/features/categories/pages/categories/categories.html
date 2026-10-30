@@ -51,6 +51,7 @@
             <div>
               <h3>{{ category.name }}</h3>
               <p>{{ category.description || 'Sin descripción' }}</p>
+              <small>Creada {{ category.createdAtUtc | date: 'dd MMM yyyy' }}</small>
             </div>
             <div class="category-item__actions">
               <button type="button" (click)="edit(category)">Editar</button

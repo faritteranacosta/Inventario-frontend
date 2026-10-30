@@ -29,7 +29,12 @@
       }
     </nav>
     <div class="shell__account">
-      <span class="shell__tenant">{{ auth.user()?.role ?? 'Usuario' }}</span>
+      <span
+        class="shell__tenant"
+        [attr.title]="'Tenant activo: ' + (auth.user()?.tenantId ?? 'no disponible')"
+        >Negocio · {{ auth.user()?.tenantId?.slice(0, 8) ?? '—' }}</span
+      >
+      <span class="shell__role">{{ auth.user()?.role ?? 'Usuario' }}</span>
       <span class="shell__user">{{ auth.user()?.email ?? 'Usuario' }}</span>
       <button type="button" (click)="auth.logout()">Cerrar sesión</button>
     </div>
