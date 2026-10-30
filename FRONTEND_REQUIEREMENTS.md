@@ -549,6 +549,13 @@ Mapeo mínimo de respuestas:
 No se deben presentar operaciones optimistas de eliminación, venta o cambio de
 imagen como exitosas antes de recibir respuesta satisfactoria.
 
+Los mensajes de error deben conservar el mensaje funcional de la API cuando
+exista. El frontend puede añadir contexto de recuperación, pero no debe
+mostrar un éxito alternativo ni exponer detalles internos del servidor.
+Después de un `401` no se debe repetir automáticamente la solicitud; después
+de un `403` no se debe intentar cambiar el contexto ni degradar el rol para
+forzar el acceso.
+
 ## 8. Permisos y visibilidad
 
 El frontend debe centralizar las reglas de autorización:
