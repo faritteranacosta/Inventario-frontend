@@ -40,11 +40,6 @@ La API devuelve objetos de error con la forma:
 El frontend debe mostrar ese mensaje cuando sea apropiado, sin reemplazarlo
 silenciosamente por un mensaje de éxito.
 
-Este documento distingue entre capacidades implementables con el OpenAPI
-vigente y capacidades que requieren una ampliación coordinada del backend.
-Una funcionalidad marcada como futura no debe simular respuestas exitosas ni
-inventar parámetros o endpoints.
-
 ## 3. Modelo de acceso multi-negocio
 
 El sistema debe distinguir entre la administración de la plataforma y la
@@ -86,15 +81,15 @@ El frontend debe contemplar estos flujos para `PlatformAdmin`:
 7. Seleccionar un negocio para operar sus pantallas, siempre que la política
    de auditoría lo permita.
 
-Estas acciones deben registrar quién las ejecutó, sobre qué negocio y cuándo.
-El frontend debe mostrar ese contexto en las confirmaciones y evitar acciones
-globales ambiguas.
+El frontend debe mostrar quién está ejecutando cada acción, sobre qué negocio
+y con qué rol. La auditoría detallada de esas acciones todavía no forma parte
+del contrato actual.
 
-### 3.2 Contrato de API necesario
+### 3.2 Contrato de API implementado
 
-El frontend debe consumir el contrato multi-negocio expuesto por la API. Los
-payloads definitivos, nombres de propiedades y estados deben validarse contra
-el OpenAPI vigente antes de implementar cada formulario:
+La API implementa el modelo mediante `PlatformAdmin`, membresías y contexto
+activo. Las rutas de administración global requieren un JWT con el rol
+`PlatformAdmin`:
 
 - `GET /api/platform/tenants`: listado global para `PlatformAdmin`.
 - `POST /api/platform/tenants`: crear negocio y, opcionalmente, su primer
@@ -110,10 +105,26 @@ el OpenAPI vigente antes de implementar cada formulario:
 - `GET /api/auth/me`: devolver el usuario y todas sus membresías.
 - `POST /api/auth/context`: seleccionar un negocio autorizado.
 
-Los nombres y payloads definitivos deben salir del OpenAPI vigente. Mientras
-estos endpoints no existan, el frontend no debe simularlos ni presentar
-acciones exitosas: debe marcar la capacidad como no disponible o restringirla
-al flujo actual.
+`POST /api/platform/tenants` acepta `{ "name": "...", "adminEmail": "...",
+"adminPassword": "..." }`. Los dos campos del administrador son opcionales,
+pero deben enviarse juntos cuando se quiera crear el primer administrador.
+
+`PATCH /api/platform/tenants/{tenantId}/status` acepta
+`{ "status": "Active" | "Suspended" }`.
+
+`POST /api/platform/tenants/{tenantId}/members` acepta
+`{ "email": "...", "password": "...", "role": "Admin" | "User" }`.
+
+`PATCH /api/platform/tenants/{tenantId}/members/{userId}` acepta
+`{ "role": "Admin" | "User", "status": "Active" | "Suspended" | "Revoked" }`;
+ambos campos son opcionales, pero debe enviarse al menos uno.
+
+`POST /api/auth/context` acepta `{ "tenantId": "guid" }` y devuelve un nuevo
+`token` junto con `activeTenantId`. El frontend debe reemplazar el token
+anterior por el nuevo antes de consultar el inventario del negocio.
+
+El contrato completo y ejemplos de solicitudes están en
+[`platform.http`](src/Unimag.Inventario.Api/Platform/platform.http).
 
 ## 4. Reglas generales de sesión y seguridad
 
@@ -140,9 +151,10 @@ La pantalla llama a `POST /api/auth/login` con:
 La respuesta contiene `token` y `user`. El frontend debe:
 
 - Guardar la sesión de forma segura según las capacidades del entorno.
-- Enviar la cabecera de autorización con el token vigente en las solicitudes protegidas.
+- Enviar `Authorization: Bearer <token>` en las solicitudes protegidas.
 - Conservar el usuario autenticado, su `id`, correo y rol.
-- Conservar sus membresías, el rol global si existe y el `tenantId` activo.
+- Consultar `GET /api/auth/me` después del login para conservar sus
+  membresías, el rol global y el `tenantId` activo.
 - Redirigir al dashboard después de iniciar sesión.
 - No guardar ni mostrar la contraseña.
 - Limpiar la sesión al cerrar sesión.
@@ -171,15 +183,10 @@ El frontend debe mantener un tenant activo para la sesión. Debe:
 - Evitar que el usuario crea que está viendo datos de otro tenant.
 - Recargar categorías, productos, ventas y dashboard cuando cambie el tenant.
 
-La API actual obtiene el tenant desde el contexto autenticado para las
+La API obtiene el tenant desde el claim `tenant_id` del JWT para las
 operaciones de inventario y ventas. El frontend no debe enviar un `tenantId`
-arbitrario como sustituto del contexto de sesión.
-
-El selector de negocio debe mostrar únicamente membresías activas. Al cambiar
-de negocio, debe limpiar la selección anterior, solicitar el nuevo contexto a
-la API y recargar los datos antes de habilitar acciones de operación. El rol
-visible debe corresponder a la membresía activa y no a un rol heredado de otro
-negocio.
+arbitrario como sustituto del contexto de sesión: debe llamar a
+`POST /api/auth/context` y usar el token devuelto.
 
 ## 5. Páginas y módulos requeridos
 
@@ -480,9 +487,10 @@ adicional para `PlatformAdmin`:
 - Mostrar la diferencia entre el rol global y el rol dentro del negocio.
 - Ocultar o bloquear cada acción para usuarios sin permisos.
 
-Las acciones deben respetar el alcance del rol y de la membresía activa. Si
-una operación no está disponible para un rol o devuelve `403`, el frontend
-debe mostrar el estado de acceso denegado y no simular un resultado exitoso.
+La administración global de membresías sí está disponible mediante las rutas
+`/api/platform/tenants/{tenantId}/members`. La API todavía no expone un
+listado general de usuarios, edición del perfil, eliminación física de
+usuarios ni cambio de contraseña. El frontend no debe simular esas acciones.
 
 ## 5.10 Administración global de negocios
 
@@ -500,9 +508,9 @@ necesite administrar varios negocios:
 - Acceder al selector de negocio sin cambiar accidentalmente el rol global.
 
 La administración global de negocios no debe confundirse con el tenant activo
-de la sesión. El frontend debe consumir el contrato de plataforma y mostrar
-por separado el contexto global y el contexto operativo del negocio
-seleccionado.
+de la sesión. La API ya ofrece rol `PlatformAdmin`, estados, membresías,
+suspensión y selección de contexto. Todavía no ofrece auditoría detallada,
+renombrado de negocios ni eliminación desde estas rutas.
 
 ## 6. Contrato de datos que debe respetarse
 
@@ -517,9 +525,13 @@ El frontend debe modelar, como mínimo, estas respuestas:
 - Tenant: `id`, `name`, `createdAtUtc`.
 - Usuario: `id`, `tenantId`, `email`, `role`, `createdAtUtc`.
 - Login: `token`, `user`.
-- Membresía: `tenantId`, `tenantName`, `role`, `status`, `createdAtUtc`.
-- Sesión: `user`, `memberships`, `activeTenantId` y, si aplica,
-  `platformRole`.
+- Tenant administrable: `id`, `name`, `status`, `createdAtUtc`, `userCount`,
+  `adminCount`.
+- Membresía: `id`, `userId`, `tenantId`, `email`, `role`, `status`,
+  `createdAtUtc`.
+- Sesión (`GET /api/auth/me`): `id`, `email`, `platformRole`,
+  `activeTenantId`, `memberships`.
+- Cambio de contexto: `token`, `activeTenantId`.
 
 Los campos opcionales pueden ser nulos. El frontend debe mostrar un valor
 neutro para descripciones o imágenes ausentes, sin enviar cadenas inválidas.
@@ -543,18 +555,13 @@ Mapeo mínimo de respuestas:
 - `401`: cerrar sesión y solicitar autenticación.
 - `404`: recurso inexistente; ofrecer regresar o actualizar.
 - `409`: conflicto, principalmente stock insuficiente o usuario duplicado.
+- `403`: rol insuficiente, membresía suspendida/revocada o negocio
+  suspendido; no repetir automáticamente la solicitud.
 - `500`: mostrar mensaje genérico y opción de reintentar; no mostrar
   información interna.
 
 No se deben presentar operaciones optimistas de eliminación, venta o cambio de
 imagen como exitosas antes de recibir respuesta satisfactoria.
-
-Los mensajes de error deben conservar el mensaje funcional de la API cuando
-exista. El frontend puede añadir contexto de recuperación, pero no debe
-mostrar un éxito alternativo ni exponer detalles internos del servidor.
-Después de un `401` no se debe repetir automáticamente la solicitud; después
-de un `403` no se debe intentar cambiar el contexto ni degradar el rol para
-forzar el acceso.
 
 ## 8. Permisos y visibilidad
 
@@ -573,6 +580,11 @@ Las reglas deben evaluarse con el rol efectivo para el negocio activo, no solo
 con el nombre del rol guardado en el usuario. La interfaz debe ocultar
 acciones no permitidas, pero nunca considerar el ocultamiento como seguridad:
 la API sigue siendo la autoridad final.
+
+Las rutas de catálogo, ventas y usuarios requieren autenticación. Crear,
+editar, eliminar o cargar imágenes de catálogo requiere `Admin` o
+`PlatformAdmin`; las consultas y el registro de ventas requieren un contexto
+de negocio válido.
 
 ## 9. Requisitos de usabilidad
 
@@ -593,10 +605,13 @@ El frontend debe diseñarse para evolucionar sin asumir que estas capacidades
 ya existen:
 
 - Paginación y ordenamiento del servidor no están definidos.
-- Los payloads definitivos de plataforma, membresías y contexto deben
-  mantenerse alineados con el OpenAPI vigente.
-- La disponibilidad de cada acción depende del rol global, el rol de la
-  membresía activa y su estado.
+- La administración de usuarios no incluye edición del perfil, eliminación
+  física ni cambio de contraseña.
+- No existe todavía un endpoint específico para bootstrap o promoción de un
+  usuario a `PlatformAdmin`; ese usuario debe provisionarse fuera de estos
+  endpoints.
+- La auditoría detallada, el renombrado y la eliminación de negocios no están
+  disponibles en las rutas de plataforma.
 - El filtrado por tenant debe seguir el contexto autenticado actual.
 - La persistencia real y transacciones del backend pueden cambiar al pasar de
   almacenamiento en memoria a un proveedor definitivo.
@@ -615,6 +630,9 @@ Se considera que el frontend utiliza completamente la API cuando:
 - Un usuario puede crear o seleccionar un tenant, registrarse e iniciar sesión.
 - Un usuario con varias membresías puede cambiar de negocio y ver solo datos
   del contexto activo.
+- Un `PlatformAdmin` puede crear un negocio con su primer `Admin`, consultar
+  miembros, cambiar roles/estados, revocar membresías y suspender o reactivar
+  negocios.
 - Las solicitudes autenticadas envían el token correctamente.
 - Un administrador puede gestionar categorías y productos, incluidas sus
   imágenes.
@@ -625,21 +643,3 @@ Se considera que el frontend utiliza completamente la API cuando:
 - Las acciones globales y las acciones del negocio muestran claramente su
   alcance y no se habilitan para el rol equivocado.
 - Ninguna pantalla depende de endpoints que no existen en la API vigente.
-
-## 12. Revisión de contrato antes de entregar
-
-Antes de considerar completa una funcionalidad multi-negocio, el equipo debe
-comprobar en el OpenAPI vigente:
-
-- Que existen los endpoints de plataforma, membresías, sesión y contexto
-  descritos en la sección 3.2.
-- Que `PlatformAdmin`, `Admin` y `User` se representan con nombres y valores
-  consistentes entre login, sesión y membresías.
-- Que los estados `Active`, `Suspended` y `Revoked` tienen el mismo significado
-  en backend y frontend.
-- Que las respuestas de error conservan la propiedad `message` y los códigos
-  `400`, `401`, `403`, `404`, `409` y `500`.
-- Que seleccionar un negocio actualiza el contexto autenticado antes de
-  consultar dashboard, categorías, productos o ventas.
-- Que las operaciones de suspensión, revocación y cambio de rol requieren
-  confirmación y no se presentan como exitosas antes de la respuesta de la API.
