@@ -10,9 +10,19 @@
       </svg>
       <span class="landing__brand-name">Inventario <strong>SaaS</strong></span>
     </a>
-    <button class="landing__button landing__button--outline" type="button" (click)="goToAdmin()">
-      Abrir panel
-    </button>
+    <nav class="landing__nav" aria-label="Navegación principal">
+      <a
+        routerLink="/"
+        routerLinkActive="landing__nav-link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Inicio</a
+      >
+      <a routerLink="/dashboard" routerLinkActive="landing__nav-link--active">Panel</a>
+      <a routerLink="/products" routerLinkActive="landing__nav-link--active">Productos</a>
+      <button class="landing__button landing__button--outline" type="button" (click)="goToAdmin()">
+        Abrir panel
+      </button>
+    </nav>
   </header>
 
   <main>
@@ -40,12 +50,6 @@
             />
           </svg>
         </button>
-      </div>
-      <div class="landing__chips" aria-label="Tecnologías incluidas">
-        <span>Angular 21</span>
-        <span>Tailwind CSS</span>
-        <span>Jest</span>
-        <span>TypeScript estricto</span>
       </div>
     </section>
 
@@ -107,18 +111,25 @@
   </main>
 
   <footer class="landing__footer">
-    <svg
-      class="landing__logo landing__logo--small"
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-      <path
-        d="M4 4h16v16H4zM8 8h3v3H8zm5 0h3v3h-3zM8 13h3v3H8zm5 0h3v3h-3z"
-        stroke="currentColor"
-        stroke-width="1.8"
-      />
-    </svg>
-    <span>Inventario SaaS · {{ year }}</span>
+    <div class="landing__footer-brand">
+      <svg
+        class="landing__logo landing__logo--small"
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+        <path
+          d="M4 4h16v16H4zM8 8h3v3H8zm5 0h3v3h-3zM8 13h3v3H8zm5 0h3v3h-3z"
+          stroke="currentColor"
+          stroke-width="1.8"
+        />
+      </svg>
+      <span>Inventario SaaS · {{ year }}</span>
+    </div>
+    <nav class="landing__footer-nav" aria-label="Navegación del pie de página">
+      <a routerLink="/">Inicio</a>
+      <a routerLink="/dashboard">Panel</a>
+      <a routerLink="/products">Productos</a>
+    </nav>
   </footer>
 </div>
