@@ -1,9 +1,16 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 .agents
+.codex/
+.github/agents/
+.github/hooks/
+.github/skills/
 .claude
 AGENTS.md
+PRODUCT.md
 GUIDE-FRONTEND.md
+FRONTEND_REQUIEREMENTS.md
+v1.json
 .angular
 /docs
 agents
