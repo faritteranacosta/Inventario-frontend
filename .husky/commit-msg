@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# Valida que el mensaje de commit siga Conventional Commits.
+npx --no-install commitlint --edit "$1"

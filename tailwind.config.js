@@ -1,0 +1,66 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ['./src/**/*.{html,ts}'],
+  darkMode: ['class', '.app-dark'],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: 'var(--app-primary-50)',
+          100: 'var(--app-primary-100)',
+          200: 'var(--app-primary-200)',
+          300: 'var(--app-primary-300)',
+          400: 'var(--app-primary-400)',
+          500: 'var(--app-primary-500)',
+          600: 'var(--app-primary-600)',
+          700: 'var(--app-primary-700)',
+          800: 'var(--app-primary-800)',
+          900: 'var(--app-primary-900)',
+          DEFAULT: 'var(--app-primary)',
+        },
+        accent: {
+          50: 'var(--app-accent-50)',
+          100: 'var(--app-accent-100)',
+          200: 'var(--app-accent-200)',
+          300: 'var(--app-accent-300)',
+          400: 'var(--app-accent-400)',
+          500: 'var(--app-accent-500)',
+          600: 'var(--app-accent-600)',
+          700: 'var(--app-accent-700)',
+          DEFAULT: 'var(--app-accent)',
+        },
+        success: 'var(--app-success)',
+        info: 'var(--app-info)',
+        warning: 'var(--app-warning)',
+        danger: 'var(--app-danger)',
+        surface: {
+          0: 'var(--app-surface-0)',
+          50: 'var(--app-surface-50)',
+          100: 'var(--app-surface-100)',
+          200: 'var(--app-surface-200)',
+          300: 'var(--app-surface-300)',
+          500: 'var(--app-surface-500)',
+          700: 'var(--app-surface-700)',
+          900: 'var(--app-surface-900)',
+        },
+      },
+      fontFamily: {
+        heading: ['Trebuchet MS', 'system-ui', 'sans-serif'],
+        body: ['system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        sans: ['system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+      },
+      borderRadius: {
+        sm: 'var(--app-radius-sm)',
+        md: 'var(--app-radius-md)',
+        lg: 'var(--app-radius-lg)',
+        xl: 'var(--app-radius-xl)',
+      },
+      boxShadow: {
+        'app-sm': 'var(--app-shadow-sm)',
+        'app-md': 'var(--app-shadow-md)',
+        'app-lg': 'var(--app-shadow-lg)',
+      },
+    },
+  },
+  plugins: [],
+};

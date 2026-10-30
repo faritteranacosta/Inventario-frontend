@@ -1,0 +1,89 @@
+<div class="form-page">
+  <header class="form-page__header">
+    <div>
+      <a class="form-page__back" href="/" (click)="goHome(); $event.preventDefault()">← Inicio</a>
+      <p class="form-page__eyebrow">Catálogo</p>
+      <h1>Agregar producto</h1>
+      <p>Registra un producto para comenzar a controlar sus existencias.</p>
+    </div>
+    <span class="form-page__mark" aria-hidden="true">▦</span>
+  </header>
+
+  @if (submitted()) {
+    <div class="form-page__success" role="status">
+      <strong>Producto guardado.</strong> El registro se validó correctamente.
+    </div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="form-page__form" novalidate>
+    <div class="form-page__grid">
+      <label>
+        Nombre del producto *
+        <input formControlName="name" placeholder="Ej. Audífonos inalámbricos" />
+        @if (error('name'); as message) {
+          <small>{{ message }}</small>
+        }
+      </label>
+
+      <label>
+        SKU *
+        <input formControlName="sku" placeholder="Ej. AUD-001" />
+        @if (error('sku'); as message) {
+          <small>{{ message }}</small>
+        }
+      </label>
+
+      <label>
+        Categoría *
+        <select formControlName="category">
+          <option value="">Selecciona una categoría</option>
+          @for (option of categories; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+        @if (error('category'); as message) {
+          <small>{{ message }}</small>
+        }
+      </label>
+
+      <label>
+        Ubicación *
+        <select formControlName="warehouse">
+          <option value="">Selecciona una ubicación</option>
+          @for (option of warehouses; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+        @if (error('warehouse'); as message) {
+          <small>{{ message }}</small>
+        }
+      </label>
+
+      <label>
+        Cantidad inicial *
+        <input type="number" formControlName="quantity" min="0" />
+        @if (error('quantity'); as message) {
+          <small>{{ message }}</small>
+        }
+      </label>
+
+      <label>
+        Stock mínimo *
+        <input type="number" formControlName="minimumStock" min="0" />
+        @if (error('minimumStock'); as message) {
+          <small>{{ message }}</small>
+        }
+      </label>
+    </div>
+
+    <label>
+      Descripción
+      <textarea formControlName="description" rows="4" placeholder="Notas del producto"></textarea>
+    </label>
+
+    <div class="form-page__actions">
+      <button class="form-page__primary" type="submit">Guardar producto</button>
+      <button class="form-page__secondary" type="button" (click)="reset()">Limpiar</button>
+    </div>
+  </form>
+</div>

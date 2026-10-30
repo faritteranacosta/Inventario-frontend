@@ -1,0 +1,47 @@
+:root {
+  --app-font-heading: 'Trebuchet MS', system-ui, sans-serif;
+  --app-font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --app-font-size-xs: 0.75rem;
+  --app-font-size-sm: 0.875rem;
+  --app-font-size-base: 1rem;
+  --app-font-size-lg: 1.125rem;
+  --app-font-size-xl: 1.25rem;
+  --app-font-size-2xl: 1.5rem;
+  --app-font-size-3xl: 1.875rem;
+  --app-font-size-4xl: 2.25rem;
+  --app-font-weight-regular: 400;
+  --app-font-weight-medium: 500;
+  --app-font-weight-semibold: 600;
+  --app-font-weight-bold: 700;
+  --app-line-height-tight: 1.2;
+  --app-line-height-normal: 1.5;
+  --app-line-height-relaxed: 1.7;
+  --app-radius-sm: 0.375rem;
+  --app-radius-md: 0.625rem;
+  --app-radius-lg: 0.875rem;
+  --app-radius-xl: 1.25rem;
+  --app-radius-full: 9999px;
+  --app-shadow-sm: 0 1px 3px rgb(15 23 42 / 0.08);
+  --app-shadow-md: 0 8px 20px rgb(15 23 42 / 0.1);
+  --app-shadow-lg: 0 18px 40px rgb(15 23 42 / 0.14);
+  --app-space-1: 0.25rem;
+  --app-space-2: 0.5rem;
+  --app-space-3: 0.75rem;
+  --app-space-4: 1rem;
+  --app-space-5: 1.25rem;
+  --app-space-6: 1.5rem;
+  --app-space-8: 2rem;
+  --app-space-10: 2.5rem;
+  --app-space-12: 3rem;
+}
+
+.app-heading {
+  font-family: var(--app-font-heading);
+  font-weight: var(--app-font-weight-semibold);
+  line-height: var(--app-line-height-tight);
+}
+
+.app-body {
+  font-family: var(--app-font-body);
+  line-height: var(--app-line-height-normal);
+}

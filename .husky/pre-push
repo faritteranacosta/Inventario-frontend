@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Pre-push: ejecuta la validación completa (lint + formato + pruebas) antes de
+# subir cambios. Evita romper la rama compartida / el pipeline de CI.
+npm run validate

@@ -1,0 +1,66 @@
+{
+  "name": "inventario-frontend",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --ci --runInBand",
+    "test:coverage": "jest --coverage",
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
+    "format": "prettier --write \"src/**/*.{ts,html,scss,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,html,scss,json}\"",
+    "sonar": "sonar-scanner",
+    "validate": "npm run lint && npm run format:check && npm run test:ci",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,html}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "src/**/*.{scss,json}": [
+      "prettier --write"
+    ]
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "^21.2.25",
+    "@angular/compiler": "^21.2.25",
+    "@angular/core": "^21.2.25",
+    "@angular/forms": "^21.2.25",
+    "@angular/platform-browser": "^21.2.25",
+    "@angular/router": "^21.2.25",
+    "@angular/cdk": "^21.2.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^21.2.28",
+    "@angular/cli": "^21.2.28",
+    "@angular/compiler-cli": "^21.2.25",
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2",
+    "@eslint/js": "^10.0.0",
+    "@types/jest": "^30.0.0",
+    "angular-eslint": "21.4.0",
+    "autoprefixer": "^10.5.5",
+    "eslint": "^10.0.0",
+    "husky": "^9.1.7",
+    "jest": "^30.0.0",
+    "jest-environment-jsdom": "^30.0.0",
+    "jest-preset-angular": "^17.0.3",
+    "lint-staged": "^17.5.0",
+    "postcss": "^8.5.28",
+    "prettier": "^3.9.6",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "tailwindcss": "^3.4.19",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "8.72.0"
+  }
+}

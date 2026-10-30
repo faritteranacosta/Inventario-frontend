@@ -1,0 +1,194 @@
+:host {
+  display: block;
+}
+
+.landing {
+  min-height: 100vh;
+  background: var(--app-surface-50);
+  color: var(--app-text-color);
+
+  &__topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--app-space-4);
+    padding: var(--app-space-4) max(1.25rem, 5vw);
+    background: var(--app-surface-0);
+    border-bottom: 1px solid var(--app-border-color);
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--app-space-3);
+    color: var(--app-text-color);
+    font-family: var(--app-font-heading);
+    font-size: var(--app-font-size-lg);
+    font-weight: var(--app-font-weight-bold);
+  }
+
+  &__brand-name strong {
+    color: var(--app-primary);
+  }
+
+  &__logo {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border-radius: var(--app-radius-md);
+    background: linear-gradient(135deg, var(--app-primary), var(--app-accent));
+    color: var(--app-primary-contrast);
+    font-size: 1.5rem;
+  }
+
+  &__logo--small {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 1rem;
+  }
+
+  &__button {
+    border: 0;
+    border-radius: var(--app-radius-md);
+    padding: 0.7rem 1.1rem;
+    font: inherit;
+    font-weight: var(--app-font-weight-semibold);
+    cursor: pointer;
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--app-accent-300);
+      outline-offset: 2px;
+    }
+  }
+
+  &__button--primary {
+    background: var(--app-primary);
+    color: var(--app-primary-contrast);
+    box-shadow: var(--app-shadow-md);
+  }
+
+  &__button--outline {
+    border: 1px solid var(--app-primary-200);
+    background: var(--app-primary-50);
+    color: var(--app-primary-700);
+  }
+
+  &__hero {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: 6rem 1.25rem 4rem;
+    text-align: center;
+  }
+
+  &__eyebrow {
+    color: var(--app-accent-700);
+    font-size: var(--app-font-size-sm);
+    font-weight: var(--app-font-weight-bold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: var(--app-space-4) 0;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    font-weight: var(--app-font-weight-bold);
+    line-height: var(--app-line-height-tight);
+
+    span {
+      color: var(--app-primary);
+    }
+  }
+
+  &__subtitle {
+    max-width: 44rem;
+    margin: 0 auto;
+    color: var(--app-text-color-secondary);
+    font-size: var(--app-font-size-lg);
+  }
+
+  &__cta {
+    margin-top: var(--app-space-6);
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--app-space-2);
+    margin-top: var(--app-space-8);
+
+    span {
+      border: 1px solid var(--app-border-color);
+      border-radius: var(--app-radius-full);
+      padding: 0.45rem 0.8rem;
+      background: var(--app-surface-0);
+      color: var(--app-text-color-secondary);
+      font-size: var(--app-font-size-sm);
+    }
+  }
+
+  &__section {
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 5rem;
+  }
+
+  &__section-title {
+    margin: 0;
+    text-align: center;
+    font-size: var(--app-font-size-2xl);
+  }
+
+  &__section-sub {
+    margin: var(--app-space-2) 0 var(--app-space-8);
+    color: var(--app-text-color-secondary);
+    text-align: center;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--app-space-4);
+  }
+
+  &__card {
+    border: 1px solid var(--app-border-color);
+    border-radius: var(--app-radius-lg);
+    padding: var(--app-space-5);
+    background: var(--app-surface-0);
+    box-shadow: var(--app-shadow-sm);
+
+    h3 {
+      margin: var(--app-space-4) 0 var(--app-space-2);
+      font-size: var(--app-font-size-lg);
+    }
+
+    p {
+      margin: 0;
+      color: var(--app-text-color-secondary);
+      font-size: var(--app-font-size-sm);
+    }
+  }
+
+  &__card-icon {
+    font-size: 1.75rem;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--app-space-3);
+    padding: var(--app-space-8);
+    color: var(--app-text-color-secondary);
+    font-size: var(--app-font-size-sm);
+  }
+}

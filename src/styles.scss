@@ -1,0 +1,38 @@
+// Estilos globales para Inventario SaaS.
+@use './styles/colors';
+@use './styles/typography';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: var(--app-font-body);
+  font-size: var(--app-font-size-base);
+  line-height: var(--app-line-height-normal);
+  color: var(--app-text-color);
+  background: var(--app-surface-50);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--app-font-heading);
+  color: var(--app-text-color);
+}
+
+a {
+  color: var(--app-primary);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

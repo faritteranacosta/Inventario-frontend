@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Pre-commit: valida solo los archivos en stage (lint + formato) antes de commitear.
+# Mantiene el código legible y conforme a la guía de estilo sin frenar el flujo.
+npx lint-staged

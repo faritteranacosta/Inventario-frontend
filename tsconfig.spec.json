@@ -1,0 +1,12 @@
+/* Configuración TypeScript para pruebas unitarias con Jest. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "types": ["jest", "node"]
+  },
+  "files": ["setup-jest.ts"],
+  "include": ["src/**/*.d.ts", "src/**/*.spec.ts"]
+}
