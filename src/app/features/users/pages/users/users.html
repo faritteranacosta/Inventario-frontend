@@ -1,0 +1,51 @@
+<main class="users-page">
+  <header class="page-header">
+    <div>
+      <h1>Usuarios</h1>
+      <p>Consulta perfiles sin exponer información sensible.</p>
+    </div>
+  </header>
+  <section class="lookup">
+    <label for="user-id">Consultar por identificador</label>
+    <div>
+      <input
+        id="user-id"
+        [value]="lookupId()"
+        (input)="lookupId.set(userId.value)"
+        #userId
+        placeholder="GUID del usuario"
+      /><button type="button" (click)="lookup()">Consultar</button>
+    </div>
+  </section>
+  @if (errorMessage(); as message) {
+    <div class="notice" role="alert">{{ message }}</div>
+  }
+  @if (loading()) {
+    <p class="empty">Consultando usuario…</p>
+  } @else if (user(); as profile) {
+    <section class="profile" aria-labelledby="profile-title">
+      <h2 id="profile-title">Perfil consultado</h2>
+      <dl>
+        <div>
+          <dt>Correo</dt>
+          <dd>{{ profile.email }}</dd>
+        </div>
+        <div>
+          <dt>Rol</dt>
+          <dd>{{ profile.role }}</dd>
+        </div>
+        <div>
+          <dt>Negocio</dt>
+          <dd>{{ profile.tenantId }}</dd>
+        </div>
+        <div>
+          <dt>Creado</dt>
+          <dd>{{ profile.createdAtUtc | date: 'medium' }}</dd>
+        </div>
+      </dl>
+    </section>
+  }
+  <p class="limitation">
+    La API actual no expone listado, edición, eliminación ni cambio de contraseña.
+  </p>
+</main>

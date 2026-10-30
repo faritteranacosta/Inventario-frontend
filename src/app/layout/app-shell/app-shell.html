@@ -23,6 +23,10 @@
       <a routerLink="/sales" routerLinkActive="shell__link--active"
         ><span aria-hidden="true">↗</span> Ventas</a
       >
+      @if (auth.isAdmin()) {
+        <a routerLink="/users" routerLinkActive="shell__link--active">Usuarios</a>
+        <a routerLink="/tenants" routerLinkActive="shell__link--active">Negocios</a>
+      }
     </nav>
     <div class="shell__account">
       <span class="shell__tenant">{{ auth.user()?.role ?? 'Usuario' }}</span>

@@ -17,6 +17,7 @@ export class AuthService {
 
   readonly user = this.userState.asReadonly();
   readonly isAuthenticated = computed(() => Boolean(this.token));
+  readonly isAdmin = computed(() => this.user()?.role.toLowerCase() === 'admin');
 
   get token(): string | null {
     return localStorage.getItem(TOKEN_KEY);
@@ -47,6 +48,9 @@ export class AuthService {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     this.userState.set(null);
+    if (!this.router.url.startsWith('/login')) {
+      void this.router.navigate(['/login'], { queryParams: { reason: 'expired' } });
+    }
   }
 
   private readUser(): UserResponse | null {

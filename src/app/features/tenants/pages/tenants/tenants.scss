@@ -1,0 +1,90 @@
+:host {
+  display: block;
+}
+.tenants-page {
+  max-width: 76rem;
+  margin: auto;
+  padding: clamp(1.5rem, 4vw, 4rem) 1.25rem;
+}
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.75rem);
+}
+.page-header p,
+.limitation {
+  color: var(--app-text-color-secondary);
+}
+.create-panel,
+.detail,
+.listing {
+  border: 1px solid var(--app-border-color);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  background: var(--app-surface-0);
+}
+h2 {
+  margin-top: 0;
+}
+form {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+}
+label {
+  display: grid;
+  gap: 0.35rem;
+  flex: 1;
+  font-weight: 700;
+}
+input,
+button {
+  border: 1px solid var(--app-border-color);
+  border-radius: 0.55rem;
+  padding: 0.7rem;
+  font: inherit;
+}
+button {
+  background: var(--app-primary);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+.notice {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #fef2f2;
+  color: #991b1b;
+}
+.notice button {
+  background: transparent;
+  color: inherit;
+}
+article {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--app-border-color);
+  padding: 1rem 0;
+}
+article small {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--app-text-color-secondary);
+  overflow-wrap: anywhere;
+}
+article div:last-child {
+  display: flex;
+  gap: 0.5rem;
+  align-items: start;
+}
+.danger {
+  background: transparent;
+  color: var(--app-danger);
+}
+@media (max-width: 600px) {
+  form,
+  article {
+    display: grid;
+  }
+}

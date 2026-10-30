@@ -1,0 +1,47 @@
+<main class="auth-page">
+  <section class="auth-card">
+    <a routerLink="/" class="brand">Inventario <strong>SaaS</strong></a>
+    <h1>Crear usuario</h1>
+    <p>Asocia una cuenta al negocio y comienza a operar.</p>
+    @if (errorMessage(); as message) {
+      <div class="notice notice--error" role="alert">{{ message }}</div>
+    }
+    @if (successMessage(); as message) {
+      <div class="notice notice--success" role="status">{{ message }}</div>
+    }
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label for="tenantId">ID del negocio<input id="tenantId" formControlName="tenantId" /></label>
+      <label for="email"
+        >Correo electrónico<input
+          id="email"
+          type="email"
+          autocomplete="email"
+          formControlName="email"
+      /></label>
+      <label for="password"
+        >Contraseña<input
+          id="password"
+          type="password"
+          autocomplete="new-password"
+          formControlName="password"
+      /></label>
+      <label for="confirmPassword"
+        >Confirmar contraseña<input
+          id="confirmPassword"
+          type="password"
+          autocomplete="new-password"
+          formControlName="confirmPassword"
+      /></label>
+      <label for="role"
+        >Rol<select id="role" formControlName="role">
+          <option value="User">Usuario</option>
+          <option value="Admin">Administrador</option>
+        </select></label
+      >
+      <button type="submit" [disabled]="pending()">
+        {{ pending() ? 'Creando…' : 'Crear usuario' }}
+      </button>
+    </form>
+    <a routerLink="/login">Volver a iniciar sesión</a>
+  </section>
+</main>

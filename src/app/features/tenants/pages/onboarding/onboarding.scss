@@ -1,0 +1,76 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+.onboarding-page {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  background: var(--app-surface-50);
+}
+.onboarding-card {
+  width: min(100%, 30rem);
+  border: 1px solid var(--app-border-color);
+  border-radius: 1rem;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  background: var(--app-surface-0);
+}
+.brand {
+  color: var(--app-primary);
+  font-weight: 800;
+}
+.brand strong {
+  color: var(--app-accent-600);
+}
+h1 {
+  margin: 2rem 0 0.5rem;
+}
+p {
+  color: var(--app-text-color-secondary);
+}
+form {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0 1rem;
+}
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 700;
+}
+input,
+button {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid var(--app-border-color);
+  border-radius: 0.55rem;
+  padding: 0.75rem;
+  font: inherit;
+}
+button {
+  border-color: var(--app-primary);
+  background: var(--app-primary);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 800;
+}
+dl {
+  margin: 2rem 0;
+  padding: 1rem;
+  background: var(--app-surface-50);
+}
+dt {
+  color: var(--app-text-color-secondary);
+  font-size: 0.8rem;
+}
+dd {
+  margin: 0.4rem 0 0;
+  overflow-wrap: anywhere;
+  font-size: 0.85rem;
+}
+.notice {
+  padding: 0.75rem;
+  background: #fef2f2;
+  color: #991b1b;
+}
