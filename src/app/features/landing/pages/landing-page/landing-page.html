@@ -1,7 +1,13 @@
 <div class="landing">
   <header class="landing__topbar">
     <a class="landing__brand" href="/" aria-label="Ir al inicio de Inventario SaaS">
-      <span class="landing__logo" aria-hidden="true">▦</span>
+      <svg class="landing__logo" aria-hidden="true" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M4 4h16v16H4zM8 8h3v3H8zm5 0h3v3h-3zM8 13h3v3H8zm5 0h3v3h-3z"
+          stroke="currentColor"
+          stroke-width="1.8"
+        />
+      </svg>
       <span class="landing__brand-name">Inventario <strong>SaaS</strong></span>
     </a>
     <button class="landing__button landing__button--outline" type="button" (click)="goToAdmin()">
@@ -23,7 +29,16 @@
           type="button"
           (click)="goToAdmin()"
         >
-          Explorar el panel <span aria-hidden="true">→</span>
+          Explorar el panel
+          <svg class="landing__button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M5 12h14m-6-6 6 6-6 6"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
         </button>
       </div>
       <div class="landing__chips" aria-label="Tecnologías incluidas">
@@ -40,7 +55,49 @@
       <div class="landing__grid">
         @for (feature of features; track feature.title) {
           <article class="landing__card">
-            <span class="landing__card-icon" aria-hidden="true">{{ feature.icon }}</span>
+            @switch (feature.icon) {
+              @case ('box') {
+                <svg class="landing__card-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="m4 8 8-4 8 4v8l-8 4-8-4V8Zm0 0 8 4 8-4M12 12v8"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              }
+              @case ('chart') {
+                <svg class="landing__card-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M5 19V5m0 14h14M8 16v-4m4 4V8m4 8v-7"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              }
+              @case ('bolt') {
+                <svg class="landing__card-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="m13 2-8 12h6l-1 8 8-12h-6l1-8Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              }
+              @case ('bell') {
+                <svg class="landing__card-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M6 17h12l-1.5-2v-4a4.5 4.5 0 0 0-9 0v4L6 17Zm4 3h4"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              }
+            }
             <h3>{{ feature.title }}</h3>
             <p>{{ feature.description }}</p>
           </article>
@@ -50,7 +107,18 @@
   </main>
 
   <footer class="landing__footer">
-    <span class="landing__logo landing__logo--small" aria-hidden="true">▦</span>
+    <svg
+      class="landing__logo landing__logo--small"
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M4 4h16v16H4zM8 8h3v3H8zm5 0h3v3h-3zM8 13h3v3H8zm5 0h3v3h-3z"
+        stroke="currentColor"
+        stroke-width="1.8"
+      />
+    </svg>
     <span>Inventario SaaS · {{ year }}</span>
   </footer>
 </div>

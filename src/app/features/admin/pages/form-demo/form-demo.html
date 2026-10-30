@@ -1,12 +1,29 @@
 <div class="form-page">
   <header class="form-page__header">
     <div>
-      <a class="form-page__back" href="/" (click)="goHome(); $event.preventDefault()">← Inicio</a>
+      <a class="form-page__back" href="/" (click)="goHome(); $event.preventDefault()">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M19 12H5m6-6-6 6 6 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        Inicio
+      </a>
       <p class="form-page__eyebrow">Catálogo</p>
       <h1>Agregar producto</h1>
       <p>Registra un producto para comenzar a controlar sus existencias.</p>
     </div>
-    <span class="form-page__mark" aria-hidden="true">▦</span>
+    <svg class="form-page__mark" aria-hidden="true" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M4 4h16v16H4zM8 8h3v3H8zm5 0h3v3h-3zM8 13h3v3H8zm5 0h3v3h-3z"
+        stroke="currentColor"
+        stroke-width="1.8"
+      />
+    </svg>
   </header>
 
   @if (submitted()) {
