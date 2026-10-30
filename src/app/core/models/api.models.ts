@@ -1,9 +1,41 @@
 export interface UserResponse {
   readonly id: string;
-  readonly tenantId: string;
+  readonly tenantId?: string | null;
   readonly email: string;
   readonly role: string;
   readonly createdAtUtc: string;
+  readonly platformRole?: string | null;
+}
+
+export type MembershipRole = 'Admin' | 'User';
+export type MembershipStatus = 'Active' | 'Suspended' | 'Revoked';
+
+export interface MembershipResponse {
+  readonly id: string;
+  readonly userId: string;
+  readonly tenantId: string;
+  readonly tenantName: string;
+  readonly email: string;
+  readonly role: MembershipRole;
+  readonly status: MembershipStatus;
+  readonly createdAtUtc: string;
+}
+
+export interface SessionResponse {
+  readonly id: string;
+  readonly email: string;
+  readonly platformRole: string | null;
+  readonly activeTenantId: string | null;
+  readonly memberships: readonly MembershipResponse[];
+}
+
+export interface ContextResponse {
+  readonly token: string;
+  readonly activeTenantId: string;
+}
+
+export interface SelectContextRequest {
+  readonly tenantId: string;
 }
 
 export interface LoginRequest {
@@ -14,6 +46,8 @@ export interface LoginRequest {
 export interface LoginResponse {
   readonly token: string;
   readonly user: UserResponse;
+  readonly activeTenantId?: string | null;
+  readonly memberships?: readonly MembershipResponse[];
 }
 
 export interface RegisterRequest {
@@ -21,6 +55,54 @@ export interface RegisterRequest {
   readonly email: string;
   readonly password: string;
   readonly role: string;
+}
+
+export interface BootstrapPlatformRequest {
+  readonly email: string;
+  readonly password: string;
+}
+
+export interface PlatformTenantResponse {
+  readonly id: string;
+  readonly name: string;
+  readonly status: 'Active' | 'Suspended';
+  readonly createdAtUtc: string;
+  readonly userCount: number;
+  readonly adminCount: number;
+}
+
+export interface CreatePlatformTenantRequest {
+  readonly name: string;
+  readonly adminEmail?: string;
+  readonly adminPassword?: string;
+}
+
+export interface UpdatePlatformTenantRequest {
+  readonly name: string;
+}
+
+export interface UpdateTenantStatusRequest {
+  readonly status: 'Active' | 'Suspended';
+}
+
+export interface CreateMembershipRequest {
+  readonly email: string;
+  readonly password: string;
+  readonly role: MembershipRole;
+}
+
+export interface UpdateMembershipRequest {
+  readonly role?: MembershipRole;
+  readonly status?: MembershipStatus;
+}
+
+export interface AuditEventResponse {
+  readonly id: string;
+  readonly actorUserId: string;
+  readonly action: string;
+  readonly resourceType: string;
+  readonly resourceId: string;
+  readonly createdAtUtc: string;
 }
 
 export interface TenantResponse {

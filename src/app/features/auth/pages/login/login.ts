@@ -34,8 +34,16 @@ export class LoginPage {
     this.errorMessage.set(null);
     this.auth.login(this.form.getRawValue()).subscribe({
       next: () => {
-        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/dashboard';
-        void this.router.navigateByUrl(returnUrl);
+        this.auth.me().subscribe({
+          next: () => {
+            const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/dashboard';
+            void this.router.navigateByUrl(returnUrl);
+          },
+          error: () => {
+            const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/dashboard';
+            void this.router.navigateByUrl(returnUrl);
+          },
+        });
       },
       error: (error: unknown) => {
         this.pending.set(false);
