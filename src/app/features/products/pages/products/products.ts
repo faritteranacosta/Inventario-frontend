@@ -5,6 +5,7 @@ import { CategoriesApi } from '../../../categories/categories.api';
 import { CategoryResponse, ProductResponse } from '../../../../core/models/api.models';
 import { ProductsApi } from '../../products.api';
 import { NotificationService } from '../../../../core/notifications/notification.service';
+import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-products',
@@ -19,6 +20,7 @@ export class ProductsPage {
   private readonly categoriesApi = inject(CategoriesApi);
   private readonly fb = inject(FormBuilder);
   private readonly notifications = inject(NotificationService);
+  protected readonly auth = inject(AuthService);
 
   protected readonly products = signal<readonly ProductResponse[]>([]);
   protected readonly categories = signal<readonly CategoryResponse[]>([]);

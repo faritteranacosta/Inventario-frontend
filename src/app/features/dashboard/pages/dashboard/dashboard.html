@@ -88,31 +88,29 @@
               ></div>
               <small>{{ item.period | date: 'dd MMM' }}</small>
             </div>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Periodo</th>
-                    <th>Operaciones</th>
-                    <th>Ingresos</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @for (item of data.items; track item.period) {
-                    <tr>
-                      <td>
-                        {{
-                          item.period | date: (groupBy() === 'month' ? 'MMMM yyyy' : 'dd MMM yyyy')
-                        }}
-                      </td>
-                      <td>{{ item.count }}</td>
-                      <td>{{ item.total | currency }}</td>
-                    </tr>
-                  }
-                </tbody>
-              </table>
-            </div>
           }
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Periodo</th>
+                <th>Operaciones</th>
+                <th>Ingresos</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of data.items; track item.period) {
+                <tr>
+                  <td>
+                    {{ item.period | date: (groupBy() === 'month' ? 'MMMM yyyy' : 'dd MMM yyyy') }}
+                  </td>
+                  <td>{{ item.count }}</td>
+                  <td>{{ item.total | currency }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
         </div>
       } @else {
         <p class="empty">Todavía no hay ventas para mostrar.</p>

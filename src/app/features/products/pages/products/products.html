@@ -5,9 +5,11 @@
       <h1>Productos</h1>
       <p>Consulta existencias y mantén tu catálogo al día.</p>
     </div>
-    <button class="button button--primary" type="button" (click)="showForm.set(!showForm())">
-      {{ showForm() ? 'Cerrar formulario' : 'Nuevo producto' }}
-    </button>
+    @if (auth.canManageCatalog()) {
+      <button class="button button--primary" type="button" (click)="showForm.set(!showForm())">
+        {{ showForm() ? 'Cerrar formulario' : 'Nuevo producto' }}
+      </button>
+    }
   </header>
 
   @if (errorMessage(); as message) {
@@ -118,15 +120,17 @@
                 <td>{{ product.createdAtUtc | date: 'dd MMM yyyy' }}</td>
                 <td>
                   <div class="row-actions">
-                    <button class="icon-button" type="button" (click)="edit(product)">
-                      Editar
-                    </button>
-                    <button class="icon-button" type="button" (click)="openImage(product)">
-                      Imagen
-                    </button>
-                    <button class="icon-button danger" type="button" (click)="remove(product)">
-                      Eliminar
-                    </button>
+                    @if (auth.canManageCatalog()) {
+                      <button class="icon-button" type="button" (click)="edit(product)">
+                        Editar
+                      </button>
+                      <button class="icon-button" type="button" (click)="openImage(product)">
+                        Imagen
+                      </button>
+                      <button class="icon-button danger" type="button" (click)="remove(product)">
+                        Eliminar
+                      </button>
+                    }
                   </div>
                 </td>
               </tr>

@@ -65,7 +65,6 @@ export const routes: Routes = [
       },
       {
         path: 'products',
-        canActivate: [adminGuard],
         title: 'Productos · Inventario SaaS',
         loadComponent: () =>
           import('./features/products/pages/products/products').then((m) => m.ProductsPage),
@@ -90,6 +89,7 @@ export const routes: Routes = [
       },
       {
         path: 'admin/form-demo',
+        canActivate: [adminGuard],
         title: 'Panel administrativo',
         loadComponent: () =>
           import('./features/admin/pages/form-demo/form-demo').then((m) => m.FormDemoPage),
