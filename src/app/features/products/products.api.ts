@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   CreateProductRequest,
@@ -22,7 +22,7 @@ export class ProductsApi {
     let params = new HttpParams();
     if (filters.categoryId) params = params.set('categoryId', filters.categoryId);
     if (filters.search) params = params.set('search', filters.search);
-    return this.http.get<readonly ProductResponse[]>(this.url, { params });
+    return this.http.get<unknown>(this.url, { params }).pipe(map(toProductList));
   }
 
   get(id: string): Observable<ProductResponse> {
@@ -50,4 +50,21 @@ export class ProductsApi {
     formData.append('file', file);
     return this.http.post<ProductResponse>(`${this.url}/${id}/image/upload`, formData);
   }
+}
+
+function toProductList(response: unknown): readonly ProductResponse[] {
+  if (Array.isArray(response)) {
+    return response as ProductResponse[];
+  }
+  if (isRecord(response) && Array.isArray(response['items'])) {
+    return response['items'] as ProductResponse[];
+  }
+  if (isRecord(response) && Array.isArray(response['data'])) {
+    return response['data'] as ProductResponse[];
+  }
+  return [];
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
 }

@@ -1,0 +1,47 @@
+:host {
+  position: fixed;
+  z-index: 20;
+  top: 1rem;
+  right: 1rem;
+  left: 1rem;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(100%, 34rem);
+  border: 1px solid currentColor;
+  border-radius: 0.65rem;
+  padding: 0.85rem 1rem;
+  pointer-events: auto;
+  font-weight: 700;
+}
+
+.alert--success {
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.alert--error {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.alert--info {
+  background: #eff6ff;
+  color: #1e40af;
+}
+
+button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-decoration: underline;
+}

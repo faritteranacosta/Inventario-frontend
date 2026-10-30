@@ -1,0 +1,6 @@
+@if (notifications.notification(); as notification) {
+  <div class="alert" [class]="'alert--' + notification.tone" role="status">
+    <span>{{ notification.message }}</span>
+    <button type="button" aria-label="Cerrar alerta" (click)="notifications.clear()">Cerrar</button>
+  </div>
+}

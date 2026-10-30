@@ -11,7 +11,10 @@
   </header>
 
   @if (errorMessage(); as message) {
-    <div class="notice" role="alert">{{ message }}</div>
+    <div class="notice" role="alert">
+      <span>{{ message }}</span>
+      <button type="button" (click)="load()">Reintentar</button>
+    </div>
   }
 
   @if (showForm()) {
@@ -75,8 +78,12 @@
               <tr>
                 <td>
                   <div class="product-cell">
-                    @if (product.imageUrl) {
-                      <img [src]="product.imageUrl" [alt]="product.name" />
+                    @if (product.imageUrl; as imageUrl) {
+                      <img
+                        src="assets/escudo/light_grey_192.png"
+                        [src]="imageUrl"
+                        [alt]="product.name"
+                      />
                     }
                     <div>
                       <strong>{{ product.name }}</strong
