@@ -31,6 +31,9 @@ pnpm-debug.log*
 *.launch
 .settings/
 *.sublime-workspace
+.codex
+PRODUCT.md
+
 
 # Visual Studio Code
 .vscode/*
