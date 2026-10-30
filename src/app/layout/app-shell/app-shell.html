@@ -24,7 +24,9 @@
         ><span aria-hidden="true">↗</span> Ventas</a
       >
       @if (auth.isAdmin() || auth.isPlatformAdmin()) {
-        <a routerLink="/users" routerLinkActive="shell__link--active">Usuarios</a>
+        @if (auth.isAdmin() && !auth.isPlatformAdmin()) {
+          <a routerLink="/users" routerLinkActive="shell__link--active">Usuarios</a>
+        }
         <a routerLink="/tenants" routerLinkActive="shell__link--active">Negocios</a>
       }
     </nav>

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
@@ -12,12 +12,15 @@ import { AuthService } from '../../core/auth/auth.service';
 })
 export class AppShellComponent {
   protected readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
   protected readonly contextLoading = signal(false);
   protected readonly contextError = signal<string | null>(null);
 
   constructor() {
     if (this.auth.isAuthenticated() && !this.auth.session()) {
-      this.auth.me().subscribe({ error: () => undefined });
+      this.auth.me().subscribe({
+        error: () => this.contextError.set('No pudimos actualizar la sesión multi-negocio.'),
+      });
     }
   }
 
@@ -26,7 +29,10 @@ export class AppShellComponent {
     this.contextLoading.set(true);
     this.contextError.set(null);
     this.auth.selectContext({ tenantId }).subscribe({
-      next: () => this.contextLoading.set(false),
+      next: () => {
+        this.contextLoading.set(false);
+        void this.router.navigate(['/dashboard']);
+      },
       error: () => {
         this.contextLoading.set(false);
         this.contextError.set('No pudimos cambiar el negocio activo.');
