@@ -159,16 +159,23 @@ export class ProductsPage {
   }
 
   protected edit(product: ProductResponse): void {
-    this.editingId.set(product.id);
-    this.form.reset({
-      name: product.name,
-      description: product.description ?? '',
-      price: product.price,
-      stock: product.stock,
-      categoryId: product.categoryId,
-      imageUrl: product.imageUrl ?? '',
+    this.productsApi.get(product.id).subscribe({
+      next: (detail) => {
+        this.editingId.set(detail.id);
+        this.form.reset({
+          name: detail.name,
+          description: detail.description ?? '',
+          price: detail.price,
+          stock: detail.stock,
+          categoryId: detail.categoryId,
+          imageUrl: detail.imageUrl ?? '',
+        });
+        this.showForm.set(true);
+      },
+      error: () => {
+        this.errorMessage.set('El producto ya no está disponible. Actualiza el catálogo.');
+      },
     });
-    this.showForm.set(true);
   }
 
   protected openImage(product: ProductResponse): void {
