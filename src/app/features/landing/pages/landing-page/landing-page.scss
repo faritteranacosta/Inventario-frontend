@@ -64,7 +64,7 @@ $accent: #C2E1C3;
 
 .landing__button {
   background: transparent;
-  border: 1px solid $border;
+  border: 1px solid #76b878;
   color: #1a2a1f;
   padding: 0.5rem 1rem;
   border-radius: 999px;
@@ -74,17 +74,17 @@ $accent: #C2E1C3;
 
   &:hover {
     background: $soft;
-    border-color: $accent;
+    border-color: #5fa561;
   }
 
   &--primary {
-    background: $accent;
-    border-color: $accent;
-    color: #1a2a1f;
+    background: #76b878;
+    border-color: #76b878;
+    color: #ffffff;
     font-weight: 600;
 
     &:hover {
-      background: #a8d4a9;
+      background: #5fa561;
     }
   }
 }
