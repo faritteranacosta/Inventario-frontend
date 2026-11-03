@@ -52,9 +52,7 @@ echo "→ Nueva versión: $NEW_VERSION"
 
 # Commit + annotated tag
 git -C "$ROOT" add package.json package-lock.json
-git -C "$ROOT" commit \
-  -m "chore(release): v$NEW_VERSION" \
-  -m "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
+git -C "$ROOT" commit -m "chore(release): v$NEW_VERSION"
 git -C "$ROOT" tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
 echo "✓ Commit y tag v$NEW_VERSION creados."
 echo ""
