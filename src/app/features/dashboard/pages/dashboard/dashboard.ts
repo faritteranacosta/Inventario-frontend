@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../../core/auth/auth.service';
 import { SalesApi } from '../../../sales/sales.api';
 import { SalesSummaryResponse } from '../../../../core/models/api.models';
 
@@ -14,14 +15,21 @@ import { SalesSummaryResponse } from '../../../../core/models/api.models';
 })
 export class DashboardPage {
   private readonly salesApi = inject(SalesApi);
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
   protected readonly loading = signal(true);
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly summary = signal<SalesSummaryResponse | null>(null);
   protected readonly from = signal('');
   protected readonly to = signal('');
   protected readonly groupBy = signal<'day' | 'month'>('day');
+  protected readonly isPlatformAdmin = this.auth.isPlatformAdmin;
 
   constructor() {
+    if (this.auth.isPlatformAdmin()) {
+      void this.router.navigate(['/tenants']);
+      return;
+    }
     this.load();
   }
 

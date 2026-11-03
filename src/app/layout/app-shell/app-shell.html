@@ -6,15 +6,17 @@
     </a>
 
     <nav class="shell__nav" aria-label="Navegación del panel">
-      <a routerLink="/dashboard" routerLinkActive="is-active">Resumen</a>
-      <a routerLink="/products" routerLinkActive="is-active">Productos</a>
-      <a routerLink="/categories" routerLinkActive="is-active">Categorías</a>
-      <a routerLink="/sales" routerLinkActive="is-active">Ventas</a>
-      @if (auth.isAdmin() || auth.isPlatformAdmin()) {
-        @if (auth.isAdmin() && !auth.isPlatformAdmin()) {
+      @if (auth.isPlatformAdmin()) {
+        <a routerLink="/tenants" routerLinkActive="is-active">Negocios</a>
+        <a routerLink="/dashboard" routerLinkActive="is-active">Resumen global</a>
+      } @else {
+        <a routerLink="/dashboard" routerLinkActive="is-active">Resumen</a>
+        <a routerLink="/products" routerLinkActive="is-active">Productos</a>
+        <a routerLink="/categories" routerLinkActive="is-active">Categorías</a>
+        <a routerLink="/sales" routerLinkActive="is-active">Ventas</a>
+        @if (auth.isAdmin()) {
           <a routerLink="/users" routerLinkActive="is-active">Usuarios</a>
         }
-        <a routerLink="/tenants" routerLinkActive="is-active">Negocios</a>
       }
     </nav>
 
