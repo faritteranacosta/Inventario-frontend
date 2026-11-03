@@ -31,12 +31,12 @@
   text-decoration: none;
 }
 .brand strong {
-  color: var(--app-accent-300);
+  color: var(--app-primary-400);
 }
 .brand__mark {
   width: 2.5rem;
   height: 2.5rem;
-  color: var(--app-accent-300);
+  color: var(--app-primary-400);
 }
 .auth-intro__copy {
   max-width: 34rem;
@@ -51,7 +51,7 @@
   text-transform: uppercase;
 }
 .auth-intro__eyebrow {
-  color: var(--app-accent-300);
+  color: var(--app-primary-300);
 }
 .auth-intro h1 {
   margin: 0;
@@ -97,7 +97,7 @@
   font: inherit;
 }
 .auth-card input:focus {
-  border-color: var(--app-primary);
+  border-color: var(--app-primary-600);
   outline: 3px solid var(--app-primary-100);
 }
 .auth-card small {
@@ -107,15 +107,15 @@
   margin-bottom: 1rem;
   border-radius: 0.65rem;
   padding: 0.8rem 1rem;
-  background: #fef2f2;
-  color: #991b1b;
+  background: var(--app-danger-surface);
+  color: var(--app-danger);
 }
 .auth-card__info {
   margin-bottom: 1rem;
   border-radius: 0.65rem;
   padding: 0.8rem 1rem;
-  background: var(--app-primary-50);
-  color: var(--app-primary-800);
+  background: var(--app-accent-50);
+  color: var(--app-accent-700);
 }
 .button {
   border: 0;
@@ -127,7 +127,7 @@
 }
 .button--primary {
   margin-top: 1rem;
-  background: var(--app-primary);
+  background: var(--app-primary-600);
   color: #fff;
 }
 .button:disabled {

@@ -1,4 +1,4 @@
-// Estilos globales para Inventario SaaS.
+// Estilos globales para Stokio.
 @use './styles/colors';
 @use './styles/typography';
 
@@ -44,26 +44,26 @@ button.button {
 
 .button--primary,
 button.button--primary {
-  background: #2d6a30 !important;
+  background: var(--app-primary-600) !important;
   color: #ffffff !important;
-  border: 1px solid #2d6a30 !important;
+  border: 1px solid var(--app-primary-600) !important;
   font-weight: 600;
 
   &:hover {
-    background: #1f4d22 !important;
-    border-color: #1f4d22 !important;
+    background: var(--app-primary-700) !important;
+    border-color: var(--app-primary-700) !important;
   }
 }
 
 .button--secondary,
 button.button--secondary {
   background: #ffffff !important;
-  color: #2d6a30 !important;
-  border: 1px solid #2d6a30 !important;
+  color: var(--app-primary-600) !important;
+  border: 1px solid var(--app-primary-600) !important;
   font-weight: 600;
 
   &:hover {
-    background: #e7f5e9 !important;
+    background: var(--app-primary-50) !important;
   }
 }
 

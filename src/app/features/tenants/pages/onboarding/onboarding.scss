@@ -71,6 +71,6 @@ dd {
 }
 .notice {
   padding: 0.75rem;
-  background: #fef2f2;
-  color: #991b1b;
+  background: var(--app-danger-surface);
+  color: var(--app-danger);
 }

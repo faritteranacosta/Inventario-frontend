@@ -64,11 +64,11 @@
   &__success {
     max-width: 62rem;
     margin: 0 auto var(--app-space-5);
-    border: 1px solid #86efac;
+    border: 1px solid #9ed5b4;
     border-radius: var(--app-radius-md);
     padding: var(--app-space-4);
-    background: #f0fdf4;
-    color: #166534;
+    background: var(--app-success-surface);
+    color: var(--app-success);
   }
 
   &__form {

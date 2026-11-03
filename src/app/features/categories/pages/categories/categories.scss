@@ -54,11 +54,11 @@ h3 {
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1rem;
-  border: 1px solid #fecaca;
+  border: 1px solid var(--app-danger);
   border-radius: 0.65rem;
   padding: 1rem;
-  background: #fef2f2;
-  color: #991b1b;
+  background: var(--app-danger-surface);
+  color: var(--app-danger);
 }
 .form-panel,
 .listing {

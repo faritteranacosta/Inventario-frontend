@@ -23,18 +23,18 @@
 }
 
 .alert--success {
-  background: #f0fdf4;
-  color: #166534;
+  background: var(--app-success-surface);
+  color: var(--app-success);
 }
 
 .alert--error {
-  background: #fef2f2;
-  color: #991b1b;
+  background: var(--app-danger-surface);
+  color: var(--app-danger);
 }
 
 .alert--info {
-  background: #eff6ff;
-  color: #1e40af;
+  background: var(--app-primary-50);
+  color: var(--app-primary-700);
 }
 
 button {

@@ -9,8 +9,8 @@
   align-items: center;
   gap: 1.5rem;
   padding: 2rem;
-  background: #ffffff;
-  border: 1px solid #dbead9;
+  background: var(--app-surface-0);
+  border: 1px solid var(--app-border-color);
   border-radius: 1.25rem;
   margin-bottom: 1.5rem;
   position: relative;
@@ -23,9 +23,9 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1px solid #dbead9;
-  background: #ffffff;
-  color: #2d6a30;
+  border: 1px solid var(--app-border-color);
+  background: var(--app-surface-0);
+  color: var(--app-primary-600);
   font-size: 1.1rem;
   cursor: pointer;
   display: flex;
@@ -36,8 +36,8 @@
     border-color 0.2s ease;
 
   &:hover {
-    background: #e7f5e9;
-    border-color: #2d6a30;
+    background: var(--app-primary-50);
+    border-color: var(--app-primary-600);
   }
 }
 
@@ -45,14 +45,14 @@
   width: 88px;
   height: 88px;
   border-radius: 0.5rem;
-  background: #e7f5e9;
-  border: 2px solid #c2e1c3;
+  background: var(--app-primary-50);
+  border: 2px solid var(--app-primary-300);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.75rem;
   font-weight: 700;
-  color: #2d6a30;
+  color: var(--app-primary-600);
   overflow: hidden;
   flex-shrink: 0;
 
@@ -68,12 +68,12 @@
     margin: 0;
     font-size: 1.5rem;
     font-weight: 700;
-    color: #1a2a1f;
+    color: var(--app-text-color);
   }
 
   .profile__email {
     margin: 0.25rem 0 0;
-    color: #4a5a4f;
+    color: var(--app-text-color-secondary);
     font-size: 0.95rem;
   }
 
@@ -81,8 +81,8 @@
     display: inline-block;
     margin-top: 0.5rem;
     padding: 0.2rem 0.6rem;
-    background: #e7f5e9;
-    color: #2d6a30;
+    background: var(--app-primary-50);
+    color: var(--app-primary-700);
     border-radius: 999px;
     font-size: 0.75rem;
     font-weight: 600;
@@ -92,8 +92,8 @@
 }
 
 .profile__card {
-  background: #ffffff;
-  border: 1px solid #dbead9;
+  background: var(--app-surface-0);
+  border: 1px solid var(--app-border-color);
   border-radius: 1.25rem;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
@@ -102,7 +102,7 @@
     margin: 0 0 1rem;
     font-size: 1.1rem;
     font-weight: 600;
-    color: #1a2a1f;
+    color: var(--app-text-color);
   }
 }
 
@@ -114,12 +114,12 @@
     display: grid;
     gap: 0.35rem;
     font-size: 0.9rem;
-    color: #4a5a4f;
+    color: var(--app-text-color-secondary);
   }
 
   input {
     padding: 0.6rem 0.8rem;
-    border: 1px solid #dbead9;
+    border: 1px solid var(--app-border-color);
     border-radius: 0.5rem;
     font: inherit;
   }
@@ -136,7 +136,7 @@
   width: 80px;
   height: 80px;
   object-fit: contain;
-  border: 1px solid #dbead9;
+  border: 1px solid var(--app-border-color);
   border-radius: 0.25rem;
 }
 
@@ -151,7 +151,7 @@
   span {
     display: inline-block;
     padding: 0.6rem 1.2rem;
-    background: #2d6a30;
+    background: var(--app-primary-600);
     color: #ffffff;
     border-radius: 0.5rem;
     font-weight: 600;
@@ -159,13 +159,13 @@
     transition: background 0.2s ease;
 
     &:hover {
-      background: #1f4d22;
+      background: var(--app-primary-700);
     }
   }
 }
 
 .profile__hint {
   font-size: 0.8rem;
-  color: #6a7a6f;
+  color: var(--app-text-color-secondary);
   margin-top: 0.75rem;
 }

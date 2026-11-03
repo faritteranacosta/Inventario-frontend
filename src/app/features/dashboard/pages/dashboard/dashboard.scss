@@ -67,14 +67,14 @@
   text-decoration: none;
 }
 .button--primary {
-  background: #2d6a30;
+  background: var(--app-primary-600);
   color: #fff;
-  border: 1px solid #2d6a30;
+  border: 1px solid var(--app-primary-600);
 }
 .button--secondary {
-  border: 1px solid #2d6a30;
+  border: 1px solid var(--app-primary-600);
   background: var(--app-surface-0);
-  color: #2d6a30;
+  color: var(--app-primary-600);
 }
 .table-wrap {
   margin-top: 1.5rem;
@@ -101,8 +101,8 @@ th {
   padding: 1rem;
 }
 .notice--error {
-  background: #fef2f2;
-  color: #991b1b;
+  background: var(--app-danger-surface);
+  color: var(--app-danger);
 }
 .metrics {
   display: grid;
@@ -127,12 +127,12 @@ th {
   letter-spacing: -0.04em;
 }
 .metric--accent {
-  background: #2d6a30;
+  background: var(--app-primary-600);
   color: #ffffff;
 }
 .metric--accent span,
 .metric--accent small {
-  color: #e7f5e9;
+  color: var(--app-primary-100);
 }
 .metric--accent strong {
   color: #ffffff;

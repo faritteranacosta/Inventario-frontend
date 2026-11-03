@@ -1,18 +1,13 @@
-$bg: #f9fcfa;
-$soft: #e7f5e9;
-$mint: #e4eee2;
-$border: #dbead9;
-$accent: #c2e1c3;
+$bg: var(--app-surface-50);
+$soft: var(--app-primary-50);
+$border: var(--app-border-color);
+$accent: var(--app-primary-400);
 
 .landing {
   min-height: 100vh;
   background: $bg;
-  color: #1a2a1f;
-  font-family:
-    'Inter',
-    system-ui,
-    -apple-system,
-    sans-serif;
+  color: var(--app-text-color);
+  font-family: var(--app-font-body);
   display: flex;
   flex-direction: column;
 }
@@ -32,15 +27,14 @@ $accent: #c2e1c3;
   align-items: center;
   gap: 0.6rem;
   text-decoration: none;
-  color: #1a2a1f;
+  color: var(--app-text-color);
   font-weight: 600;
 }
 
 .landing__brand-mark {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: $accent;
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
 }
 
 .landing__brand-name {
@@ -54,22 +48,22 @@ $accent: #c2e1c3;
   gap: 1.5rem;
 
   a {
-    color: #4a5a4f;
+    color: var(--app-text-color-secondary);
     text-decoration: none;
     font-size: 0.9rem;
     transition: color 0.2s ease;
 
     &:hover,
     &.is-active {
-      color: #1a2a1f;
+      color: var(--app-text-color);
     }
   }
 }
 
 .landing__button {
   background: transparent;
-  border: 2px solid #2d6a30;
-  color: #2d6a30;
+  border: 2px solid var(--app-primary-600);
+  color: var(--app-primary-600);
   padding: 0.7rem 1.6rem;
   border-radius: 999px;
   font-size: 0.95rem;
@@ -79,20 +73,20 @@ $accent: #c2e1c3;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
   &:hover {
-    background: #e7f5e9;
-    border-color: #2d6a30;
+    background: var(--app-primary-50);
+    border-color: var(--app-primary-600);
   }
 
   &--primary {
-    background: #2d6a30;
-    border-color: #2d6a30;
+    background: var(--app-primary-600);
+    border-color: var(--app-primary-600);
     color: #ffffff;
     font-weight: 600;
-    box-shadow: 0 2px 6px rgba(45, 106, 48, 0.25);
+    box-shadow: 0 2px 6px rgba(194, 65, 12, 0.25);
 
     &:hover {
-      background: #1f4d22;
-      border-color: #1f4d22;
+      background: var(--app-primary-700);
+      border-color: var(--app-primary-700);
     }
   }
 }
@@ -104,28 +98,19 @@ $accent: #c2e1c3;
   padding: 6rem 2rem 4rem;
 }
 
-.landing__eyebrow {
-  display: inline-block;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #6a7a6f;
-  margin-bottom: 1.5rem;
-}
-
 .landing__title {
   font-size: clamp(2.5rem, 6vw, 4.5rem);
   line-height: 1.05;
   font-weight: 700;
   letter-spacing: -0.03em;
   margin: 0 0 1.5rem;
-  color: #1a2a1f;
+  color: var(--app-text-color);
 }
 
 .landing__subtitle {
   font-size: 1.15rem;
   line-height: 1.6;
-  color: #4a5a4f;
+  color: var(--app-text-color-secondary);
   max-width: 520px;
   margin: 0 0 2.5rem;
 }
@@ -138,7 +123,7 @@ $accent: #c2e1c3;
 }
 
 .landing__link {
-  color: #1a2a1f;
+  color: var(--app-text-color);
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
@@ -165,7 +150,7 @@ $accent: #c2e1c3;
 }
 
 .landing__card {
-  background: #ffffff;
+  background: var(--app-surface-0);
   border: 1px solid $border;
   border-radius: 16px;
   padding: 2rem;
@@ -182,13 +167,13 @@ $accent: #c2e1c3;
     font-size: 1.05rem;
     font-weight: 600;
     margin: 0 0 0.5rem;
-    color: #1a2a1f;
+    color: var(--app-text-color);
   }
 
   p {
     font-size: 0.9rem;
     line-height: 1.6;
-    color: #4a5a4f;
+    color: var(--app-text-color-secondary);
     margin: 0;
   }
 }
@@ -198,6 +183,6 @@ $accent: #c2e1c3;
   padding: 2rem;
   text-align: center;
   font-size: 0.8rem;
-  color: #6a7a6f;
+  color: var(--app-text-color-secondary);
   border-top: 1px solid $border;
 }

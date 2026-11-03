@@ -121,7 +121,12 @@ export class SalesPage {
       this.errorMessage.set('Agrega al menos un producto para registrar la venta.');
       return;
     }
-    if (!confirm(`¿Confirmar venta por ${this.total().toFixed(2)}?`)) return;
+    const formattedTotal = new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      maximumFractionDigits: 0,
+    }).format(this.total());
+    if (!confirm(`¿Confirmar venta por ${formattedTotal}?`)) return;
     this.saving.set(true);
     this.errorMessage.set(null);
     this.salesApi
@@ -174,7 +179,7 @@ export class SalesPage {
     }
     w.document.write('<html><head><title>Recibo de venta</title>');
     w.document.write(
-      '<style>body{font-family:system-ui,sans-serif;padding:2rem;color:#1a2a1f;} .receipt-header{text-align:center;padding:1rem 0 1.5rem;border-bottom:2px solid #2d6a30;margin-bottom:1rem;} .receipt-header h2{margin:0;font-size:1.5rem;font-weight:700;} .receipt-header p{margin:.25rem 0 0;font-size:.85rem;color:#6a7a6f;text-transform:uppercase;letter-spacing:.1em;} h3{margin:0 0 .5rem;} .detail-actions,.detail-actions button,button{display:none !important;} .detail-line{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid #dbead9;} .detail-line__product{display:flex;flex-direction:column;} .detail-line__product small{font-size:.8rem;color:#6a7a6f;} .sale-total{display:flex;justify-content:space-between;font-weight:700;margin-top:1rem;padding-top:1rem;border-top:2px solid #2d6a30;} .detail-info div{display:flex;justify-content:space-between;padding:.25rem 0;font-size:.9rem;} code{font-size:.8rem;}</style>',
+      '<style>body{font-family:Inter,system-ui,sans-serif;padding:2rem;color:#1C1917;} .receipt-header{text-align:center;padding:1rem 0 1.5rem;border-bottom:2px solid #C2410C;margin-bottom:1rem;} .receipt-header h2{margin:0;font-size:1.5rem;font-weight:700;} .receipt-header p{margin:.25rem 0 0;font-size:.85rem;color:#6B625C;text-transform:uppercase;letter-spacing:.1em;} h3{margin:0 0 .5rem;} .detail-actions,.detail-actions button,button{display:none !important;} .detail-line{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid #E8E0D8;} .detail-line__product{display:flex;flex-direction:column;} .detail-line__product small{font-size:.8rem;color:#6B625C;} .sale-total{display:flex;justify-content:space-between;font-weight:700;margin-top:1rem;padding-top:1rem;border-top:2px solid #C2410C;} .detail-info div{display:flex;justify-content:space-between;padding:.25rem 0;font-size:.9rem;} code{font-size:.8rem;}</style>',
     );
     w.document.write('</head><body>');
     w.document.write(content.outerHTML);

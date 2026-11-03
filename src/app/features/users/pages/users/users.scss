@@ -53,8 +53,8 @@ button {
 .notice {
   margin: 1rem 0;
   padding: 1rem;
-  background: #fef2f2;
-  color: #991b1b;
+  background: var(--app-danger-surface);
+  color: var(--app-danger);
 }
 .profile h2 {
   margin-top: 0;

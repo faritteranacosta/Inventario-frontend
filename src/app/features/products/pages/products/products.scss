@@ -46,11 +46,11 @@ h1 {
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1rem;
-  border: 1px solid #fecaca;
+  border: 1px solid var(--app-danger);
   border-radius: 0.65rem;
   padding: 1rem;
-  background: #fef2f2;
-  color: #991b1b;
+  background: var(--app-danger-surface);
+  color: var(--app-danger);
 }
 .notice button {
   border: 0;
@@ -172,12 +172,12 @@ th {
   color: var(--app-accent-700);
 }
 .stock--low {
-  background: #fff7ed;
-  color: #9a3412;
+  background: var(--app-primary-50);
+  color: var(--app-primary-700);
 }
 .stock--zero {
-  background: #fee2e2;
-  color: #991b1b;
+  background: var(--app-danger-surface);
+  color: var(--app-danger);
 }
 .icon-button {
   border: 0;

@@ -14,7 +14,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    title: 'Inventario SaaS',
+    title: 'Stokio',
     loadComponent: () =>
       import('./features/landing/pages/landing-page/landing-page').then((m) => m.LandingPage),
   },
@@ -25,31 +25,31 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    title: 'Iniciar sesión · Inventario SaaS',
+    title: 'Iniciar sesión · Stokio',
     loadComponent: () => import('./features/auth/pages/login/login').then((m) => m.LoginPage),
   },
   {
     path: 'bootstrap',
-    title: 'Configurar plataforma · Inventario SaaS',
+    title: 'Configurar plataforma · Stokio',
     loadComponent: () =>
       import('./features/platform/pages/bootstrap/bootstrap').then((m) => m.BootstrapPage),
   },
   {
     path: 'register',
-    title: 'Crear usuario · Inventario SaaS',
+    title: 'Crear usuario · Stokio',
     loadComponent: () =>
       import('./features/auth/pages/register/register').then((m) => m.RegisterPage),
   },
   {
     path: 'onboarding',
     canActivate: [platformGuard],
-    title: 'Crear negocio · Inventario SaaS',
+    title: 'Crear negocio · Stokio',
     loadComponent: () =>
       import('./features/tenants/pages/onboarding/onboarding').then((m) => m.OnboardingPage),
   },
   {
     path: 'forbidden',
-    title: 'Acceso denegado · Inventario SaaS',
+    title: 'Acceso denegado · Stokio',
     loadComponent: () =>
       import('./features/auth/pages/forbidden/forbidden').then((m) => m.ForbiddenPage),
   },
@@ -60,44 +60,44 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        title: 'Resumen · Inventario SaaS',
+        title: 'Resumen · Stokio',
         loadComponent: () =>
           import('./features/dashboard/pages/dashboard/dashboard').then((m) => m.DashboardPage),
       },
       {
         path: 'settings',
-        title: 'Configuración · Inventario SaaS',
+        title: 'Configuración · Stokio',
         loadComponent: () =>
           import('./features/settings/pages/settings/settings').then((m) => m.SettingsPage),
       },
       {
         path: 'categories',
         canActivate: [adminGuard],
-        title: 'Categorías · Inventario SaaS',
+        title: 'Categorías · Stokio',
         loadComponent: () =>
           import('./features/categories/pages/categories/categories').then((m) => m.CategoriesPage),
       },
       {
         path: 'products',
-        title: 'Productos · Inventario SaaS',
+        title: 'Productos · Stokio',
         loadComponent: () =>
           import('./features/products/pages/products/products').then((m) => m.ProductsPage),
       },
       {
         path: 'sales',
-        title: 'Ventas · Inventario SaaS',
+        title: 'Ventas · Stokio',
         loadComponent: () => import('./features/sales/pages/sales/sales').then((m) => m.SalesPage),
       },
       {
         path: 'users',
         canActivate: [platformGuard],
-        title: 'Usuarios · Inventario SaaS',
+        title: 'Usuarios · Stokio',
         loadComponent: () => import('./features/users/pages/users/users').then((m) => m.UsersPage),
       },
       {
         path: 'tenants',
         canActivate: [platformGuard],
-        title: 'Negocios · Inventario SaaS',
+        title: 'Negocios · Stokio',
         loadComponent: () =>
           import('./features/tenants/pages/tenants/tenants').then((m) => m.TenantsPage),
       },

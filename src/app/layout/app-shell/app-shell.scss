@@ -1,18 +1,14 @@
-$bg: #f9fcfa;
-$soft: #e7f5e9;
-$mint: #e4eee2;
-$border: #dbead9;
-$accent: #c2e1c3;
+$bg: var(--app-surface-50);
+$soft: var(--app-primary-50);
+$mint: var(--app-primary-100);
+$border: var(--app-border-color);
+$accent: var(--app-primary-400);
 
 .shell {
   min-height: 100vh;
   background: $bg;
-  color: #1a2a1f;
-  font-family:
-    'Inter',
-    system-ui,
-    -apple-system,
-    sans-serif;
+  color: var(--app-text-color);
+  font-family: var(--app-font-body);
   display: flex;
   flex-direction: column;
 }
@@ -23,7 +19,7 @@ $accent: #c2e1c3;
   justify-content: space-between;
   gap: 2rem;
   padding: 1rem 2rem;
-  background: #ffffff;
+  background: var(--app-surface-0);
   border-bottom: 1px solid $border;
   position: sticky;
   top: 0;
@@ -35,12 +31,12 @@ $accent: #c2e1c3;
   align-items: center;
   gap: 0.6rem;
   text-decoration: none;
-  color: #1a2a1f;
+  color: var(--app-text-color);
   font-weight: 600;
   font-size: 1rem;
 
   &:hover {
-    color: #1a2a1f;
+    color: var(--app-text-color);
   }
 }
 
@@ -58,6 +54,11 @@ $accent: #c2e1c3;
   border-radius: 0;
 }
 
+.shell__brand-logo--fallback {
+  width: 36px;
+  height: 36px;
+}
+
 .shell__nav {
   display: flex;
   align-items: center;
@@ -66,7 +67,7 @@ $accent: #c2e1c3;
   justify-content: center;
 
   a {
-    color: #4a5a4f;
+    color: var(--app-text-color-secondary);
     text-decoration: none;
     font-size: 0.9rem;
     padding: 0.5rem 0.9rem;
@@ -77,12 +78,12 @@ $accent: #c2e1c3;
 
     &:hover {
       background: $soft;
-      color: #1a2a1f;
+      color: var(--app-text-color);
     }
 
     &.is-active {
       background: $mint;
-      color: #1a2a1f;
+      color: var(--app-text-color);
       font-weight: 500;
     }
   }
@@ -93,20 +94,20 @@ $accent: #c2e1c3;
   align-items: center;
   gap: 1rem;
   font-size: 0.85rem;
-  color: #4a5a4f;
+  color: var(--app-text-color-secondary);
 
   select {
-    background: #ffffff;
+    background: var(--app-surface-0);
     border: 1px solid $border;
     border-radius: 8px;
     padding: 0.35rem 0.6rem;
-    color: #1a2a1f;
+    color: var(--app-text-color);
     font-size: 0.85rem;
   }
 
   button {
-    background: #2d6a30;
-    border: 1px solid #2d6a30;
+    background: var(--app-primary-600);
+    border: 1px solid var(--app-primary-600);
     color: #ffffff;
     padding: 0.45rem 1rem;
     border-radius: 8px;
@@ -116,8 +117,8 @@ $accent: #c2e1c3;
     transition: background 0.15s ease;
 
     &:hover {
-      background: #1f4d22;
-      border-color: #1f4d22;
+      background: var(--app-primary-700);
+      border-color: var(--app-primary-700);
     }
   }
 }
@@ -141,12 +142,12 @@ $accent: #c2e1c3;
 }
 
 .shell__user {
-  color: #4a5a4f;
+  color: var(--app-text-color-secondary);
 }
 
 .shell__context-error {
-  background: #fce4e4;
-  color: #8a2a2a;
+  background: var(--app-danger-surface);
+  color: var(--app-danger);
   padding: 0.75rem 2rem;
   text-align: center;
   font-size: 0.9rem;

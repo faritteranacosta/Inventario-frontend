@@ -66,15 +66,15 @@ button {
   font: inherit;
 }
 button {
-  background: #2d6a30;
+  background: var(--app-primary-600);
   color: #fff;
   cursor: pointer;
   font-weight: 700;
-  border: 1px solid #2d6a30;
+  border: 1px solid var(--app-primary-600);
 
   &:hover:not(:disabled) {
-    background: #1f4d22;
-    border-color: #1f4d22;
+    background: var(--app-primary-700);
+    border-color: var(--app-primary-700);
   }
 }
 button:disabled {
@@ -84,8 +84,8 @@ button:disabled {
 .notice {
   margin: 1rem 0;
   padding: 1rem;
-  background: #fef2f2;
-  color: #991b1b;
+  background: var(--app-danger-surface);
+  color: var(--app-danger);
 }
 .notice button,
 .danger {
@@ -123,14 +123,14 @@ dd {
   margin-top: 0.5rem;
   padding: 0.2rem 0.55rem;
   border-radius: 999px;
-  background: #dcfce7;
-  color: #166534;
+  background: var(--app-success-surface);
+  color: var(--app-success);
   font-size: 0.75rem;
   font-weight: 800;
 }
 .status--suspended {
-  background: #fef3c7;
-  color: #92400e;
+  background: var(--app-accent-50);
+  color: var(--app-accent-700);
 }
 .member-form {
   margin-bottom: 1rem;

@@ -16,7 +16,9 @@ v1.json
 /docs
 agents
 .codegraph/
-
+plan.md
+todo.md
+api-contract.md
 # Compiled output
 /dist
 /tmp

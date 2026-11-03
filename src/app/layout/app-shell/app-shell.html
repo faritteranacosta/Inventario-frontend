@@ -2,11 +2,20 @@
   <header class="shell__header">
     <a class="shell__brand" routerLink="/dashboard" aria-label="Ir al panel">
       @if (logoSrc() && !logoFailed()) {
-        <img class="shell__brand-logo" [src]="logoSrc()!" alt="" (error)="onLogoError($event)" />
+        <img
+          class="shell__brand-logo"
+          [src]="logoSrc()!"
+          alt="Logo del negocio"
+          (error)="onLogoError($event)"
+        />
       } @else {
-        <span class="shell__brand-mark" aria-hidden="true"></span>
+        <img
+          class="shell__brand-logo shell__brand-logo--fallback"
+          src="assets/brand/logo/simbolo-mono-f2561d.svg"
+          alt="Stokio"
+        />
       }
-      <span class="shell__brand-name">{{ auth.activeTenantName() || 'Inventario' }}</span>
+      <span class="shell__brand-name">{{ auth.activeTenantName() || 'Stokio' }}</span>
     </a>
 
     <nav class="shell__nav" aria-label="Navegación del panel">

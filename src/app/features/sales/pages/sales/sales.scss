@@ -43,8 +43,8 @@ h1 {
   gap: 1rem;
   margin-bottom: 1rem;
   padding: 1rem;
-  background: #fef2f2;
-  color: #991b1b;
+  background: var(--app-danger-surface);
+  color: var(--app-danger);
 }
 .notice button {
   border: 0;
@@ -216,12 +216,12 @@ code {
 
   strong {
     font-size: 0.95rem;
-    color: #1a2a1f;
+    color: var(--app-text-color);
   }
 
   small {
     font-size: 0.75rem;
-    color: #6a7a6f;
+    color: var(--app-text-color-secondary);
   }
 }
 @media (max-width: 700px) {
@@ -250,8 +250,8 @@ code {
   gap: 0.35rem;
   margin: 1rem 0;
   padding: 1rem;
-  background: #f9fcfa;
-  border: 1px solid #dbead9;
+  background: var(--app-surface-50);
+  border: 1px solid var(--app-border-color);
   border-radius: 0.65rem;
 
   div {
@@ -261,12 +261,12 @@ code {
     font-size: 0.9rem;
 
     span {
-      color: #6a7a6f;
+      color: var(--app-text-color-secondary);
     }
 
     code {
       font-size: 0.8rem;
-      background: #e7f5e9;
+      background: var(--app-primary-50);
       padding: 0.15rem 0.4rem;
       border-radius: 4px;
     }
@@ -276,20 +276,20 @@ code {
 .receipt-header {
   text-align: center;
   padding: 1rem 0 1.5rem;
-  border-bottom: 2px solid #2d6a30;
+  border-bottom: 2px solid var(--app-primary-600);
   margin-bottom: 1rem;
 
   h2 {
     margin: 0;
     font-size: 1.5rem;
     font-weight: 700;
-    color: #1a2a1f;
+    color: var(--app-text-color);
   }
 
   p {
     margin: 0.25rem 0 0;
     font-size: 0.85rem;
-    color: #6a7a6f;
+    color: var(--app-text-color-secondary);
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
