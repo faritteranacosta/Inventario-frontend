@@ -15,6 +15,11 @@ export class AppShellComponent {
   private readonly router = inject(Router);
   protected readonly contextLoading = signal(false);
   protected readonly contextError = signal<string | null>(null);
+  protected readonly logoFailed = signal(false);
+
+  protected onLogoError(_event: Event): void {
+    this.logoFailed.set(true);
+  }
 
   constructor() {
     if (this.auth.isAuthenticated() && !this.auth.session()) {
