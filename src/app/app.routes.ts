@@ -29,6 +29,12 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/pages/login/login').then((m) => m.LoginPage),
   },
   {
+    path: 'bootstrap',
+    title: 'Configurar plataforma · Inventario SaaS',
+    loadComponent: () =>
+      import('./features/platform/pages/bootstrap/bootstrap').then((m) => m.BootstrapPage),
+  },
+  {
     path: 'register',
     title: 'Crear usuario · Inventario SaaS',
     loadComponent: () =>
@@ -36,6 +42,7 @@ export const routes: Routes = [
   },
   {
     path: 'onboarding',
+    canActivate: [platformGuard],
     title: 'Crear negocio · Inventario SaaS',
     loadComponent: () =>
       import('./features/tenants/pages/onboarding/onboarding').then((m) => m.OnboardingPage),
@@ -58,6 +65,12 @@ export const routes: Routes = [
           import('./features/dashboard/pages/dashboard/dashboard').then((m) => m.DashboardPage),
       },
       {
+        path: 'settings',
+        title: 'Configuración · Inventario SaaS',
+        loadComponent: () =>
+          import('./features/settings/pages/settings/settings').then((m) => m.SettingsPage),
+      },
+      {
         path: 'categories',
         canActivate: [adminGuard],
         title: 'Categorías · Inventario SaaS',
@@ -77,7 +90,7 @@ export const routes: Routes = [
       },
       {
         path: 'users',
-        canActivate: [adminGuard],
+        canActivate: [platformGuard],
         title: 'Usuarios · Inventario SaaS',
         loadComponent: () => import('./features/users/pages/users/users').then((m) => m.UsersPage),
       },

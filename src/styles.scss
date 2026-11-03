@@ -35,19 +35,49 @@ a {
   &:hover {
     text-decoration: underline;
   }
+}
 
-  button,
-  input,
-  select,
-  textarea {
-    &:focus-visible {
-      outline: 3px solid var(--app-accent-300);
-      outline-offset: 2px;
-    }
-  }
+.button,
+button.button {
+  cursor: pointer;
+}
 
-  ::selection {
-    background: var(--app-primary-200);
-    color: var(--app-primary-900);
+.button--primary,
+button.button--primary {
+  background: #2d6a30 !important;
+  color: #ffffff !important;
+  border: 1px solid #2d6a30 !important;
+  font-weight: 600;
+
+  &:hover {
+    background: #1f4d22 !important;
+    border-color: #1f4d22 !important;
   }
+}
+
+.button--secondary,
+button.button--secondary {
+  background: #ffffff !important;
+  color: #2d6a30 !important;
+  border: 1px solid #2d6a30 !important;
+  font-weight: 600;
+
+  &:hover {
+    background: #e7f5e9 !important;
+  }
+}
+
+button,
+input,
+select,
+textarea {
+  &:focus-visible {
+    outline: 3px solid var(--app-accent-300);
+    outline-offset: 2px;
+  }
+}
+
+::selection {
+  background: var(--app-primary-200);
+  color: var(--app-primary-900);
 }

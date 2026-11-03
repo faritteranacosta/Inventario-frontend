@@ -16,6 +16,10 @@ export class PlatformApi {
   private readonly http = inject(HttpClient);
   private readonly url = `${environment.apiUrl}/platform`;
 
+  bootstrap(email: string, password: string): Observable<unknown> {
+    return this.http.post(`${this.url}/bootstrap`, { email, password });
+  }
+
   listTenants(): Observable<readonly PlatformTenantResponse[]> {
     return this.http.get<readonly PlatformTenantResponse[]>(`${this.url}/tenants`);
   }

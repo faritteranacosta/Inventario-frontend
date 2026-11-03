@@ -8,9 +8,12 @@
   </header>
 
   @if (errorMessage(); as message) {
-    <div class="notice" role="alert">
+    <div class="notice notice--error" role="alert">
       {{ message }} <button type="button" (click)="load()">Reintentar</button>
     </div>
+  }
+  @if (successMessage(); as message) {
+    <div class="notice notice--success" role="status">{{ message }}</div>
   }
 
   <section class="create-panel">

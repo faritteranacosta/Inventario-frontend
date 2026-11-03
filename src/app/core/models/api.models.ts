@@ -26,6 +26,8 @@ export interface SessionResponse {
   readonly email: string;
   readonly platformRole: string | null;
   readonly activeTenantId: string | null;
+  readonly activeTenantName: string | null;
+  readonly activeTenantLogoUrl: string | null;
   readonly memberships: readonly MembershipResponse[];
 }
 
@@ -166,6 +168,7 @@ export interface CreateSaleRequest {
 
 export interface SaleItemResponse {
   readonly productId: string;
+  readonly productName: string;
   readonly quantity: number;
   readonly unitPrice: number;
   readonly total: number;
@@ -173,6 +176,7 @@ export interface SaleItemResponse {
 
 export interface SaleResponse {
   readonly id: string;
+  readonly tenantName: string;
   readonly saleDateUtc: string;
   readonly items: readonly SaleItemResponse[];
   readonly total: number;

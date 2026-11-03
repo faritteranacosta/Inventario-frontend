@@ -5,6 +5,7 @@ import { CategoriesApi } from '../../../categories/categories.api';
 import { CategoryResponse, ProductResponse } from '../../../../core/models/api.models';
 import { ProductsApi } from '../../products.api';
 import { NotificationService } from '../../../../core/notifications/notification.service';
+import { resolveImageUrl } from '../../../../core/utils/image';
 import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({
@@ -144,6 +145,10 @@ export class ProductsPage {
 
   protected categoryName(id: string): string {
     return this.categories().find((category) => category.id === id)?.name ?? 'Sin categoría';
+  }
+
+  protected imageUrlSrc(url: string | null | undefined): string | null {
+    return resolveImageUrl(url);
   }
 
   protected remove(product: ProductResponse): void {

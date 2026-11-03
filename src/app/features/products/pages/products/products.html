@@ -38,9 +38,7 @@
         <label class="wide"
           >Descripción <textarea rows="3" formControlName="description"></textarea>
         </label>
-        <label class="wide"
-          >URL de imagen <input type="url" formControlName="imageUrl" placeholder="https://…"
-        /></label>
+        <!-- La imagen se carga desde el dispositivo después de crear el producto (botón "Imagen") -->
         <div class="form-actions wide">
           <button class="button button--primary" type="submit" [disabled]="saving()">
             {{ saving() ? 'Guardando…' : editingId() ? 'Actualizar producto' : 'Guardar producto' }}
@@ -94,11 +92,11 @@
               <tr>
                 <td>
                   <div class="product-cell">
-                    @if (product.imageUrl; as imageUrl) {
+                    @if (imageUrlSrc(product.imageUrl); as src) {
                       <img
-                        src="assets/escudo/light_grey_192.png"
-                        [src]="imageUrl"
+                        [src]="src"
                         [alt]="product.name"
+                        (error)="$any($event.target).style.display='none'"
                       />
                     }
                     <div>

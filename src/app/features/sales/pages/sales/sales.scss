@@ -192,7 +192,9 @@ code {
   background: rgb(15 23 42 / 55%);
 }
 .detail-modal {
-  width: min(100%, 42rem);
+  width: min(100%, 30rem);
+  max-height: 80vh;
+  overflow-y: auto;
   border-radius: 1rem;
   padding: 1.5rem;
   background: var(--app-surface-0);
@@ -206,6 +208,22 @@ code {
   border-top: 1px solid var(--app-border-color);
   padding: 0.85rem 0;
 }
+
+.detail-line__product {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+
+  strong {
+    font-size: 0.95rem;
+    color: #1a2a1f;
+  }
+
+  small {
+    font-size: 0.75rem;
+    color: #6a7a6f;
+  }
+}
 @media (max-width: 700px) {
   .page-header,
   .filters,
@@ -218,5 +236,61 @@ code {
   }
   .sale-line button {
     grid-column: 3;
+  }
+}
+
+.detail-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.detail-info {
+  display: grid;
+  gap: 0.35rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f9fcfa;
+  border: 1px solid #dbead9;
+  border-radius: 0.65rem;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.9rem;
+
+    span {
+      color: #6a7a6f;
+    }
+
+    code {
+      font-size: 0.8rem;
+      background: #e7f5e9;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+    }
+  }
+}
+
+.receipt-header {
+  text-align: center;
+  padding: 1rem 0 1.5rem;
+  border-bottom: 2px solid #2d6a30;
+  margin-bottom: 1rem;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a2a1f;
+  }
+
+  p {
+    margin: 0.25rem 0 0;
+    font-size: 0.85rem;
+    color: #6a7a6f;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
 }

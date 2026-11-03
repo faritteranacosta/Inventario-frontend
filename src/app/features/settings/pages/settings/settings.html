@@ -1,0 +1,51 @@
+<main class="profile">
+  <header class="profile__header">
+    <div class="profile__avatar">
+      @if (logoSrc()) {
+        <img [src]="logoSrc()!" alt="Logo" />
+      } @else {
+        <span>{{ initials() }}</span>
+      }
+    </div>
+    <div class="profile__identity">
+      <h1>{{ auth.activeTenantName() || 'Mi negocio' }}</h1>
+      <p class="profile__email">{{ auth.user()?.email ?? '' }}</p>
+      <p class="profile__role">{{ auth.activeMembership()?.role ?? auth.user()?.role ?? 'Usuario' }}</p>
+    </div>
+    <button class="profile__edit-btn" type="button" (click)="toggleEdit()" aria-label="Editar perfil">
+      ✎
+    </button>
+  </header>
+
+  @if (message(); as m) {
+    <div class="notice" role="status">{{ m }}</div>
+  }
+
+  @if (editing()) {
+    <section class="profile__card">
+      <h2>Nombre del negocio</h2>
+      <form [formGroup]="form" (ngSubmit)="save()" class="profile__form">
+        <label>Nombre
+          <input formControlName="displayName" placeholder="Mi Negocio" />
+        </label>
+        <button class="button button--primary" type="submit" [disabled]="saving()">
+          {{ saving() ? 'Guardando…' : 'Guardar nombre' }}
+        </button>
+      </form>
+    </section>
+
+    <section class="profile__card">
+      <h2>Logo del negocio</h2>
+      <div class="profile__logo-row">
+        @if (logoPreview()) {
+          <img class="profile__logo-preview" [src]="logoPreviewSrc()!" alt="Logo" />
+        }
+        <label class="profile__file">
+          <input type="file" accept="image/*" (change)="selectLogo($any($event.target).files?.[0])" />
+          <span>{{ uploading() ? 'Cargando…' : 'Seleccionar imagen' }}</span>
+        </label>
+      </div>
+      <p class="profile__hint">Formatos: JPG, PNG, GIF, WebP. Máximo 5 MB. Tamaño recomendado: 256×256 px (cuadrado).</p>
+    </section>
+  }
+</main>

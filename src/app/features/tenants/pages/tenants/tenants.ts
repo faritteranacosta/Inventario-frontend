@@ -21,10 +21,11 @@ export class TenantsPage {
   protected readonly loading = signal(true);
   protected readonly busy = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
+  protected readonly successMessage = signal<string | null>(null);
   protected readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
     adminEmail: ['', [Validators.email]],
-    adminPassword: ['', [Validators.minLength(8)]],
+    adminPassword: [''],
   });
   protected readonly memberForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -54,11 +55,16 @@ export class TenantsPage {
   protected create(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.errorMessage.set('Completa el nombre del negocio (mínimo 2 caracteres).');
       return;
     }
     const { name, adminEmail, adminPassword } = this.form.getRawValue();
     if ((adminEmail && !adminPassword) || (!adminEmail && adminPassword)) {
       this.errorMessage.set('El correo y la contraseña del administrador deben enviarse juntos.');
+      return;
+    }
+    if (adminPassword && adminPassword.length < 8) {
+      this.errorMessage.set('La contraseña del administrador debe tener al menos 8 caracteres.');
       return;
     }
     this.busy.set(true);
@@ -68,14 +74,18 @@ export class TenantsPage {
         ...(adminEmail ? { adminEmail, adminPassword } : {}),
       })
       .subscribe({
-        next: () => {
+        next: (tenant) => {
           this.form.reset({ name: '', adminEmail: '', adminPassword: '' });
           this.busy.set(false);
+          this.successMessage.set(`Negocio "${tenant.name}" creado correctamente.`);
+          this.errorMessage.set(null);
           this.load();
         },
-        error: () => {
+        error: (err: unknown) => {
           this.busy.set(false);
-          this.errorMessage.set('No pudimos crear el negocio.');
+          this.successMessage.set(null);
+          const msg = (err as { error?: { message?: string } })?.error?.message;
+          this.errorMessage.set(msg ?? 'No pudimos crear el negocio. Verifica que seas PlatformAdmin.');
         },
       });
   }
@@ -123,14 +133,23 @@ export class TenantsPage {
     const tenant = this.selected();
     if (!tenant || this.memberForm.invalid) {
       this.memberForm.markAllAsTouched();
+      this.errorMessage.set('Completa los datos del usuario (email y contraseña de al menos 8 caracteres).');
       return;
     }
+    this.busy.set(true);
     this.api.createMember(tenant.id, this.memberForm.getRawValue()).subscribe({
       next: (member) => {
         this.members.update((items) => [...items, member]);
         this.memberForm.reset({ email: '', password: '', role: 'User' });
+        this.busy.set(false);
+        this.successMessage.set('Acceso agregado correctamente.');
+        this.errorMessage.set(null);
       },
-      error: () => this.errorMessage.set('No pudimos crear la membresía.'),
+      error: (err: unknown) => {
+        this.busy.set(false);
+        const msg = (err as { error?: { message?: string } })?.error?.message;
+        this.errorMessage.set(msg ?? 'No pudimos crear la membresía.');
+      },
     });
   }
 
