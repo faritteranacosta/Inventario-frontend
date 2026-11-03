@@ -90,17 +90,19 @@ $accent: #C2E1C3;
   }
 
   button {
-    background: transparent;
-    border: 1px solid #76b878;
-    color: #1a2a1f;
-    padding: 0.4rem 0.9rem;
+    background: #2d6a30;
+    border: 1px solid #2d6a30;
+    color: #ffffff;
+    padding: 0.45rem 1rem;
     border-radius: 8px;
     font-size: 0.85rem;
+    font-weight: 600;
     cursor: pointer;
     transition: background 0.15s ease;
 
     &:hover {
-      background: $soft;
+      background: #1f4d22;
+      border-color: #1f4d22;
     }
   }
 }
