@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { TenantsApi } from '../../../tenants/tenants.api';
+import { resolveImageUrl } from '../../../../core/utils/image';
 
 @Component({
   selector: 'app-settings',
@@ -19,7 +20,19 @@ export class SettingsPage {
   protected readonly saving = signal(false);
   protected readonly uploading = signal(false);
   protected readonly message = signal<string | null>(null);
+  protected readonly editing = signal(false);
   protected readonly logoPreview = signal<string | null>(this.auth.activeTenantLogoUrl());
+
+  protected readonly logoSrc = computed(() => resolveImageUrl(this.logoPreview()));
+
+  protected logoPreviewSrc(): string | null {
+    return resolveImageUrl(this.logoPreview());
+  }
+
+  protected toggleEdit(): void {
+    this.editing.set(!this.editing());
+    this.message.set(null);
+  }
 
   protected readonly initials = computed(() => {
     const name = this.auth.activeTenantName() || this.auth.user()?.email || '?';
