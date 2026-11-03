@@ -20,9 +20,19 @@ export class DashboardPage {
   protected readonly loading = signal(true);
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly summary = signal<SalesSummaryResponse | null>(null);
-  protected readonly from = signal('');
-  protected readonly to = signal('');
+  protected readonly from = signal(this.defaultFrom());
+  protected readonly to = signal(this.defaultTo());
   protected readonly groupBy = signal<'day' | 'month'>('day');
+
+  private defaultFrom(): string {
+    const d = new Date();
+    d.setDate(d.getDate() - 7);
+    return d.toISOString().slice(0, 10);
+  }
+
+  private defaultTo(): string {
+    return new Date().toISOString().slice(0, 10);
+  }
   protected readonly isPlatformAdmin = this.auth.isPlatformAdmin;
 
   constructor() {
