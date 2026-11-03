@@ -21,6 +21,7 @@ export class TenantsPage {
   protected readonly loading = signal(true);
   protected readonly busy = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
+  protected readonly successMessage = signal<string | null>(null);
   protected readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
     adminEmail: ['', [Validators.email]],
@@ -68,14 +69,18 @@ export class TenantsPage {
         ...(adminEmail ? { adminEmail, adminPassword } : {}),
       })
       .subscribe({
-        next: () => {
+        next: (tenant) => {
           this.form.reset({ name: '', adminEmail: '', adminPassword: '' });
           this.busy.set(false);
+          this.successMessage.set(`Negocio "${tenant.name}" creado correctamente.`);
+          this.errorMessage.set(null);
           this.load();
         },
-        error: () => {
+        error: (err: unknown) => {
           this.busy.set(false);
-          this.errorMessage.set('No pudimos crear el negocio.');
+          this.successMessage.set(null);
+          const msg = (err as { error?: { message?: string } })?.error?.message;
+          this.errorMessage.set(msg ?? 'No pudimos crear el negocio. Verifica que seas PlatformAdmin.');
         },
       });
   }

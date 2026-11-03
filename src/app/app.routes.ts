@@ -29,6 +29,12 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/pages/login/login').then((m) => m.LoginPage),
   },
   {
+    path: 'bootstrap',
+    title: 'Configurar plataforma · Inventario SaaS',
+    loadComponent: () =>
+      import('./features/platform/pages/bootstrap/bootstrap').then((m) => m.BootstrapPage),
+  },
+  {
     path: 'register',
     title: 'Crear usuario · Inventario SaaS',
     loadComponent: () =>
