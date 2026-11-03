@@ -25,7 +25,7 @@ export class TenantsPage {
   protected readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
     adminEmail: ['', [Validators.email]],
-    adminPassword: ['', [Validators.minLength(8)]],
+    adminPassword: [''],
   });
   protected readonly memberForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -61,6 +61,10 @@ export class TenantsPage {
     const { name, adminEmail, adminPassword } = this.form.getRawValue();
     if ((adminEmail && !adminPassword) || (!adminEmail && adminPassword)) {
       this.errorMessage.set('El correo y la contraseña del administrador deben enviarse juntos.');
+      return;
+    }
+    if (adminPassword && adminPassword.length < 8) {
+      this.errorMessage.set('La contraseña del administrador debe tener al menos 8 caracteres.');
       return;
     }
     this.busy.set(true);
