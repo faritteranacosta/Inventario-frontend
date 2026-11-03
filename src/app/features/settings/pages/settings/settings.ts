@@ -74,19 +74,42 @@ export class SettingsPage {
       this.message.set('La imagen no puede superar 5 MB.');
       return;
     }
-    this.logoPreview.set(URL.createObjectURL(file));
-    this.uploading.set(true);
-    this.message.set(null);
-    this.tenantsApi.uploadLogo(file).subscribe({
-      next: () => {
-        this.uploading.set(false);
-        this.auth.me().subscribe({ error: () => {} });
-        this.message.set('Logo actualizado.');
-      },
-      error: () => {
-        this.uploading.set(false);
-        this.message.set('No se pudo cargar el logo.');
-      },
-    });
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      const { width, height } = img;
+      if (width < 64 || height < 64) {
+        this.message.set('La imagen es muy pequeña. Mínimo 64×64 px.');
+        return;
+      }
+      if (width > 1024 || height > 1024) {
+        this.message.set('La imagen es muy grande. Máximo 1024×1024 px.');
+        return;
+      }
+      if (Math.abs(width - height) > Math.max(width, height) * 0.15) {
+        this.message.set('El logo debe ser cuadrado (relación 1:1).');
+        return;
+      }
+      this.logoPreview.set(URL.createObjectURL(file));
+      this.uploading.set(true);
+      this.message.set(null);
+      this.tenantsApi.uploadLogo(file).subscribe({
+        next: () => {
+          this.uploading.set(false);
+          this.auth.me().subscribe({ error: () => {} });
+          this.message.set('Logo actualizado.');
+        },
+        error: () => {
+          this.uploading.set(false);
+          this.message.set('No se pudo cargar el logo.');
+        },
+      });
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      this.message.set('No se pudo leer la imagen.');
+    };
+    img.src = objectUrl;
   }
 }
