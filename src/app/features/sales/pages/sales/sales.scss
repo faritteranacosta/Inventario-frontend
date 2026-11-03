@@ -192,7 +192,9 @@ code {
   background: rgb(15 23 42 / 55%);
 }
 .detail-modal {
-  width: min(100%, 42rem);
+  width: min(100%, 30rem);
+  max-height: 80vh;
+  overflow-y: auto;
   border-radius: 1rem;
   padding: 1.5rem;
   background: var(--app-surface-0);
