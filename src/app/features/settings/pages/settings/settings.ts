@@ -31,7 +31,8 @@ export class SettingsPage {
     this.tenantsApi.updateBranding(displayName, null).subscribe({
       next: () => {
         this.saving.set(false);
-        this.message.set('Nombre guardado. Recarga para ver los cambios.');
+        this.auth.me().subscribe({ error: () => {} });
+        this.message.set('Nombre guardado.');
       },
       error: () => {
         this.saving.set(false);
@@ -56,7 +57,8 @@ export class SettingsPage {
     this.tenantsApi.uploadLogo(file).subscribe({
       next: () => {
         this.uploading.set(false);
-        this.message.set('Logo actualizado. Recarga para ver los cambios.');
+        this.auth.me().subscribe({ error: () => {} });
+        this.message.set('Logo actualizado.');
       },
       error: () => {
         this.uploading.set(false);
