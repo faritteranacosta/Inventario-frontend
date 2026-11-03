@@ -254,3 +254,25 @@ code {
     }
   }
 }
+
+.receipt-header {
+  text-align: center;
+  padding: 1rem 0 1.5rem;
+  border-bottom: 2px solid #2d6a30;
+  margin-bottom: 1rem;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a2a1f;
+  }
+
+  p {
+    margin: 0.25rem 0 0;
+    font-size: 0.85rem;
+    color: #6a7a6f;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+}

@@ -149,9 +149,13 @@
         aria-labelledby="sale-detail-title"
         id="sale-receipt"
       >
+        <div class="receipt-header">
+          <h2>{{ sale.tenantName || 'Tienda' }}</h2>
+          <p>Recibo de venta</p>
+        </div>
         <div class="section-heading">
           <div>
-            <h2 id="sale-detail-title">Detalle de venta</h2>
+            <h3 id="sale-detail-title">Detalle de venta</h3>
             <p>{{ sale.saleDateUtc | date: 'medium' }}</p>
           </div>
           <div class="detail-actions">

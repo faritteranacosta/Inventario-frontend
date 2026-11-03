@@ -174,6 +174,7 @@ export interface SaleItemResponse {
 
 export interface SaleResponse {
   readonly id: string;
+  readonly tenantName: string;
   readonly saleDateUtc: string;
   readonly items: readonly SaleItemResponse[];
   readonly total: number;
