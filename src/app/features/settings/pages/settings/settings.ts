@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../../core/auth/auth.service';
@@ -13,13 +13,23 @@ import { TenantsApi } from '../../../tenants/tenants.api';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsPage {
-  private readonly auth = inject(AuthService);
+  protected readonly auth = inject(AuthService);
   private readonly tenantsApi = inject(TenantsApi);
   private readonly fb = inject(FormBuilder);
   protected readonly saving = signal(false);
   protected readonly uploading = signal(false);
   protected readonly message = signal<string | null>(null);
   protected readonly logoPreview = signal<string | null>(this.auth.activeTenantLogoUrl());
+
+  protected readonly initials = computed(() => {
+    const name = this.auth.activeTenantName() || this.auth.user()?.email || '?';
+    return name
+      .split(/\s+/)
+      .map((w) => w[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase();
+  });
   protected readonly form = this.fb.nonNullable.group({
     displayName: [this.auth.activeTenantName() ?? ''],
   });

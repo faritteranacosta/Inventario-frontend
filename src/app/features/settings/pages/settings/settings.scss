@@ -1,8 +1,88 @@
-.settings__form {
+.profile {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.profile__header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  background: #ffffff;
+  border: 1px solid #dbead9;
+  border-radius: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile__avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: #e7f5e9;
+  border: 2px solid #c2e1c3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2d6a30;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.profile__identity {
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a2a1f;
+  }
+
+  .profile__email {
+    margin: 0.25rem 0 0;
+    color: #4a5a4f;
+    font-size: 0.95rem;
+  }
+
+  .profile__role {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.2rem 0.6rem;
+    background: #e7f5e9;
+    color: #2d6a30;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+.profile__card {
+  background: #ffffff;
+  border: 1px solid #dbead9;
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  h2 {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a2a1f;
+  }
+}
+
+.profile__form {
   display: grid;
   gap: 1rem;
-  max-width: 480px;
-  margin-top: 1.5rem;
 
   label {
     display: grid;
@@ -19,30 +99,22 @@
   }
 }
 
-.settings__card {
-  background: #ffffff;
-  border: 1px solid #dbead9;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  margin-top: 1.5rem;
-  max-width: 480px;
-
-  h2 {
-    margin: 0 0 1rem;
-    font-size: 1.1rem;
-  }
+.profile__logo-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
-.settings__logo-preview {
+.profile__logo-preview {
   width: 80px;
   height: 80px;
   object-fit: contain;
   border: 1px solid #dbead9;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
+  border-radius: 0.75rem;
 }
 
-.settings__file {
+.profile__file {
   display: inline-block;
   cursor: pointer;
 
@@ -66,8 +138,8 @@
   }
 }
 
-.settings__hint {
+.profile__hint {
   font-size: 0.8rem;
   color: #6a7a6f;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
 }

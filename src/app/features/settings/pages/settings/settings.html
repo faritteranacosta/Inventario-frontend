@@ -1,8 +1,16 @@
-<main class="settings">
-  <header class="page-header">
-    <div>
-      <h1>Configuración</h1>
-      <p>Personaliza el nombre y logo de tu negocio.</p>
+<main class="profile">
+  <header class="profile__header">
+    <div class="profile__avatar">
+      @if (logoPreview()) {
+        <img [src]="logoPreview()!" alt="Logo" />
+      } @else {
+        <span>{{ initials() }}</span>
+      }
+    </div>
+    <div class="profile__identity">
+      <h1>{{ auth.activeTenantName() || 'Mi negocio' }}</h1>
+      <p class="profile__email">{{ auth.user()?.email ?? '' }}</p>
+      <p class="profile__role">{{ auth.activeMembership()?.role ?? auth.user()?.role ?? 'Usuario' }}</p>
     </div>
   </header>
 
@@ -10,9 +18,9 @@
     <div class="notice" role="status">{{ m }}</div>
   }
 
-  <section class="settings__card">
+  <section class="profile__card">
     <h2>Nombre del negocio</h2>
-    <form [formGroup]="form" (ngSubmit)="save()" class="settings__form">
+    <form [formGroup]="form" (ngSubmit)="save()" class="profile__form">
       <label>Nombre
         <input formControlName="displayName" placeholder="Mi Negocio" />
       </label>
@@ -22,15 +30,17 @@
     </form>
   </section>
 
-  <section class="settings__card">
+  <section class="profile__card">
     <h2>Logo del negocio</h2>
-    @if (logoPreview()) {
-      <img class="settings__logo-preview" [src]="logoPreview()!" alt="Logo" />
-    }
-    <label class="settings__file">
-      <input type="file" accept="image/*" (change)="selectLogo($any($event.target).files?.[0])" />
-      <span>{{ uploading() ? 'Cargando…' : 'Seleccionar imagen' }}</span>
-    </label>
-    <p class="settings__hint">Formatos: JPG, PNG, GIF, WebP. Máximo 5 MB.</p>
+    <div class="profile__logo-row">
+      @if (logoPreview()) {
+        <img class="profile__logo-preview" [src]="logoPreview()!" alt="Logo" />
+      }
+      <label class="profile__file">
+        <input type="file" accept="image/*" (change)="selectLogo($any($event.target).files?.[0])" />
+        <span>{{ uploading() ? 'Cargando…' : 'Cambiar logo' }}</span>
+      </label>
+    </div>
+    <p class="profile__hint">Formatos: JPG, PNG, GIF, WebP. Máximo 5 MB.</p>
   </section>
 </main>
