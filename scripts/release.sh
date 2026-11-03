@@ -27,6 +27,11 @@ if [ -z "$BUMP" ]; then
   exit 1
 fi
 
+if [[ ! "$BUMP" =~ ^(patch|minor|major|[0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+  echo "Versión inválida: usa patch, minor, major o X.Y.Z."
+  exit 2
+fi
+
 # No liberar con cambios sin commitear (commitea tu trabajo antes del bump).
 if [ -n "$(git -C "$ROOT" status --porcelain)" ]; then
   echo "❌ Hay cambios sin commitear. Comitéalos antes de liberar:"
@@ -45,10 +50,12 @@ NEW_VERSION="$(cd "$ROOT" && npm version "$BUMP" --no-git-tag-version | tail -1)
 NEW_VERSION="${NEW_VERSION#v}"
 echo "→ Nueva versión: $NEW_VERSION"
 
-# Commit + tag
+# Commit + annotated tag
 git -C "$ROOT" add package.json package-lock.json
-git -C "$ROOT" commit -m "chore(release): v$NEW_VERSION"
-git -C "$ROOT" tag "v$NEW_VERSION"
+git -C "$ROOT" commit \
+  -m "chore(release): v$NEW_VERSION" \
+  -m "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
+git -C "$ROOT" tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
 echo "✓ Commit y tag v$NEW_VERSION creados."
 echo ""
 echo "Siguiente:  git push && git push --tags"
