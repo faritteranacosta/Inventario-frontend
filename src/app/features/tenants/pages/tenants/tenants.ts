@@ -55,6 +55,7 @@ export class TenantsPage {
   protected create(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.errorMessage.set('Completa el nombre del negocio (mínimo 2 caracteres).');
       return;
     }
     const { name, adminEmail, adminPassword } = this.form.getRawValue();

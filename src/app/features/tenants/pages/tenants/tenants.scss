@@ -66,10 +66,16 @@ button {
   font: inherit;
 }
 button {
-  background: var(--app-primary);
+  background: #2d6a30;
   color: #fff;
   cursor: pointer;
   font-weight: 700;
+  border: 1px solid #2d6a30;
+
+  &:hover:not(:disabled) {
+    background: #1f4d22;
+    border-color: #1f4d22;
+  }
 }
 button:disabled {
   cursor: not-allowed;
