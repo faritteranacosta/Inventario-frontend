@@ -15,6 +15,7 @@ v1.json
 .angular
 /docs
 agents
+.codegraph/
 
 # Compiled output
 /dist
