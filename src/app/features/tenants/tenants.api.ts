@@ -32,4 +32,10 @@ export class TenantsApi {
   updateBranding(displayName: string | null, logoUrl: string | null): Observable<unknown> {
     return this.http.put(`${environment.apiUrl}/Tenants/branding`, { displayName, logoUrl });
   }
+
+  uploadLogo(file: File): Observable<unknown> {
+    const fd = new FormData();
+    fd.append('file', file);
+    return this.http.post(`${environment.apiUrl}/Tenants/branding/logo`, fd);
+  }
 }

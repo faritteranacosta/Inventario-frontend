@@ -18,3 +18,56 @@
     font: inherit;
   }
 }
+
+.settings__card {
+  background: #ffffff;
+  border: 1px solid #dbead9;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  max-width: 480px;
+
+  h2 {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+.settings__logo-preview {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border: 1px solid #dbead9;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.settings__file {
+  display: inline-block;
+  cursor: pointer;
+
+  input {
+    display: none;
+  }
+
+  span {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: #2d6a30;
+    color: #ffffff;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #1f4d22;
+    }
+  }
+}
+
+.settings__hint {
+  font-size: 0.8rem;
+  color: #6a7a6f;
+  margin-top: 0.5rem;
+}
