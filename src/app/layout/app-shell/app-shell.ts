@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
+import { resolveImageUrl } from '../../core/utils/image';
 
 @Component({
   selector: 'app-shell',
@@ -16,6 +17,10 @@ export class AppShellComponent {
   protected readonly contextLoading = signal(false);
   protected readonly contextError = signal<string | null>(null);
   protected readonly logoFailed = signal(false);
+
+  protected logoSrc(): string | null {
+    return resolveImageUrl(this.auth.activeTenantLogoUrl());
+  }
 
   protected onLogoError(_event: Event): void {
     this.logoFailed.set(true);
