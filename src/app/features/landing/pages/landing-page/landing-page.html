@@ -5,21 +5,17 @@
       <span class="landing__brand-name">Stokio</span>
     </a>
     <nav class="landing__nav" aria-label="Navegación principal">
-      <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }"
-        >Inicio</a
-      >
-      <a routerLink="/products" routerLinkActive="is-active">Productos</a>
-      <a routerLink="/dashboard" routerLinkActive="is-active">Panel</a>
       <button class="landing__button" type="button" (click)="goToAdmin()">Entrar</button>
     </nav>
   </header>
 
   <main>
     <section class="landing__hero">
-      <h1 class="landing__title">Controla tu stock, <br />sin ruido.</h1>
+      <p class="landing__announcement">Inventario claro para negocios que no paran</p>
+      <h1 class="landing__title">Tu inventario,<br /><em>en movimiento.</em></h1>
       <p class="landing__subtitle">
-        Una base limpia para gestionar productos, categorías y ventas. Rápido, accesible y listo
-        para crecer.
+        Registra productos, entiende tus ventas y toma decisiones con la tranquilidad de tener todo
+        bajo control.
       </p>
       <div class="landing__cta">
         <button
@@ -29,23 +25,125 @@
         >
           Abrir panel
         </button>
-        <a class="landing__link" routerLink="/products">Ver productos →</a>
+        <span class="landing__note">Comienza sin complicaciones</span>
+      </div>
+      <div class="landing__signal" aria-label="Funciones principales">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
     </section>
 
-    <section class="landing__section">
-      <div class="landing__grid">
-        @for (feature of features; track feature.title) {
-          <article class="landing__card">
-            <h3>{{ feature.title }}</h3>
-            <p>{{ feature.description }}</p>
-          </article>
-        }
+    <section class="landing__showcase" aria-labelledby="showcase-title">
+      <div class="landing__showcase-intro">
+        <p class="landing__section-label">Todo en un mismo lugar</p>
+        <h2 id="showcase-title">Menos hojas.<br />Más claridad.</h2>
+        <p>
+          Stokio acompaña el ritmo de tu operación con herramientas que hablan el idioma de tu
+          negocio.
+        </p>
+      </div>
+
+      <div class="landing__showcase-demo">
+        <div class="landing__feature-tabs" role="tablist" aria-label="Funciones de Stokio">
+          @for (feature of features; track feature.title; let index = $index) {
+            <button
+              type="button"
+              role="tab"
+              [attr.aria-selected]="activeFeatureIndex() === index"
+              [attr.aria-controls]="'feature-panel-' + index"
+              [class.is-active]="activeFeatureIndex() === index"
+              (click)="selectFeature(index)"
+            >
+              <span class="landing__feature-number">0{{ index + 1 }}</span>
+              <span>
+                <strong>{{ feature.title }}</strong>
+                <small>{{ feature.description }}</small>
+              </span>
+            </button>
+          }
+          <button
+            class="landing__pause"
+            type="button"
+            [attr.aria-label]="
+              isFeatureRotationPaused() ? 'Reproducir animación' : 'Pausar animación'
+            "
+            (click)="toggleFeatureRotation()"
+          >
+            {{ isFeatureRotationPaused() ? 'Reproducir' : 'Pausar' }}
+          </button>
+        </div>
+
+        <div
+          class="landing__feature-panel"
+          [id]="'feature-panel-' + activeFeatureIndex()"
+          role="tabpanel"
+          [attr.aria-label]="activeFeature().title"
+        >
+          <div class="landing__demo-chrome">
+            <span></span><span></span><span></span>
+            <small>stokio / {{ activeFeature().title.toLowerCase() }}</small>
+          </div>
+          <div class="landing__demo-content">
+            @switch (activeFeature().icon) {
+              @case ('box') {
+                <div class="landing__demo-inventory">
+                  <div class="landing__demo-heading">
+                    <span>Inventario</span><strong>24 productos</strong>
+                  </div>
+                  <div class="landing__demo-lines"><i></i><i></i><i></i><i></i></div>
+                </div>
+              }
+              @case ('chart') {
+                <div class="landing__demo-chart">
+                  <div class="landing__demo-heading">
+                    <span>Ventas del mes</span><strong>$ 8.420.000</strong>
+                  </div>
+                  <div class="landing__chart-bars"><i></i><i></i><i></i><i></i><i></i></div>
+                </div>
+              }
+              @case ('bolt') {
+                <div class="landing__demo-flow">
+                  <span>Entrada</span><b>→</b><span>Existencias</span><b>→</b><span>Venta</span>
+                </div>
+              }
+              @case ('bell') {
+                <div class="landing__demo-alert">
+                  <span>!</span>
+                  <div>
+                    <strong>Stock bajo</strong><small>Revisa 3 productos esta semana</small>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="landing__footer">
-    <span>Stokio · {{ year }}</span>
+    <div class="landing__footer-brand">
+      <a class="landing__brand" href="/" aria-label="Stokio">
+        <img class="landing__brand-mark" src="assets/brand/logo/simbolo-mono-f2561d.svg" alt="" />
+        <span class="landing__brand-name">Stokio</span>
+      </a>
+      <p>Inventario simple para negocios que quieren crecer con orden.</p>
+    </div>
+    <div class="landing__footer-column">
+      <strong>Producto</strong>
+      <a routerLink="/login">Iniciar sesión</a>
+      <a routerLink="/register">Crear cuenta</a>
+    </div>
+    <div class="landing__footer-column">
+      <strong>Ayuda</strong>
+      <a href="mailto:hola@stokio.app">Contactar</a>
+      <span>Hecho para operar mejor</span>
+    </div>
+    <div class="landing__footer-bottom">
+      <span>© {{ year }} Stokio</span>
+      <span>Tu operación, más clara.</span>
+    </div>
   </footer>
 </div>

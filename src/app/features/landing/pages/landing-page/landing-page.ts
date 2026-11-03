@@ -1,6 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnDestroy,
+  signal,
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 interface Feature {
   readonly icon: 'box' | 'chart' | 'bolt' | 'bell';
@@ -11,15 +18,18 @@ interface Feature {
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink],
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LandingPage {
+export class LandingPage implements OnDestroy {
   private readonly router = inject(Router);
+  private rotationTimer: ReturnType<typeof setInterval> | undefined;
 
   protected readonly year = new Date().getFullYear();
+  protected readonly activeFeatureIndex = signal(0);
+  protected readonly isFeatureRotationPaused = signal(false);
   protected readonly features: readonly Feature[] = [
     {
       icon: 'box',
@@ -43,7 +53,34 @@ export class LandingPage {
     },
   ];
 
+  protected readonly activeFeature = computed(
+    () => this.features[this.activeFeatureIndex()] ?? this.features[0],
+  );
+
+  constructor() {
+    this.rotationTimer = setInterval(() => {
+      if (!this.isFeatureRotationPaused()) {
+        this.activeFeatureIndex.update((index) => (index + 1) % this.features.length);
+      }
+    }, 4200);
+  }
+
+  protected selectFeature(index: number): void {
+    this.activeFeatureIndex.set(index);
+    this.isFeatureRotationPaused.set(true);
+  }
+
+  protected toggleFeatureRotation(): void {
+    this.isFeatureRotationPaused.update((paused) => !paused);
+  }
+
   protected goToAdmin(): void {
     void this.router.navigate(['/admin']);
+  }
+
+  ngOnDestroy(): void {
+    if (this.rotationTimer) {
+      clearInterval(this.rotationTimer);
+    }
   }
 }

@@ -6,6 +6,7 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="assets/brand/web/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="apple-touch-icon" href="assets/brand/web/apple-touch-icon.png" />
     <link rel="manifest" href="assets/brand/web/site.webmanifest" />
     <meta name="theme-color" content="#F2561D" />
@@ -17,6 +18,13 @@
     />
   </head>
   <body>
+    <div id="app-loading" role="status" aria-live="polite" aria-label="Cargando Stokio">
+      <div class="app-loading__mark" aria-hidden="true">
+        <img src="assets/brand/logo/simbolo-mono-f2561d.svg" alt="" />
+        <span></span>
+      </div>
+      <p>Cargando Stokio</p>
+    </div>
     <app-root></app-root>
   </body>
 </html>
