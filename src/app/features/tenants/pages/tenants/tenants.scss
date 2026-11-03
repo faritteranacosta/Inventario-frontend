@@ -26,10 +26,9 @@ h1 {
 .detail,
 .listing {
   margin-top: 1rem;
-  padding: 1.5rem;
-  border: 1px solid var(--app-border-color);
-  border-radius: 1rem;
-  background: var(--app-surface-0);
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--app-border-color);
+  background: transparent;
 }
 h2,
 h3 {
@@ -122,7 +121,7 @@ dd {
   display: inline-block;
   margin-top: 0.5rem;
   padding: 0.2rem 0.55rem;
-  border-radius: 999px;
+  border-radius: 0.2rem;
   background: var(--app-success-surface);
   color: var(--app-success);
   font-size: 0.75rem;

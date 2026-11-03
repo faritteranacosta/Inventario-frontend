@@ -56,10 +56,9 @@ h1 {
 .sale-builder,
 .listing,
 .filters {
-  border: 1px solid var(--app-border-color);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  background: var(--app-surface-0);
+  border-top: 1px solid var(--app-border-color);
+  padding: 1.5rem 0;
+  background: transparent;
 }
 .sale-builder {
   display: grid;
@@ -100,7 +99,7 @@ input {
   display: grid;
   gap: 0.25rem;
   border: 1px solid var(--app-border-color);
-  border-radius: 0.65rem;
+  border-radius: 0;
   padding: 0.85rem;
   background: var(--app-surface-50);
   color: var(--app-text-color);
@@ -195,7 +194,7 @@ code {
   width: min(100%, 30rem);
   max-height: 80vh;
   overflow-y: auto;
-  border-radius: 1rem;
+  border-radius: 0;
   padding: 1.5rem;
   background: var(--app-surface-0);
   box-shadow: 0 16px 40px rgb(15 23 42 / 20%);
@@ -251,8 +250,8 @@ code {
   margin: 1rem 0;
   padding: 1rem;
   background: var(--app-surface-50);
-  border: 1px solid var(--app-border-color);
-  border-radius: 0.65rem;
+  border-top: 1px solid var(--app-border-color);
+  border-bottom: 1px solid var(--app-border-color);
 
   div {
     display: flex;

@@ -17,10 +17,9 @@
 }
 .lookup,
 .profile {
-  border: 1px solid var(--app-border-color);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  background: var(--app-surface-0);
+  border-top: 1px solid var(--app-border-color);
+  padding: 1.5rem 0;
+  background: transparent;
 }
 .lookup {
   margin: 2rem 0 1rem;

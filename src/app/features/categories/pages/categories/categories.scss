@@ -62,10 +62,9 @@ h3 {
 }
 .form-panel,
 .listing {
-  border: 1px solid var(--app-border-color);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  background: var(--app-surface-0);
+  border-top: 1px solid var(--app-border-color);
+  padding: 1.5rem 0;
+  background: transparent;
 }
 .form-panel {
   margin-bottom: 1.5rem;
@@ -114,10 +113,9 @@ input:focus {
   justify-content: space-between;
   gap: 1.25rem;
   min-height: 8rem;
-  border: 1px solid var(--app-border-color);
-  border-radius: 0.75rem;
-  padding: 1rem;
-  background: var(--app-surface-50);
+  border-top: 1px solid var(--app-border-color);
+  padding: 1rem 0;
+  background: transparent;
 }
 .category-item p {
   margin: 0.4rem 0 0;

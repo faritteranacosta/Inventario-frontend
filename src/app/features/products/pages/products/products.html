@@ -1,7 +1,6 @@
 <main class="products-page">
   <header class="page-header">
     <div>
-      <p class="eyebrow">Catálogo</p>
       <h1>Productos</h1>
       <p>Consulta existencias y mantén tu catálogo al día.</p>
     </div>
@@ -152,12 +151,7 @@
           <button type="button" (click)="closeImage()" aria-label="Cerrar">×</button>
         </div>
         @if (imagePreview(); as preview) {
-          <img
-            class="image-preview"
-            src="assets/escudo/light_grey_192.png"
-            [src]="preview"
-            [alt]="'Vista previa de ' + product.name"
-          />
+          <img class="image-preview" [src]="preview" [alt]="'Vista previa de ' + product.name" />
         }
         @if (imageError(); as message) {
           <div class="notice" role="alert">{{ message }}</div>
