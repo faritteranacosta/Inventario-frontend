@@ -84,7 +84,7 @@ export const routes: Routes = [
       },
       {
         path: 'users',
-        canActivate: [adminGuard],
+        canActivate: [platformGuard],
         title: 'Usuarios · Inventario SaaS',
         loadComponent: () => import('./features/users/pages/users/users').then((m) => m.UsersPage),
       },

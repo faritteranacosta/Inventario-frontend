@@ -133,14 +133,23 @@ export class TenantsPage {
     const tenant = this.selected();
     if (!tenant || this.memberForm.invalid) {
       this.memberForm.markAllAsTouched();
+      this.errorMessage.set('Completa los datos del usuario (email y contraseña de al menos 8 caracteres).');
       return;
     }
+    this.busy.set(true);
     this.api.createMember(tenant.id, this.memberForm.getRawValue()).subscribe({
       next: (member) => {
         this.members.update((items) => [...items, member]);
         this.memberForm.reset({ email: '', password: '', role: 'User' });
+        this.busy.set(false);
+        this.successMessage.set('Acceso agregado correctamente.');
+        this.errorMessage.set(null);
       },
-      error: () => this.errorMessage.set('No pudimos crear la membresía.'),
+      error: (err: unknown) => {
+        this.busy.set(false);
+        const msg = (err as { error?: { message?: string } })?.error?.message;
+        this.errorMessage.set(msg ?? 'No pudimos crear la membresía.');
+      },
     });
   }
 
