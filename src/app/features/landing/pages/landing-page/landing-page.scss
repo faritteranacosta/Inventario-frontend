@@ -1,14 +1,18 @@
-$bg: #F9FCFA;
-$soft: #E7F5E9;
-$mint: #E4EEE2;
-$border: #DBEAD9;
-$accent: #C2E1C3;
+$bg: #f9fcfa;
+$soft: #e7f5e9;
+$mint: #e4eee2;
+$border: #dbead9;
+$accent: #c2e1c3;
 
 .landing {
   min-height: 100vh;
   background: $bg;
   color: #1a2a1f;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
   display: flex;
   flex-direction: column;
 }
@@ -165,7 +169,9 @@ $accent: #C2E1C3;
   border: 1px solid $border;
   border-radius: 16px;
   padding: 2rem;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
 
   &:hover {
     border-color: $accent;

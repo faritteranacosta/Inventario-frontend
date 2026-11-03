@@ -101,7 +101,11 @@ export class AuthService {
         this.userState.update((user) =>
           user ? { ...user, tenantId: response.activeTenantId } : user,
         );
-        this.me().subscribe({ error: () => {} });
+        this.me().subscribe({
+          error: () => {
+            /* noop */
+          },
+        });
       }),
     );
   }

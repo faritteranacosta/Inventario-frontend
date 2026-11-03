@@ -54,7 +54,11 @@ export class SettingsPage {
     this.tenantsApi.updateBranding(displayName, null).subscribe({
       next: () => {
         this.saving.set(false);
-        this.auth.me().subscribe({ error: () => {} });
+        this.auth.me().subscribe({
+          error: () => {
+            /* noop */
+          },
+        });
         this.message.set('Nombre guardado.');
       },
       error: () => {
@@ -97,7 +101,11 @@ export class SettingsPage {
       this.tenantsApi.uploadLogo(file).subscribe({
         next: () => {
           this.uploading.set(false);
-          this.auth.me().subscribe({ error: () => {} });
+          this.auth.me().subscribe({
+            error: () => {
+              /* noop */
+            },
+          });
           this.message.set('Logo actualizado.');
         },
         error: () => {
