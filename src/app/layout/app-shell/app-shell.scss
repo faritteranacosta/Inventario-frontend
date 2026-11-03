@@ -45,6 +45,13 @@ $accent: #C2E1C3;
   background: $accent;
 }
 
+.shell__brand-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
 .shell__nav {
   display: flex;
   align-items: center;
