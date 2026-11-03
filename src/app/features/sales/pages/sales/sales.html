@@ -167,7 +167,10 @@
         </div>
         @for (item of sale.items; track item.productId) {
           <div class="detail-line">
-            <code>{{ item.productId }}</code
+            <div class="detail-line__product">
+              <strong>{{ item.productName || 'Producto' }}</strong>
+              <small>{{ item.productId }}</small>
+            </div
             ><span>{{ item.quantity }} × {{ item.unitPrice | currency }}</span
             ><strong>{{ item.total | currency }}</strong>
           </div>

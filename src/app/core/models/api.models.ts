@@ -166,6 +166,7 @@ export interface CreateSaleRequest {
 
 export interface SaleItemResponse {
   readonly productId: string;
+  readonly productName: string;
   readonly quantity: number;
   readonly unitPrice: number;
   readonly total: number;
