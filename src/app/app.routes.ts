@@ -36,6 +36,7 @@ export const routes: Routes = [
   },
   {
     path: 'onboarding',
+    canActivate: [platformGuard],
     title: 'Crear negocio · Inventario SaaS',
     loadComponent: () =>
       import('./features/tenants/pages/onboarding/onboarding').then((m) => m.OnboardingPage),
