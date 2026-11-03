@@ -10,15 +10,27 @@
     <div class="notice" role="status">{{ m }}</div>
   }
 
-  <form [formGroup]="form" (ngSubmit)="save()" class="settings__form">
-    <label>Nombre del negocio
-      <input formControlName="displayName" placeholder="Mi Negocio" />
+  <section class="settings__card">
+    <h2>Nombre del negocio</h2>
+    <form [formGroup]="form" (ngSubmit)="save()" class="settings__form">
+      <label>Nombre
+        <input formControlName="displayName" placeholder="Mi Negocio" />
+      </label>
+      <button class="button button--primary" type="submit" [disabled]="saving()">
+        {{ saving() ? 'Guardando…' : 'Guardar nombre' }}
+      </button>
+    </form>
+  </section>
+
+  <section class="settings__card">
+    <h2>Logo del negocio</h2>
+    @if (logoPreview()) {
+      <img class="settings__logo-preview" [src]="logoPreview()!" alt="Logo" />
+    }
+    <label class="settings__file">
+      <input type="file" accept="image/*" (change)="selectLogo($any($event.target).files?.[0])" />
+      <span>{{ uploading() ? 'Cargando…' : 'Seleccionar imagen' }}</span>
     </label>
-    <label>URL del logo
-      <input formControlName="logoUrl" placeholder="https://..." />
-    </label>
-    <button class="button button--primary" type="submit" [disabled]="saving()">
-      {{ saving() ? 'Guardando…' : 'Guardar' }}
-    </button>
-  </form>
+    <p class="settings__hint">Formatos: JPG, PNG, GIF, WebP. Máximo 5 MB.</p>
+  </section>
 </main>

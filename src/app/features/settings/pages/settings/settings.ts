@@ -17,24 +17,50 @@ export class SettingsPage {
   private readonly tenantsApi = inject(TenantsApi);
   private readonly fb = inject(FormBuilder);
   protected readonly saving = signal(false);
+  protected readonly uploading = signal(false);
   protected readonly message = signal<string | null>(null);
+  protected readonly logoPreview = signal<string | null>(this.auth.activeTenantLogoUrl());
   protected readonly form = this.fb.nonNullable.group({
     displayName: [this.auth.activeTenantName() ?? ''],
-    logoUrl: [this.auth.activeTenantLogoUrl() ?? ''],
   });
 
   protected save(): void {
     this.saving.set(true);
     this.message.set(null);
-    const { displayName, logoUrl } = this.form.getRawValue();
-    this.tenantsApi.updateBranding(displayName, logoUrl || null).subscribe({
+    const { displayName } = this.form.getRawValue();
+    this.tenantsApi.updateBranding(displayName, null).subscribe({
       next: () => {
         this.saving.set(false);
-        this.message.set('Configuración guardada. Recarga para ver los cambios.');
+        this.message.set('Nombre guardado. Recarga para ver los cambios.');
       },
       error: () => {
         this.saving.set(false);
-        this.message.set('No se pudo guardar la configuración.');
+        this.message.set('No se pudo guardar el nombre.');
+      },
+    });
+  }
+
+  protected selectLogo(file: File | undefined): void {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      this.message.set('Selecciona un archivo de imagen.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      this.message.set('La imagen no puede superar 5 MB.');
+      return;
+    }
+    this.logoPreview.set(URL.createObjectURL(file));
+    this.uploading.set(true);
+    this.message.set(null);
+    this.tenantsApi.uploadLogo(file).subscribe({
+      next: () => {
+        this.uploading.set(false);
+        this.message.set('Logo actualizado. Recarga para ver los cambios.');
+      },
+      error: () => {
+        this.uploading.set(false);
+        this.message.set('No se pudo cargar el logo.');
       },
     });
   }
