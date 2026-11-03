@@ -46,7 +46,11 @@
           {{ auth.activeMembership()?.tenantName ?? auth.activeTenantId()?.slice(0, 8) ?? '—' }}
         </span>
       }
-      <span class="shell__role">{{ auth.isPlatformAdmin() ? 'Platform' : (auth.activeMembership()?.role ?? auth.user()?.role ?? 'Usuario') }}</span>
+      <span class="shell__role">{{
+        auth.isPlatformAdmin()
+          ? 'Platform'
+          : (auth.activeMembership()?.role ?? auth.user()?.role ?? 'Usuario')
+      }}</span>
       <span class="shell__user">{{ auth.user()?.email ?? 'Usuario' }}</span>
       <button type="button" (click)="auth.logout()">Salir</button>
     </div>

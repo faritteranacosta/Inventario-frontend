@@ -20,7 +20,9 @@ import { PlatformApi } from '../../../tenants/platform.api';
           <label>Contraseña <input type="password" formControlName="password" /></label>
           <button type="submit" [disabled]="pending()">Crear administrador</button>
         </form>
-        @if (error()) { <div class="notice notice--error" role="alert">{{ error() }}</div> }
+        @if (error()) {
+          <div class="notice notice--error" role="alert">{{ error() }}</div>
+        }
       }
     </main>
   `,
@@ -46,7 +48,9 @@ export class BootstrapPage {
     this.api.bootstrap(email, password).subscribe({
       next: () => {
         this.pending.set(false);
-        this.success.set('Administrador de plataforma creado. Inicia sesión con esas credenciales.');
+        this.success.set(
+          'Administrador de plataforma creado. Inicia sesión con esas credenciales.',
+        );
       },
       error: (e: unknown) => {
         this.pending.set(false);

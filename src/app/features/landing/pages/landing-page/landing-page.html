@@ -5,7 +5,9 @@
       <span class="landing__brand-name">Inventario</span>
     </a>
     <nav class="landing__nav" aria-label="Navegación principal">
-      <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+      <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }"
+        >Inicio</a
+      >
       <a routerLink="/products" routerLinkActive="is-active">Productos</a>
       <a routerLink="/dashboard" routerLinkActive="is-active">Panel</a>
       <button class="landing__button" type="button" (click)="goToAdmin()">Entrar</button>
@@ -17,11 +19,15 @@
       <p class="landing__eyebrow">Inventario SaaS</p>
       <h1 class="landing__title">Controla tu stock, <br />sin ruido.</h1>
       <p class="landing__subtitle">
-        Una base limpia para gestionar productos, categorías y ventas.
-        Rápido, accesible y listo para crecer.
+        Una base limpia para gestionar productos, categorías y ventas. Rápido, accesible y listo
+        para crecer.
       </p>
       <div class="landing__cta">
-        <button class="landing__button landing__button--primary" type="button" (click)="goToAdmin()">
+        <button
+          class="landing__button landing__button--primary"
+          type="button"
+          (click)="goToAdmin()"
+        >
           Abrir panel
         </button>
         <a class="landing__link" routerLink="/products">Ver productos →</a>

@@ -1,14 +1,18 @@
-$bg: #F9FCFA;
-$soft: #E7F5E9;
-$mint: #E4EEE2;
-$border: #DBEAD9;
-$accent: #C2E1C3;
+$bg: #f9fcfa;
+$soft: #e7f5e9;
+$mint: #e4eee2;
+$border: #dbead9;
+$accent: #c2e1c3;
 
 .shell {
   min-height: 100vh;
   background: $bg;
   color: #1a2a1f;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
   display: flex;
   flex-direction: column;
 }
@@ -35,7 +39,9 @@ $accent: #C2E1C3;
   font-weight: 600;
   font-size: 1rem;
 
-  &:hover { color: #1a2a1f; }
+  &:hover {
+    color: #1a2a1f;
+  }
 }
 
 .shell__brand-mark {
@@ -65,7 +71,9 @@ $accent: #C2E1C3;
     font-size: 0.9rem;
     padding: 0.5rem 0.9rem;
     border-radius: 8px;
-    transition: background 0.15s ease, color 0.15s ease;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
 
     &:hover {
       background: $soft;

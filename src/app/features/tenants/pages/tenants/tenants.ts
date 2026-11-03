@@ -85,7 +85,9 @@ export class TenantsPage {
           this.busy.set(false);
           this.successMessage.set(null);
           const msg = (err as { error?: { message?: string } })?.error?.message;
-          this.errorMessage.set(msg ?? 'No pudimos crear el negocio. Verifica que seas PlatformAdmin.');
+          this.errorMessage.set(
+            msg ?? 'No pudimos crear el negocio. Verifica que seas PlatformAdmin.',
+          );
         },
       });
   }
@@ -133,7 +135,9 @@ export class TenantsPage {
     const tenant = this.selected();
     if (!tenant || this.memberForm.invalid) {
       this.memberForm.markAllAsTouched();
-      this.errorMessage.set('Completa los datos del usuario (email y contraseña de al menos 8 caracteres).');
+      this.errorMessage.set(
+        'Completa los datos del usuario (email y contraseña de al menos 8 caracteres).',
+      );
       return;
     }
     this.busy.set(true);
