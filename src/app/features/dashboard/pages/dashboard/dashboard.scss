@@ -67,13 +67,14 @@
   text-decoration: none;
 }
 .button--primary {
-  background: var(--app-primary);
+  background: #2d6a30;
   color: #fff;
+  border: 1px solid #2d6a30;
 }
 .button--secondary {
-  border: 1px solid var(--app-border-color);
+  border: 1px solid #2d6a30;
   background: var(--app-surface-0);
-  color: var(--app-primary-700);
+  color: #2d6a30;
 }
 .table-wrap {
   margin-top: 1.5rem;
@@ -126,12 +127,15 @@ th {
   letter-spacing: -0.04em;
 }
 .metric--accent {
-  background: var(--app-primary);
-  color: #fff;
+  background: #2d6a30;
+  color: #ffffff;
 }
 .metric--accent span,
 .metric--accent small {
-  color: var(--app-primary-100);
+  color: #e7f5e9;
+}
+.metric--accent strong {
+  color: #ffffff;
 }
 .panel {
   border: 1px solid var(--app-border-color);
