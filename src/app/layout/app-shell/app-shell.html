@@ -11,7 +11,9 @@
       } @else {
         <a routerLink="/dashboard" routerLinkActive="is-active">Resumen</a>
         <a routerLink="/products" routerLinkActive="is-active">Productos</a>
-        <a routerLink="/categories" routerLinkActive="is-active">Categorías</a>
+        @if (auth.isAdmin()) {
+          <a routerLink="/categories" routerLinkActive="is-active">Categorías</a>
+        }
         <a routerLink="/sales" routerLinkActive="is-active">Ventas</a>
       }
     </nav>
