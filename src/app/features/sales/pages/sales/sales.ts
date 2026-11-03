@@ -161,6 +161,27 @@ export class SalesPage {
     });
   }
 
+  protected printSale(): void {
+    const content = document.getElementById('sale-receipt');
+    if (!content) {
+      window.print();
+      return;
+    }
+    const w = window.open('', '_blank', 'width=420,height=640');
+    if (!w) {
+      window.print();
+      return;
+    }
+    w.document.write('<html><head><title>Recibo de venta</title>');
+    w.document.write('<style>body{font-family:system-ui,sans-serif;padding:2rem;color:#1a2a1f;} h2{margin:0 0 .5rem;} .detail-line{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid #dbead9;} .sale-total{display:flex;justify-content:space-between;font-weight:700;margin-top:1rem;padding-top:1rem;border-top:2px solid #2d6a30;} .detail-info div{display:flex;justify-content:space-between;padding:.25rem 0;font-size:.9rem;} code{font-size:.8rem;}</style>');
+    w.document.write('</head><body>');
+    w.document.write(content.outerHTML);
+    w.document.write('</body></html>');
+    w.document.close();
+    w.focus();
+    setTimeout(() => { w.print(); w.close(); }, 250);
+  }
+
   protected cancel(): void {
     this.lines.set([]);
     this.errorMessage.set(null);

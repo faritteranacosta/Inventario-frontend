@@ -147,13 +147,23 @@
         role="dialog"
         aria-modal="true"
         aria-labelledby="sale-detail-title"
+        id="sale-receipt"
       >
         <div class="section-heading">
           <div>
             <h2 id="sale-detail-title">Detalle de venta</h2>
             <p>{{ sale.saleDateUtc | date: 'medium' }}</p>
           </div>
-          <button class="link-button" type="button" (click)="selectedSale.set(null)">Cerrar</button>
+          <div class="detail-actions">
+            <button class="button button--secondary" type="button" (click)="printSale()">Imprimir</button>
+            <button class="link-button" type="button" (click)="selectedSale.set(null)">Cerrar</button>
+          </div>
+        </div>
+        <div class="detail-info">
+          <div><span>ID de venta</span><code>{{ sale.id }}</code></div>
+          <div><span>Fecha</span><strong>{{ sale.saleDateUtc | date: 'fullDate' }}</strong></div>
+          <div><span>Hora</span><strong>{{ sale.saleDateUtc | date: 'shortTime' }}</strong></div>
+          <div><span>Líneas</span><strong>{{ sale.items.length }}</strong></div>
         </div>
         @for (item of sale.items; track item.productId) {
           <div class="detail-line">

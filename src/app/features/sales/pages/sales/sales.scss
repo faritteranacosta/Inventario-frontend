@@ -220,3 +220,37 @@ code {
     grid-column: 3;
   }
 }
+
+.detail-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.detail-info {
+  display: grid;
+  gap: 0.35rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f9fcfa;
+  border: 1px solid #dbead9;
+  border-radius: 0.65rem;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.9rem;
+
+    span {
+      color: #6a7a6f;
+    }
+
+    code {
+      font-size: 0.8rem;
+      background: #e7f5e9;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+    }
+  }
+}
