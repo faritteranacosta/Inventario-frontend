@@ -1,0 +1,24 @@
+<main class="settings">
+  <header class="page-header">
+    <div>
+      <h1>Configuración</h1>
+      <p>Personaliza el nombre y logo de tu negocio.</p>
+    </div>
+  </header>
+
+  @if (message(); as m) {
+    <div class="notice" role="status">{{ m }}</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="save()" class="settings__form">
+    <label>Nombre del negocio
+      <input formControlName="displayName" placeholder="Mi Negocio" />
+    </label>
+    <label>URL del logo
+      <input formControlName="logoUrl" placeholder="https://..." />
+    </label>
+    <button class="button button--primary" type="submit" [disabled]="saving()">
+      {{ saving() ? 'Guardando…' : 'Guardar' }}
+    </button>
+  </form>
+</main>

@@ -28,4 +28,8 @@ export class TenantsApi {
   getUser(id: string): Observable<UserResponse> {
     return this.http.get<UserResponse>(`${environment.apiUrl}/Users/${id}`);
   }
+
+  updateBranding(displayName: string | null, logoUrl: string | null): Observable<unknown> {
+    return this.http.put(`${environment.apiUrl}/Tenants/branding`, { displayName, logoUrl });
+  }
 }

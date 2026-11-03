@@ -1,8 +1,12 @@
 <div class="shell">
   <header class="shell__header">
-    <a class="shell__brand" routerLink="/dashboard" aria-label="Ir al panel de Inventario SaaS">
-      <span class="shell__brand-mark" aria-hidden="true"></span>
-      <span class="shell__brand-name">Inventario</span>
+    <a class="shell__brand" routerLink="/dashboard" aria-label="Ir al panel">
+      @if (auth.activeTenantLogoUrl()) {
+        <img class="shell__brand-logo" [src]="auth.activeTenantLogoUrl()!" alt="" />
+      } @else {
+        <span class="shell__brand-mark" aria-hidden="true"></span>
+      }
+      <span class="shell__brand-name">{{ auth.activeTenantName() || 'Inventario' }}</span>
     </a>
 
     <nav class="shell__nav" aria-label="Navegación del panel">
@@ -15,6 +19,7 @@
           <a routerLink="/categories" routerLinkActive="is-active">Categorías</a>
         }
         <a routerLink="/sales" routerLinkActive="is-active">Ventas</a>
+        <a routerLink="/settings" routerLinkActive="is-active">Configuración</a>
       }
     </nav>
 
@@ -38,7 +43,7 @@
         </label>
       } @else {
         <span class="shell__tenant">
-          {{ auth.activeTenantId()?.slice(0, 8) ?? '—' }}
+          {{ auth.activeMembership()?.tenantName ?? auth.activeTenantId()?.slice(0, 8) ?? '—' }}
         </span>
       }
       <span class="shell__role">{{ auth.isPlatformAdmin() ? 'Platform' : (auth.activeMembership()?.role ?? auth.user()?.role ?? 'Usuario') }}</span>

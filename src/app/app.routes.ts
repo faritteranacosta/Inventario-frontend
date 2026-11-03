@@ -65,6 +65,12 @@ export const routes: Routes = [
           import('./features/dashboard/pages/dashboard/dashboard').then((m) => m.DashboardPage),
       },
       {
+        path: 'settings',
+        title: 'Configuración · Inventario SaaS',
+        loadComponent: () =>
+          import('./features/settings/pages/settings/settings').then((m) => m.SettingsPage),
+      },
+      {
         path: 'categories',
         canActivate: [adminGuard],
         title: 'Categorías · Inventario SaaS',

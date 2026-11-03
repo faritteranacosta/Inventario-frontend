@@ -26,6 +26,8 @@ export interface SessionResponse {
   readonly email: string;
   readonly platformRole: string | null;
   readonly activeTenantId: string | null;
+  readonly activeTenantName: string | null;
+  readonly activeTenantLogoUrl: string | null;
   readonly memberships: readonly MembershipResponse[];
 }
 

@@ -31,6 +31,10 @@ export class AuthService {
   readonly activeTenantId = computed(
     () => this.session()?.activeTenantId ?? this.user()?.tenantId ?? null,
   );
+  readonly activeTenantName = computed(
+    () => this.session()?.activeTenantName ?? this.activeMembership()?.tenantName ?? null,
+  );
+  readonly activeTenantLogoUrl = computed(() => this.session()?.activeTenantLogoUrl ?? null);
   readonly isAuthenticated = computed(() => Boolean(this.token));
   readonly platformRole = computed(() => this.session()?.platformRole ?? this.user()?.platformRole);
   readonly isPlatformAdmin = computed(() => this.platformRole()?.toLowerCase() === 'platformadmin');
@@ -61,6 +65,8 @@ export class AuthService {
             email: response.user.email,
             platformRole: response.user.platformRole ?? null,
             activeTenantId: response.activeTenantId ?? response.user.tenantId ?? null,
+            activeTenantName: null,
+            activeTenantLogoUrl: null,
             memberships: response.memberships,
           });
         }
@@ -95,6 +101,7 @@ export class AuthService {
         this.userState.update((user) =>
           user ? { ...user, tenantId: response.activeTenantId } : user,
         );
+        this.me().subscribe({ error: () => {} });
       }),
     );
   }
