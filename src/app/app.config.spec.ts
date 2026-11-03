@@ -1,14 +1,14 @@
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { routerFeatures } from './router.config';
 
 describe('routerFeatures', () => {
-  it('uses hash URLs so GitHub Pages can serve client-side routes', () => {
+  it('uses clean URLs for client-side routes', () => {
     TestBed.configureTestingModule({
       providers: [provideRouter([], ...routerFeatures)],
     });
 
-    expect(TestBed.inject(LocationStrategy)).toBeInstanceOf(HashLocationStrategy);
+    expect(TestBed.inject(LocationStrategy)).toBeInstanceOf(PathLocationStrategy);
   });
 });

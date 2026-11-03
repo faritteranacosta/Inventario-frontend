@@ -24,10 +24,6 @@
     </button>
   </header>
 
-  @if (message(); as m) {
-    <div class="notice" role="status">{{ m }}</div>
-  }
-
   @if (editing()) {
     <section class="profile__card">
       <h2>Nombre del negocio</h2>
@@ -51,14 +47,15 @@
         <label class="profile__file">
           <input
             type="file"
-            accept="image/*"
+            accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
             (change)="selectLogo($any($event.target).files?.[0])"
           />
           <span>{{ uploading() ? 'Cargando…' : 'Seleccionar imagen' }}</span>
         </label>
       </div>
       <p class="profile__hint">
-        Formatos: JPG, PNG, GIF, WebP. Máximo 5 MB. Tamaño recomendado: 256×256 px (cuadrado).
+        Formatos: JPG, PNG, GIF, WebP o SVG. Máximo 5 MB y 1024×1024 px. El logo debe ser cuadrado o
+        casi cuadrado.
       </p>
     </section>
   }

@@ -1,6 +1,3 @@
-import { withHashLocation, withRouterConfig } from '@angular/router';
+import { withRouterConfig } from '@angular/router';
 
-export const routerFeatures = [
-  withHashLocation(),
-  withRouterConfig({ onSameUrlNavigation: 'reload' }),
-] as const;
+export const routerFeatures = [withRouterConfig({ onSameUrlNavigation: 'reload' })] as const;

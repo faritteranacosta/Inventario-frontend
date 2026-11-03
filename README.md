@@ -43,7 +43,10 @@ GitHub Actions ejecuta CI en cada pull request hacia `main` con instalación
 reproducible (`npm ci`), lint, formato, pruebas y build. Después de integrar un
 pull request en `main`, el mismo workflow construye la aplicación y la publica
 en GitHub Pages. En los ajustes del repositorio debe habilitarse Pages con
-`GitHub Actions` como fuente de despliegue.
+`GitHub Actions` como fuente de despliegue. El despliegue conserva las rutas
+limpias de Angular: genera un `404.html` basado en `index.html` para que
+GitHub Pages entregue la aplicación cuando se abre o recarga directamente una
+ruta como `/categories` o `/login`.
 
 Para una release, los scripts `version:*` ejecutan `scripts/release.sh`. El
 proceso exige un worktree limpio, ejecuta `npm run validate`, incrementa la
