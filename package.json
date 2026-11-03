@@ -16,6 +16,10 @@
     "format:check": "prettier --check \"src/**/*.{ts,html,scss,json}\"",
     "sonar": "sonar-scanner",
     "validate": "npm run lint && npm run format:check && npm run test:ci",
+    "release": "bash scripts/release.sh",
+    "version:patch": "npm run release -- patch",
+    "version:minor": "npm run release -- minor",
+    "version:major": "npm run release -- major",
     "prepare": "husky"
   },
   "lint-staged": {

@@ -24,6 +24,9 @@ La aplicación estará disponible en `http://localhost:4200`.
 | `npm run lint` | ESLint |
 | `npm run format:check` | Verificación de formato |
 | `npm run validate` | Lint, formato y pruebas |
+| `npm run version:patch` | Crea una release de corrección (`PATCH`) |
+| `npm run version:minor` | Crea una release compatible (`MINOR`) |
+| `npm run version:major` | Crea una release incompatible (`MAJOR`) |
 
 ## Flujo de ramas y automatización
 
@@ -42,13 +45,19 @@ pull request en `main`, el mismo workflow construye la aplicación y la publica
 en GitHub Pages. En los ajustes del repositorio debe habilitarse Pages con
 `GitHub Actions` como fuente de despliegue.
 
-Para una release, `scripts/release.sh` valida el proyecto, incrementa la versión
-SemVer y crea el commit y tag correspondiente:
+Para una release, los scripts `version:*` ejecutan `scripts/release.sh`. El
+proceso exige un worktree limpio, ejecuta `npm run validate`, incrementa la
+versión SemVer en `package.json` y `package-lock.json`, y crea el commit y tag
+correspondientes:
 
 ```bash
-bash scripts/release.sh patch
-git push origin main --follow-tags
+npm run version:patch
+git push origin HEAD --follow-tags
 ```
+
+También se puede usar directamente `bash scripts/release.sh minor` o
+`bash scripts/release.sh major`. La opción `--no-validate` está disponible para
+casos excepcionales: `bash scripts/release.sh patch --no-validate`.
 
 ## Estructura
 
