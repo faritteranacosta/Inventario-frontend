@@ -64,6 +64,57 @@ h1 {
   display: grid;
   gap: 1.25rem;
 }
+.eyebrow {
+  margin: 0 0 0.35rem;
+  color: var(--app-primary-700);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.sale-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
+  gap: 2rem;
+  align-items: start;
+}
+.catalog-panel,
+.cart-panel {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  border-top: 1px solid var(--app-border-color);
+  padding-top: 1rem;
+}
+.cart-panel {
+  position: sticky;
+  top: 5.5rem;
+}
+.panel-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.panel-heading h3 {
+  margin: 0;
+}
+.panel-heading p {
+  margin: 0.25rem 0 0;
+  color: var(--app-text-color-secondary);
+  font-size: 0.9rem;
+}
+.item-count {
+  display: grid;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--app-primary-100);
+  color: var(--app-primary-800);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
 .section-heading {
   display: flex;
   justify-content: space-between;
@@ -107,6 +158,10 @@ input {
   cursor: pointer;
   font: inherit;
 }
+.product-picker button strong {
+  color: var(--app-primary-700);
+  font-size: 0.8rem;
+}
 .product-picker button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -122,21 +177,99 @@ small {
 }
 .sale-line {
   display: grid;
-  grid-template-columns: 1fr 6rem 7rem auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   gap: 0.75rem;
   align-items: center;
   border-bottom: 1px solid var(--app-border-color);
   padding: 0.75rem 0;
 }
-.sale-line > div {
+.sale-line__info {
   display: grid;
   gap: 0.2rem;
 }
-.sale-line button {
+.quantity-control {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--app-border-color);
+}
+.quantity-control button {
+  width: 2rem;
+  height: 2rem;
   border: 0;
+  background: var(--app-surface-0);
+  color: var(--app-primary-700);
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.quantity-control button:hover:not(:disabled) {
+  background: var(--app-primary-50);
+}
+.quantity-control button:disabled {
+  color: var(--app-text-color-secondary);
+  cursor: not-allowed;
+}
+.quantity-control input {
+  width: 2.5rem;
+  height: 2rem;
+  border: 0;
+  border-right: 1px solid var(--app-border-color);
+  border-left: 1px solid var(--app-border-color);
+  border-radius: 0;
+  padding: 0;
+  text-align: center;
+}
+.line-total {
+  min-width: 5.5rem;
+  text-align: right;
+}
+.remove-line {
+  grid-column: 1 / -1;
+  justify-self: start;
+  border: 0;
+  padding: 0;
   background: transparent;
   color: var(--app-danger);
   cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  text-decoration: underline;
+}
+.cart-footer {
+  display: grid;
+  gap: 1rem;
+  border-top: 2px solid var(--app-primary-600);
+  padding-top: 1rem;
+}
+.cart-footer .button {
+  width: 100%;
+}
+.cart-empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.4rem;
+  padding: 2.5rem 1rem;
+  border: 1px dashed var(--app-border-color);
+  color: var(--app-text-color-secondary);
+  text-align: center;
+}
+.cart-empty strong {
+  color: var(--app-text-color);
+}
+.cart-empty p {
+  max-width: 16rem;
+  margin: 0;
+  font-size: 0.9rem;
+}
+.cart-empty__icon {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--app-primary-50);
+  color: var(--app-primary-700);
+  font-size: 1.5rem;
 }
 .sale-total {
   display: flex;
@@ -231,10 +364,23 @@ code {
     align-items: start;
   }
   .sale-line {
-    grid-template-columns: 1fr 5rem auto;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
-  .sale-line button {
-    grid-column: 3;
+  .sale-workspace {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .cart-panel {
+    position: static;
+  }
+  .line-total {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+  .remove-line {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: end;
   }
 }
 

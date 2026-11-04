@@ -33,17 +33,19 @@ export class ProductsPage {
   protected readonly imageProduct = signal<ProductResponse | null>(null);
   protected readonly imageFile = signal<File | null>(null);
   protected readonly imagePreview = signal<string | null>(null);
+  protected readonly productImageFile = signal<File | null>(null);
+  protected readonly productImagePreview = signal<string | null>(null);
   protected readonly imageError = signal<string | null>(null);
   protected readonly uploading = signal(false);
   protected readonly search = signal('');
   protected readonly categoryFilter = signal('');
+  protected readonly viewMode = signal<'list' | 'grid'>('list');
   protected readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
     description: [''],
     price: [0, [Validators.required, Validators.min(0)]],
     stock: [0, [Validators.required, Validators.min(0)]],
     categoryId: ['', Validators.required],
-    imageUrl: [''],
   });
 
   constructor() {
@@ -92,6 +94,10 @@ export class ProductsPage {
     this.load();
   }
 
+  protected setViewMode(mode: 'list' | 'grid'): void {
+    this.viewMode.set(mode);
+  }
+
   protected save(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -104,7 +110,6 @@ export class ProductsPage {
     const request = {
       ...value,
       description: value.description || null,
-      imageUrl: value.imageUrl || null,
     };
     const operation = this.editingId()
       ? this.productsApi.update(this.editingId()!, {
@@ -114,24 +119,18 @@ export class ProductsPage {
           stock: request.stock,
           categoryId: request.categoryId,
         })
-      : this.productsApi.create(request);
-    operation.subscribe({
-      next: () => {
-        this.form.reset({
-          name: '',
-          description: '',
-          price: 0,
-          stock: 0,
-          categoryId: '',
-          imageUrl: '',
+      : this.productsApi.create({
+          ...request,
+          imageUrl: null,
         });
-        this.showForm.set(false);
-        this.editingId.set(null);
-        this.saving.set(false);
-        this.notifications.success(
-          isEditing ? 'Producto actualizado correctamente.' : 'Producto guardado correctamente.',
-        );
-        this.load();
+    operation.subscribe({
+      next: (product) => {
+        const imageFile = this.productImageFile();
+        if (!this.editingId() && imageFile) {
+          this.uploadCreatedProductImage(product, imageFile);
+          return;
+        }
+        this.finishSave(isEditing);
       },
       error: () => {
         this.saving.set(false);
@@ -139,6 +138,45 @@ export class ProductsPage {
         this.notifications.error(
           'No se pudo guardar el producto. Revisa los datos e inténtalo nuevamente.',
         );
+      },
+    });
+  }
+
+  private finishSave(isEditing: boolean): void {
+    this.resetProductForm();
+    this.showForm.set(false);
+    this.editingId.set(null);
+    this.saving.set(false);
+    this.notifications.success(
+      isEditing ? 'Producto actualizado correctamente.' : 'Producto guardado correctamente.',
+    );
+    this.load();
+  }
+
+  private resetProductForm(): void {
+    this.form.reset({
+      name: '',
+      description: '',
+      price: 0,
+      stock: 0,
+      categoryId: '',
+    });
+    this.clearProductImage();
+  }
+
+  private uploadCreatedProductImage(product: ProductResponse, file: File): void {
+    this.productsApi.uploadImage(product.id, file).subscribe({
+      next: () => this.finishSave(false),
+      error: () => {
+        this.saving.set(false);
+        this.resetProductForm();
+        this.showForm.set(false);
+        this.editingId.set(null);
+        this.errorMessage.set(
+          'El producto se creó, pero no pudimos cargar su imagen. Puedes intentarlo desde Imagen.',
+        );
+        this.notifications.error('El producto se creó, pero la imagen no pudo cargarse.');
+        this.load();
       },
     });
   }
@@ -175,8 +213,8 @@ export class ProductsPage {
           price: detail.price,
           stock: detail.stock,
           categoryId: detail.categoryId,
-          imageUrl: detail.imageUrl ?? '',
         });
+        this.clearProductImage();
         this.showForm.set(true);
       },
       error: () => {
@@ -214,6 +252,26 @@ export class ProductsPage {
     this.imagePreview.set(URL.createObjectURL(file));
   }
 
+  protected selectProductImage(file: File | undefined): void {
+    this.imageError.set(null);
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      this.imageError.set('Selecciona un archivo de imagen.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      this.imageError.set('La imagen no puede superar 5 MB.');
+      return;
+    }
+    this.productImageFile.set(file);
+    this.productImagePreview.set(URL.createObjectURL(file));
+  }
+
+  private clearProductImage(): void {
+    this.productImageFile.set(null);
+    this.productImagePreview.set(null);
+  }
+
   protected uploadFile(): void {
     const product = this.imageProduct();
     const file = this.imageFile();
@@ -232,27 +290,6 @@ export class ProductsPage {
       error: () => {
         this.uploading.set(false);
         this.imageError.set('No pudimos cargar la imagen. Inténtalo nuevamente.');
-      },
-    });
-  }
-
-  protected saveImageUrl(url: string): void {
-    const product = this.imageProduct();
-    if (!product || !url.trim()) {
-      this.imageError.set('Escribe una URL de imagen válida.');
-      return;
-    }
-    this.uploading.set(true);
-    this.productsApi.setImage(product.id, url.trim()).subscribe({
-      next: () => {
-        this.uploading.set(false);
-        this.closeImage();
-        this.notifications.success('Imagen actualizada correctamente.');
-        this.load();
-      },
-      error: () => {
-        this.uploading.set(false);
-        this.imageError.set('No pudimos guardar la URL de imagen.');
       },
     });
   }

@@ -104,6 +104,18 @@ export class SalesPage {
     );
   }
 
+  protected increment(line: SaleLine): void {
+    this.updateQuantity(line.product.id, line.quantity + 1);
+  }
+
+  protected decrement(line: SaleLine): void {
+    if (line.quantity <= 1) {
+      this.removeLine(line.product.id);
+      return;
+    }
+    this.updateQuantity(line.product.id, line.quantity - 1);
+  }
+
   protected removeLine(productId: string): void {
     this.lines.set(this.lines().filter((line) => line.product.id !== productId));
   }

@@ -23,67 +23,119 @@
     <section class="sale-builder" aria-labelledby="new-sale-title">
       <div class="section-heading">
         <div>
-          <h2 id="new-sale-title">Nueva venta</h2>
-          <p>El precio se toma del catálogo y la API valida el stock.</p>
+          <p class="eyebrow">Nueva operación</p>
+          <h2 id="new-sale-title">Arma tu carrito</h2>
+          <p>Agrega productos, ajusta las cantidades y confirma cuando esté listo.</p>
         </div>
         <button class="link-button" type="button" (click)="cancel()">Cancelar</button>
       </div>
-      <label class="product-search" for="product-search"
-        >Buscar producto<input
-          id="product-search"
-          [value]="productSearch()"
-          (input)="productSearch.set(search.value)"
-          #search
-          placeholder="Escribe un nombre…"
-      /></label>
-      <div class="product-picker">
-        @for (product of filteredProducts(); track product.id) {
-          <button type="button" [disabled]="hasLine(product.id)" (click)="add(product)">
-            <span>{{ product.name }}</span
-            ><small>{{ product.stock }} disponibles · {{ product.price | currency }}</small>
-          </button>
-        } @empty {
-          <p>No hay productos disponibles para agregar.</p>
-        }
-      </div>
-      @if (lines().length) {
-        <div class="sale-lines">
-          @for (line of lines(); track line.product.id) {
-            <div class="sale-line">
-              <div>
-                <strong>{{ line.product.name }}</strong
-                ><small>Máximo {{ line.product.stock }}</small>
+      <div class="sale-workspace">
+        <section class="catalog-panel" aria-labelledby="catalog-title">
+          <div class="panel-heading">
+            <div>
+              <h3 id="catalog-title">Productos</h3>
+              <p>Selecciona un producto para añadirlo.</p>
+            </div>
+            <span class="item-count">{{ filteredProducts().length }}</span>
+          </div>
+          <label class="product-search" for="product-search"
+            >Buscar producto<input
+              id="product-search"
+              [value]="productSearch()"
+              (input)="productSearch.set(search.value)"
+              #search
+              placeholder="Escribe un nombre…"
+          /></label>
+          <div class="product-picker">
+            @for (product of filteredProducts(); track product.id) {
+              <button type="button" [disabled]="hasLine(product.id)" (click)="add(product)">
+                <span>{{ product.name }}</span
+                ><small>{{ product.stock }} disponibles · {{ product.price | currency }}</small>
+                <strong>{{ hasLine(product.id) ? 'En el carrito' : 'Añadir' }}</strong>
+              </button>
+            } @empty {
+              <p class="empty">No hay productos disponibles para agregar.</p>
+            }
+          </div>
+        </section>
+
+        <section class="cart-panel" aria-labelledby="cart-title">
+          <div class="panel-heading">
+            <div>
+              <h3 id="cart-title">Carrito</h3>
+              <p>{{ lines().length }} {{ lines().length === 1 ? 'producto' : 'productos' }}</p>
+            </div>
+            @if (lines().length) {
+              <button class="link-button" type="button" (click)="lines.set([])">Vaciar</button>
+            }
+          </div>
+          @if (lines().length) {
+            <div class="sale-lines">
+              @for (line of lines(); track line.product.id) {
+                <div class="sale-line">
+                  <div class="sale-line__info">
+                    <strong>{{ line.product.name }}</strong>
+                    <small>{{ line.product.price | currency }} por unidad</small>
+                  </div>
+                  <div class="quantity-control">
+                    <button
+                      type="button"
+                      (click)="decrement(line)"
+                      [attr.aria-label]="'Reducir cantidad de ' + line.product.name"
+                    >
+                      −
+                    </button>
+                    <input
+                      type="number"
+                      min="1"
+                      [max]="line.product.stock"
+                      [ngModel]="line.quantity"
+                      (ngModelChange)="updateQuantity(line.product.id, $event)"
+                      [attr.aria-label]="'Cantidad de ' + line.product.name"
+                    />
+                    <button
+                      type="button"
+                      (click)="increment(line)"
+                      [disabled]="line.quantity >= line.product.stock"
+                      [attr.aria-label]="'Aumentar cantidad de ' + line.product.name"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <strong class="line-total">{{ lineTotal(line) | currency }}</strong>
+                  <button
+                    class="remove-line"
+                    type="button"
+                    (click)="removeLine(line.product.id)"
+                    [attr.aria-label]="'Quitar ' + line.product.name"
+                  >
+                    Quitar
+                  </button>
+                </div>
+              }
+            </div>
+            <div class="cart-footer">
+              <div class="sale-total">
+                <span>Total</span><strong>{{ total() | currency }}</strong>
               </div>
-              <input
-                type="number"
-                min="1"
-                [max]="line.product.stock"
-                [ngModel]="line.quantity"
-                (ngModelChange)="updateQuantity(line.product.id, $event)"
-                [attr.aria-label]="'Cantidad de ' + line.product.name"
-              /><strong>{{ lineTotal(line) | currency }}</strong
-              ><button
+              <button
+                class="button button--primary"
                 type="button"
-                (click)="removeLine(line.product.id)"
-                [attr.aria-label]="'Quitar ' + line.product.name"
+                [disabled]="saving()"
+                (click)="submit()"
               >
-                Quitar
+                {{ saving() ? 'Procesando…' : 'Confirmar venta' }}
               </button>
             </div>
+          } @else {
+            <div class="cart-empty">
+              <span class="cart-empty__icon" aria-hidden="true">＋</span>
+              <strong>Tu carrito está vacío</strong>
+              <p>Selecciona productos del catálogo para comenzar la venta.</p>
+            </div>
           }
-          <div class="sale-total">
-            <span>Total estimado</span><strong>{{ total() | currency }}</strong>
-          </div>
-        </div>
-      }
-      <button
-        class="button button--primary"
-        type="button"
-        [disabled]="saving() || !lines().length"
-        (click)="submit()"
-      >
-        {{ saving() ? 'Procesando…' : 'Confirmar venta' }}
-      </button>
+        </section>
+      </div>
     </section>
   } @else {
     <section class="filters" aria-label="Filtros de ventas">
