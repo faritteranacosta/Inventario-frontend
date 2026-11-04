@@ -134,6 +134,8 @@ h1 {
   font-weight: 700;
 }
 input {
+  min-height: 2.75rem;
+  box-sizing: border-box;
   border: 1px solid var(--app-border-color);
   border-radius: 0.55rem;
   padding: 0.7rem;
@@ -157,6 +159,7 @@ input {
   text-align: left;
   cursor: pointer;
   font: inherit;
+  min-height: 5.5rem;
 }
 .product-picker button strong {
   color: var(--app-primary-700);
@@ -381,6 +384,60 @@ code {
     grid-column: 2;
     grid-row: 2;
     justify-self: end;
+  }
+}
+
+@media (max-width: 480px) {
+  .sales-page {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .page-header .button,
+  .cart-footer .button {
+    width: 100%;
+  }
+
+  .page-header {
+    gap: 1rem;
+  }
+
+  .sale-builder,
+  .listing,
+  .filters {
+    padding-top: 1rem;
+  }
+
+  .product-picker {
+    grid-template-columns: 1fr;
+  }
+
+  .sale-line {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.5rem;
+  }
+
+  .quantity-control button {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .quantity-control input {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .line-total {
+    font-size: 1rem;
+  }
+
+  .filters .button {
+    width: 100%;
+  }
+
+  .detail-modal {
+    max-height: calc(100vh - 1rem);
+    padding: 1rem;
   }
 }
 

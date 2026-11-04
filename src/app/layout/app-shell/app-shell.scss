@@ -163,6 +163,82 @@ $accent: var(--app-primary-400);
   padding: 0.75rem 2rem 2rem;
 }
 
+@media (max-width: 900px) {
+  .shell__header {
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .shell__brand {
+    flex: 1 1 auto;
+  }
+
+  .shell__nav {
+    order: 3;
+    flex: 1 0 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+    scrollbar-width: thin;
+
+    a {
+      flex: 0 0 auto;
+      min-height: 2.75rem;
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+
+  .shell__account {
+    gap: 0.5rem;
+    margin-left: auto;
+
+    .shell__user {
+      display: none;
+    }
+  }
+
+  .shell__content {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .shell__brand-name,
+  .shell__tenant,
+  .shell__role {
+    display: none;
+  }
+
+  .shell__nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.25rem;
+    overflow: visible;
+    padding-bottom: 0;
+
+    a {
+      min-width: 0;
+      justify-content: center;
+      padding: 0.5rem 0.35rem;
+      text-align: center;
+      white-space: normal;
+    }
+  }
+
+  .shell__account select {
+    max-width: 8rem;
+  }
+
+  .shell__account button {
+    min-height: 2.75rem;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+  }
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
