@@ -25,6 +25,7 @@ api-contract.md
 /out-tsc
 /bazel-out
 /build
+backend-api-implemetation-guide.md
 
 # Node
 /node_modules
@@ -100,3 +101,7 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Documentos locales
+*.md
+!README.md
