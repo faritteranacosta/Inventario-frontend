@@ -1,34 +1,47 @@
 import { Injectable, signal } from '@angular/core';
-
-export type NotificationTone = 'success' | 'error' | 'info';
-
-export interface Notification {
-  readonly message: string;
-  readonly tone: NotificationTone;
-}
+import Swal from 'sweetalert2';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
-  private readonly notificationState = signal<Notification | null>(null);
+  private readonly notificationState = signal<null>(null);
   readonly notification = this.notificationState.asReadonly();
 
+  clear(): void {
+    /* noop: ahora se usan toasts de SweetAlert2 */
+  }
   success(message: string): void {
-    this.show({ message, tone: 'success' });
+    void Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    });
   }
 
   error(message: string): void {
-    this.show({ message, tone: 'error' });
+    void Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'error',
+      title: message,
+      showConfirmButton: false,
+      timer: 4000,
+      timerProgressBar: true,
+    });
   }
 
   info(message: string): void {
-    this.show({ message, tone: 'info' });
-  }
-
-  clear(): void {
-    this.notificationState.set(null);
-  }
-
-  private show(notification: Notification): void {
-    this.notificationState.set(notification);
+    void Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'info',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    });
   }
 }

@@ -13,6 +13,10 @@ npm start
 
 La aplicación estará disponible en `http://localhost:4200`.
 
+El servidor local usa el entorno de pruebas y conecta con
+`http://localhost:5082/api`. La compilación de producción reemplaza
+automáticamente el entorno de pruebas por `src/environments/environment.prod.ts`.
+
 ## Scripts
 
 | Script | Descripción |

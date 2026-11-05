@@ -2,10 +2,15 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoriesApi } from '../../../categories/categories.api';
-import { CategoryResponse, ProductResponse } from '../../../../core/models/api.models';
+import {
+  CategoryResponse,
+  ProductAlertResponse,
+  ProductResponse,
+} from '../../../../core/models/api.models';
 import { ProductsApi } from '../../products.api';
 import { NotificationService } from '../../../../core/notifications/notification.service';
 import { resolveImageUrl } from '../../../../core/utils/image';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({
@@ -40,12 +45,19 @@ export class ProductsPage {
   protected readonly search = signal('');
   protected readonly categoryFilter = signal('');
   protected readonly viewMode = signal<'list' | 'grid'>('list');
+  protected readonly page = signal(1);
+  protected readonly pageSize = signal(25);
+  protected readonly totalItems = signal(0);
+  protected readonly totalPages = signal(0);
+  protected readonly alerts = signal<readonly ProductAlertResponse[]>([]);
   protected readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
     description: [''],
     price: [0, [Validators.required, Validators.min(0)]],
     stock: [0, [Validators.required, Validators.min(0)]],
     categoryId: ['', Validators.required],
+    minimumStock: [null as number | null],
+    barcode: [''],
   });
 
   constructor() {
@@ -61,6 +73,8 @@ export class ProductsPage {
     });
   }
 
+  private searchTimer: ReturnType<typeof setTimeout> | null = null;
+
   protected load(): void {
     this.loading.set(true);
     this.errorMessage.set(null);
@@ -68,10 +82,14 @@ export class ProductsPage {
       .list({
         search: this.search() || undefined,
         categoryId: this.categoryFilter() || undefined,
+        page: this.page(),
+        pageSize: this.pageSize(),
       })
       .subscribe({
-        next: (products) => {
-          this.products.set(products);
+        next: (response) => {
+          this.products.set(response.items);
+          this.totalItems.set(response.totalItems);
+          this.totalPages.set(response.totalPages);
           this.loading.set(false);
         },
         error: () => {
@@ -82,20 +100,45 @@ export class ProductsPage {
           this.loading.set(false);
         },
       });
+    this.loadAlerts();
+  }
+
+  protected loadAlerts(): void {
+    this.productsApi.alerts().subscribe({
+      next: (alerts) => this.alerts.set(alerts),
+      error: () => {
+        /* noop: las alertas son secundarias */
+      },
+    });
   }
 
   protected updateSearch(value: string): void {
     this.search.set(value);
-    this.load();
+    this.page.set(1);
+    if (this.searchTimer) clearTimeout(this.searchTimer);
+    this.searchTimer = setTimeout(() => this.load(), 300);
   }
 
   protected updateCategory(value: string): void {
     this.categoryFilter.set(value);
+    this.page.set(1);
+    this.load();
+  }
+
+  protected goToPage(next: number): void {
+    if (next < 1 || next > this.totalPages()) return;
+    this.page.set(next);
     this.load();
   }
 
   protected setViewMode(mode: 'list' | 'grid'): void {
     this.viewMode.set(mode);
+  }
+
+  protected closeForm(): void {
+    this.showForm.set(false);
+    this.editingId.set(null);
+    this.resetProductForm();
   }
 
   protected save(): void {
@@ -118,6 +161,8 @@ export class ProductsPage {
           price: request.price,
           stock: request.stock,
           categoryId: request.categoryId,
+          minimumStock: request.minimumStock ?? null,
+          barcode: request.barcode || null,
         })
       : this.productsApi.create({
           ...request,
@@ -160,6 +205,8 @@ export class ProductsPage {
       price: 0,
       stock: 0,
       categoryId: '',
+      minimumStock: null,
+      barcode: '',
     });
     this.clearProductImage();
   }
@@ -181,6 +228,19 @@ export class ProductsPage {
     });
   }
 
+  protected stockStatus(product: ProductResponse): 'out' | 'low' | 'ok' {
+    if (product.stock <= 0) return 'out';
+    if (product.minimumStock !== null && product.stock <= product.minimumStock) return 'low';
+    return 'ok';
+  }
+
+  protected editById(id: string): void {
+    this.productsApi.get(id).subscribe({
+      next: (product) => this.edit(product),
+      error: () => this.errorMessage.set('No pudimos cargar el producto.'),
+    });
+  }
+
   protected categoryName(id: string): string {
     return this.categories().find((category) => category.id === id)?.name ?? 'Sin categoría';
   }
@@ -190,16 +250,26 @@ export class ProductsPage {
   }
 
   protected remove(product: ProductResponse): void {
-    if (!confirm(`¿Eliminar permanentemente ${product.name}?`)) return;
-    this.productsApi.remove(product.id).subscribe({
-      next: () => {
-        this.notifications.success('Producto eliminado correctamente.');
-        this.load();
-      },
-      error: () => {
-        this.errorMessage.set('No pudimos eliminar el producto.');
-        this.notifications.error('No se pudo eliminar el producto.');
-      },
+    void Swal.fire({
+      title: '¿Eliminar producto?',
+      text: `Se eliminará permanentemente ${product.name}.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: 'var(--app-danger)',
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+      this.productsApi.remove(product.id).subscribe({
+        next: () => {
+          this.notifications.success('Producto eliminado correctamente.');
+          this.load();
+        },
+        error: () => {
+          this.errorMessage.set('No pudimos eliminar el producto.');
+          this.notifications.error('No se pudo eliminar el producto.');
+        },
+      });
     });
   }
 
@@ -213,6 +283,8 @@ export class ProductsPage {
           price: detail.price,
           stock: detail.stock,
           categoryId: detail.categoryId,
+          minimumStock: detail.minimumStock ?? null,
+          barcode: detail.barcode ?? '',
         });
         this.clearProductImage();
         this.showForm.set(true);

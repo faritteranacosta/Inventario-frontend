@@ -38,20 +38,33 @@ describe('ProductsPage', () => {
     fixture = TestBed.createComponent(ProductsPage);
     http = TestBed.inject(HttpTestingController);
     http
-      .match((request) => request.url.includes('/Products'))
+      .match((request) => request.url.includes('/Products') && !request.url.includes('/alerts'))
       .forEach((request) => {
-        request.flush([
-          {
-            id: 'product-1',
-            name: 'Producto de prueba',
-            description: null,
-            price: 1000,
-            stock: 3,
-            categoryId: 'category-1',
-            imageUrl: null,
-            createdAtUtc: '2026-01-01T00:00:00Z',
-          },
-        ]);
+        request.flush({
+          items: [
+            {
+              id: 'product-1',
+              name: 'Producto de prueba',
+              description: null,
+              price: 1000,
+              stock: 3,
+              categoryId: 'category-1',
+              imageUrl: null,
+              minimumStock: 5,
+              barcode: null,
+              createdAtUtc: '2026-01-01T00:00:00Z',
+            },
+          ],
+          page: 1,
+          pageSize: 25,
+          totalItems: 1,
+          totalPages: 1,
+        });
+      });
+    http
+      .match((request) => request.url.includes('/Products/alerts'))
+      .forEach((request) => {
+        request.flush([]);
       });
     http
       .match((request) => request.url.includes('/Categories'))

@@ -19,89 +19,103 @@
   }
 
   @if (showForm()) {
-    <section class="form-panel" aria-labelledby="product-form-title">
-      <h2 id="product-form-title">{{ editingId() ? 'Editar producto' : 'Agregar producto' }}</h2>
-      <form [formGroup]="form" (ngSubmit)="save()" novalidate>
-        <label>Nombre <input formControlName="name" /></label>
-        <label>Precio <input type="number" min="0" formControlName="price" /></label>
-        <label>Existencias <input type="number" min="0" formControlName="stock" /></label>
-        <label
-          >Categoría
-          <select formControlName="categoryId">
-            <option value="">Selecciona</option>
-            @for (category of categories(); track category.id) {
-              <option [value]="category.id">{{ category.name }}</option>
-            }
-          </select></label
-        >
-        <label class="wide"
-          >Descripción <textarea rows="3" formControlName="description"></textarea>
-        </label>
-        <div class="image-upload-field wide">
-          <span class="field-label">Foto del producto</span>
-          <div class="image-upload-actions">
-            <label class="file-action">
-              <span class="file-action__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M5 8h2l1.5-2h7L17 8h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2Z"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linejoin="round"
-                  />
-                  <circle cx="12" cy="14" r="3.2" stroke="currentColor" stroke-width="1.8" />
-                </svg>
-              </span>
-              <span>Tomar foto</span>
-              <input
-                type="file"
-                accept="image/*"
-                capture="environment"
-                (change)="selectProductImage(cameraInput.files?.[0])"
-                #cameraInput
-              />
-            </label>
-            <label class="file-action">
-              <span class="file-action__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13Z"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  />
-                  <circle cx="8.5" cy="8.5" r="1.25" fill="currentColor" />
-                  <path
-                    d="m5.5 17 4.25-4.25 2.75 2.75 2-2 4 3.5"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-              <span>Elegir archivo</span>
-              <input
-                type="file"
-                accept="image/*"
-                (change)="selectProductImage(fileInput.files?.[0])"
-                #fileInput
-              />
-            </label>
+    <div class="modal-backdrop" role="presentation">
+      <section class="image-modal" aria-labelledby="product-form-title">
+        <div class="modal-heading">
+          <div>
+            <h2 id="product-form-title">
+              {{ editingId() ? 'Editar producto' : 'Agregar producto' }}
+            </h2>
+            <p>Completa los datos del producto.</p>
           </div>
-          @if (productImagePreview(); as preview) {
-            <img class="form-image-preview" [src]="preview" alt="Vista previa del producto" />
-          }
-          @if (imageError(); as message) {
-            <p class="field-error" role="alert">{{ message }}</p>
-          }
+          <button type="button" (click)="closeForm()" aria-label="Cerrar">×</button>
         </div>
-        <div class="form-actions wide">
-          <button class="button button--primary" type="submit" [disabled]="saving()">
-            {{ saving() ? 'Guardando…' : editingId() ? 'Actualizar producto' : 'Guardar producto' }}
-          </button>
-        </div>
-      </form>
-    </section>
+        <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+          <label>Nombre <input formControlName="name" /></label>
+          <label>Precio <input type="number" min="0" formControlName="price" /></label>
+          <label>Existencias <input type="number" min="0" formControlName="stock" /></label>
+          <label>Stock mínimo <input type="number" min="0" formControlName="minimumStock" /></label>
+          <label>Código de barras <input formControlName="barcode" /></label>
+          <label
+            >Categoría
+            <select formControlName="categoryId">
+              <option value="">Selecciona</option>
+              @for (category of categories(); track category.id) {
+                <option [value]="category.id">{{ category.name }}</option>
+              }
+            </select></label
+          >
+          <label class="wide"
+            >Descripción <textarea rows="3" formControlName="description"></textarea>
+          </label>
+          <div class="image-upload-field wide">
+            <span class="field-label">Foto del producto</span>
+            <div class="image-upload-actions">
+              <label class="file-action">
+                <span class="file-action__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M5 8h2l1.5-2h7L17 8h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2Z"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linejoin="round"
+                    />
+                    <circle cx="12" cy="14" r="3.2" stroke="currentColor" stroke-width="1.8" />
+                  </svg>
+                </span>
+                <span>Tomar foto</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  (change)="selectProductImage(cameraInput.files?.[0])"
+                  #cameraInput
+                />
+              </label>
+              <label class="file-action">
+                <span class="file-action__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13Z"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    />
+                    <circle cx="8.5" cy="8.5" r="1.25" fill="currentColor" />
+                    <path
+                      d="m5.5 17 4.25-4.25 2.75 2.75 2-2 4 3.5"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span>Elegir archivo</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  (change)="selectProductImage(fileInput.files?.[0])"
+                  #fileInput
+                />
+              </label>
+            </div>
+            @if (productImagePreview(); as preview) {
+              <img class="form-image-preview" [src]="preview" alt="Vista previa del producto" />
+            }
+            @if (imageError(); as message) {
+              <p class="field-error" role="alert">{{ message }}</p>
+            }
+          </div>
+          <div class="form-actions wide">
+            <button class="button button--primary" type="submit" [disabled]="saving()">
+              {{
+                saving() ? 'Guardando…' : editingId() ? 'Actualizar producto' : 'Guardar producto'
+              }}
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
   }
 
   <section class="listing">
@@ -126,7 +140,7 @@
           <option [value]="category.id">{{ category.name }}</option>
         }
       </select>
-      <span class="muted">{{ products().length }} productos</span>
+      <span class="muted">{{ totalItems() }} productos</span>
       <div class="view-switcher" role="group" aria-label="Modo de visualización">
         <button
           type="button"
@@ -232,12 +246,19 @@
                 <td>{{ categoryName(product.categoryId) }}</td>
                 <td>{{ product.price | currency }}</td>
                 <td>
-                  <span
-                    [class.stock--low]="product.stock > 0 && product.stock < 5"
-                    [class.stock--zero]="product.stock === 0"
-                    class="stock"
-                    >{{ product.stock }}</span
-                  >
+                  <span class="stock-wrap">
+                    <span
+                      [class.stock--low]="stockStatus(product) === 'low'"
+                      [class.stock--zero]="stockStatus(product) === 'out'"
+                      class="stock"
+                      >{{ product.stock }}</span
+                    >
+                    @if (stockStatus(product) === 'out') {
+                      <span class="stock-badge stock-badge--out">Agotado</span>
+                    } @else if (stockStatus(product) === 'low') {
+                      <span class="stock-badge stock-badge--low">Bajo</span>
+                    }
+                  </span>
                 </td>
                 <td>{{ product.createdAtUtc | date: 'dd MMM yyyy' }}</td>
                 <td>
@@ -333,12 +354,18 @@
                   <h2>{{ product.name }}</h2>
                   <p>{{ categoryName(product.categoryId) }}</p>
                 </div>
-                <span
-                  class="stock"
-                  [class.stock--low]="product.stock > 0 && product.stock < 5"
-                  [class.stock--zero]="product.stock === 0"
-                >
-                  {{ product.stock }}
+                <span class="stock-wrap stock-wrap--card">
+                  <span
+                    class="stock"
+                    [class.stock--low]="stockStatus(product) === 'low'"
+                    [class.stock--zero]="stockStatus(product) === 'out'"
+                    >{{ product.stock }}</span
+                  >
+                  @if (stockStatus(product) === 'out') {
+                    <span class="stock-badge stock-badge--out">Agotado</span>
+                  } @else if (stockStatus(product) === 'low') {
+                    <span class="stock-badge stock-badge--low">Bajo</span>
+                  }
                 </span>
               </div>
               <p class="product-card__description">
@@ -420,6 +447,18 @@
       </div>
     } @else {
       <p class="empty">No hay productos que coincidan con tu búsqueda.</p>
+    }
+
+    @if (totalPages() > 1) {
+      <nav class="pagination" aria-label="Paginación de productos">
+        <button type="button" [disabled]="page() <= 1" (click)="goToPage(page() - 1)">
+          Anterior
+        </button>
+        <span>Página {{ page() }} de {{ totalPages() }}</span>
+        <button type="button" [disabled]="page() >= totalPages()" (click)="goToPage(page() + 1)">
+          Siguiente
+        </button>
+      </nav>
     }
   </section>
 

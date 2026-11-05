@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { SalesApi } from '../../../sales/sales.api';
-import { SalesSummaryResponse } from '../../../../core/models/api.models';
+import { ProductsApi } from '../../../products/products.api';
+import { SalesSummaryResponse, ProductAlertResponse } from '../../../../core/models/api.models';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,9 +16,11 @@ import { SalesSummaryResponse } from '../../../../core/models/api.models';
 })
 export class DashboardPage {
   private readonly salesApi = inject(SalesApi);
+  private readonly productsApi = inject(ProductsApi);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   protected readonly loading = signal(true);
+  protected readonly alerts = signal<readonly ProductAlertResponse[]>([]);
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly summary = signal<SalesSummaryResponse | null>(null);
   protected readonly from = signal(this.defaultFrom());
@@ -41,6 +44,16 @@ export class DashboardPage {
       return;
     }
     this.load();
+    this.loadAlerts();
+  }
+
+  protected loadAlerts(): void {
+    this.productsApi.alerts().subscribe({
+      next: (alerts) => this.alerts.set(alerts),
+      error: () => {
+        /* noop */
+      },
+    });
   }
 
   protected load(): void {

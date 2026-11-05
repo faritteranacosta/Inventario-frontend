@@ -17,18 +17,26 @@ describe('SalesPage', () => {
     http
       .match((request) => request.url.includes('/Products'))
       .forEach((request) => {
-        request.flush([
-          {
-            id: 'product-1',
-            name: 'Café',
-            description: null,
-            price: 5000,
-            stock: 4,
-            categoryId: 'category-1',
-            imageUrl: null,
-            createdAtUtc: '2026-01-01T00:00:00Z',
-          },
-        ]);
+        request.flush({
+          items: [
+            {
+              id: 'product-1',
+              name: 'Café',
+              description: null,
+              price: 5000,
+              stock: 4,
+              categoryId: 'category-1',
+              imageUrl: null,
+              minimumStock: null,
+              barcode: null,
+              createdAtUtc: '2026-01-01T00:00:00Z',
+            },
+          ],
+          page: 1,
+          pageSize: 25,
+          totalItems: 1,
+          totalPages: 1,
+        });
       });
     http
       .match((request) => request.url.endsWith('/Sales'))

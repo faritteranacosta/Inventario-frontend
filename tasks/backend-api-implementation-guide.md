@@ -1,4 +1,8 @@
-# Guía para implementar los endpoints faltantes
+# Guía para implementar los endpoints faltantes (referencia histórica)
+
+> Nota: los endpoints descritos en esta guía ya están implementados en el backend
+> actual. El contrato vigente está en `tasks/api-contract.md`. Este documento se
+> conserva como referencia de diseño.
 
 Esta guía propone el contrato backend necesario para desbloquear las funciones
 pendientes del frontend. Está basada en el contrato actual de

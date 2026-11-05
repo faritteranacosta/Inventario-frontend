@@ -137,7 +137,25 @@ export interface ProductResponse {
   readonly stock: number;
   readonly categoryId: string;
   readonly imageUrl: string | null;
+  readonly minimumStock: number | null;
+  readonly barcode: string | null;
   readonly createdAtUtc: string;
+}
+
+export interface ProductAlertResponse {
+  readonly productId: string;
+  readonly name: string;
+  readonly stock: number;
+  readonly minimumStock: number | null;
+  readonly kind: 'LOW' | 'OUT';
+}
+
+export interface PagedResponse<T> {
+  readonly items: readonly T[];
+  readonly page: number;
+  readonly pageSize: number;
+  readonly totalItems: number;
+  readonly totalPages: number;
 }
 
 export interface CreateProductRequest {
@@ -147,6 +165,8 @@ export interface CreateProductRequest {
   readonly stock: number;
   readonly categoryId: string;
   readonly imageUrl: string | null;
+  readonly minimumStock?: number | null;
+  readonly barcode?: string | null;
 }
 
 export interface UpdateProductRequest {
@@ -155,6 +175,8 @@ export interface UpdateProductRequest {
   readonly price: number;
   readonly stock: number;
   readonly categoryId: string;
+  readonly minimumStock?: number | null;
+  readonly barcode?: string | null;
 }
 
 export interface CreateSaleItemRequest {

@@ -33,6 +33,53 @@
     </nav>
 
     <div class="shell__account">
+      <div class="shell__notifications">
+        <button
+          type="button"
+          class="shell__notification-button"
+          (click)="toggleNotifications()"
+          aria-label="Notificaciones de stock"
+        >
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M12 4a4 4 0 0 0-4 4v1.2c0 .9-.3 1.8-.8 2.5L6 13.5V15h12v-1.5l-1.2-1.8a4.2 4.2 0 0 1-.8-2.5V8a4 4 0 0 0-4-4Z"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M10 17a2 2 0 0 0 4 0"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
+          </svg>
+          @if (stockAlerts.alerts().length) {
+            <span class="shell__notification-badge">{{ stockAlerts.alerts().length }}</span>
+          }
+        </button>
+        @if (showNotifications()) {
+          <div class="shell__notification-panel" role="dialog" aria-label="Alertas de stock">
+            <div class="shell__notification-heading">
+              <strong>Alertas de stock</strong>
+              <button type="button" (click)="closeNotifications()" aria-label="Cerrar">×</button>
+            </div>
+            @if (stockAlerts.alerts().length) {
+              <ul>
+                @for (alert of stockAlerts.alerts(); track alert.productId) {
+                  <li>
+                    <span>{{ alert.name }}</span>
+                    <span class="badge">{{ alert.kind === 'OUT' ? 'Agotado' : 'Bajo' }}</span>
+                    <small>{{ alert.stock }} unidades</small>
+                  </li>
+                }
+              </ul>
+            } @else {
+              <p class="muted">Sin alertas de stock.</p>
+            }
+          </div>
+        }
+      </div>
       @if (auth.memberships().length > 1) {
         <label class="shell__tenant-selector" for="active-tenant">
           <span class="sr-only">Negocio activo</span>
@@ -52,7 +99,7 @@
         </label>
       } @else {
         <span class="shell__tenant">
-          {{ auth.activeMembership()?.tenantName ?? auth.activeTenantId()?.slice(0, 8) ?? '—' }}
+          {{ auth.activeMembership()?.tenantName ?? '—' }}
         </span>
       }
       <span class="shell__role">{{
@@ -69,7 +116,7 @@
     <div class="shell__context-error" role="alert">{{ message }}</div>
   }
 
-  <main class="shell__content">
+  <div class="shell__content">
     <router-outlet />
-  </main>
+  </div>
 </div>

@@ -5,7 +5,9 @@
       <p>Una lectura rápida de lo que está pasando en tu negocio.</p>
     </div>
     <div class="dashboard__actions">
-      <a class="button button--secondary" routerLink="/sales">Registrar venta</a>
+      <a class="button button--secondary" routerLink="/sales" [queryParams]="{ view: 'new' }"
+        >Registrar venta</a
+      >
       <a class="button button--primary" routerLink="/products"
         >Agregar producto <span aria-hidden="true">+</span></a
       >

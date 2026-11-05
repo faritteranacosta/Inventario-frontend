@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProductsApi } from '../../../products/products.api';
 import { ProductResponse, SaleResponse } from '../../../../core/models/api.models';
 import { SalesApi } from '../../sales.api';
 import { NotificationService } from '../../../../core/notifications/notification.service';
+import { StockAlertsService } from '../../../../core/stock-alerts.service';
+import Swal from 'sweetalert2';
 
 interface SaleLine {
   readonly product: ProductResponse;
@@ -23,6 +26,8 @@ export class SalesPage {
   private readonly salesApi = inject(SalesApi);
   private readonly productsApi = inject(ProductsApi);
   private readonly notifications = inject(NotificationService);
+  private readonly stockAlerts = inject(StockAlertsService);
+  private readonly route = inject(ActivatedRoute, { optional: true });
   protected readonly sales = signal<readonly SaleResponse[]>([]);
   protected readonly products = signal<readonly ProductResponse[]>([]);
   protected readonly lines = signal<readonly SaleLine[]>([]);
@@ -38,11 +43,16 @@ export class SalesPage {
   constructor() {
     this.loadProducts();
     this.load();
+    this.route?.queryParamMap.subscribe((params) => {
+      if (params.get('view') === 'new') {
+        this.activeView.set('new');
+      }
+    });
   }
 
   protected loadProducts(): void {
     this.productsApi.list().subscribe({
-      next: (products) => this.products.set(products),
+      next: (response) => this.products.set(response.items),
       error: () => this.errorMessage.set('No pudimos cargar el catálogo para registrar ventas.'),
     });
   }
@@ -138,36 +148,47 @@ export class SalesPage {
       currency: 'COP',
       maximumFractionDigits: 0,
     }).format(this.total());
-    if (!confirm(`¿Confirmar venta por ${formattedTotal}?`)) return;
-    this.saving.set(true);
-    this.errorMessage.set(null);
-    this.salesApi
-      .create({
-        items: this.lines().map((line) => ({
-          productId: line.product.id,
-          quantity: line.quantity,
-        })),
-      })
-      .subscribe({
-        next: (sale) => {
-          this.saving.set(false);
-          this.lines.set([]);
-          this.selectedSale.set(sale);
-          this.activeView.set('history');
-          this.notifications.success('Venta registrada correctamente.');
-          this.loadProducts();
-          this.load();
-        },
-        error: (error: unknown) => {
-          this.saving.set(false);
-          this.errorMessage.set(
-            apiMessage(
-              error,
-              'No pudimos registrar la venta. Ajusta las cantidades si el stock cambió.',
-            ),
-          );
-        },
-      });
+    void Swal.fire({
+      title: '¿Confirmar venta?',
+      text: `Total: ${formattedTotal}`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+      this.saving.set(true);
+      this.errorMessage.set(null);
+      this.salesApi
+        .create({
+          items: this.lines().map((line) => ({
+            productId: line.product.id,
+            quantity: line.quantity,
+          })),
+        })
+        .subscribe({
+          next: (sale) => {
+            this.saving.set(false);
+            this.lines.set([]);
+            this.selectedSale.set(sale);
+            this.activeView.set('history');
+            this.notifications.success('Venta registrada correctamente.');
+            this.loadProducts();
+            this.load();
+            this.stockAlerts.reload();
+          },
+          error: (error: unknown) => {
+            this.saving.set(false);
+            this.errorMessage.set(
+              apiMessage(
+                error,
+                'No pudimos registrar la venta. Ajusta las cantidades si el stock cambió.',
+              ),
+            );
+          },
+        });
+    });
+    return;
   }
 
   protected detail(id: string): void {

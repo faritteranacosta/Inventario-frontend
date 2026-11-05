@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://m1mcjgv4-5082.use.devtunnels.ms/api',
+  apiUrl: 'http://localhost:5082/api',
 } as const;

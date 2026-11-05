@@ -314,6 +314,29 @@ th {
   background: var(--app-danger-surface);
   color: var(--app-danger);
 }
+.stock-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.stock-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.stock-badge--out {
+  background: var(--app-danger-surface);
+  color: var(--app-danger);
+}
+.stock-badge--low {
+  background: var(--app-warning-surface, var(--app-primary-50));
+  color: var(--app-warning, var(--app-primary-700));
+}
 .icon-button {
   display: inline-flex;
   align-items: center;
