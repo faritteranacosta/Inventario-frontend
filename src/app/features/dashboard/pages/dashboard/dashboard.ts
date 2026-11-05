@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { SalesApi } from '../../../sales/sales.api';
 import { ProductsApi } from '../../../products/products.api';
+import { ReportsService } from '../../../../core/reports.service';
 import { SalesSummaryResponse, ProductAlertResponse } from '../../../../core/models/api.models';
 
 @Component({
@@ -17,6 +18,7 @@ import { SalesSummaryResponse, ProductAlertResponse } from '../../../../core/mod
 export class DashboardPage {
   private readonly salesApi = inject(SalesApi);
   private readonly productsApi = inject(ProductsApi);
+  private readonly reports = inject(ReportsService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   protected readonly loading = signal(true);
@@ -54,6 +56,17 @@ export class DashboardPage {
         /* noop */
       },
     });
+  }
+
+  protected exportSales(): void {
+    this.reports.downloadSalesCsv(
+      this.from() || undefined,
+      this.to() ? `${this.to()}T23:59:59Z` : undefined,
+    );
+  }
+
+  protected exportInventory(): void {
+    this.reports.downloadInventoryCsv();
   }
 
   protected load(): void {

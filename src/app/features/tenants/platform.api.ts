@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
+  AuditEventResponse,
   CreateMembershipRequest,
   CreatePlatformTenantRequest,
   MembershipResponse,
@@ -64,5 +65,9 @@ export class PlatformApi {
 
   removeMember(tenantId: string, userId: string): Observable<void> {
     return this.http.delete<void>(`${this.url}/tenants/${tenantId}/members/${userId}`);
+  }
+
+  listAudit(): Observable<readonly AuditEventResponse[]> {
+    return this.http.get<readonly AuditEventResponse[]>(`${this.url}/audit`);
   }
 }

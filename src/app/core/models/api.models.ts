@@ -215,3 +215,36 @@ export interface SalesSummaryResponse {
   readonly grandTotal: number;
   readonly totalCount: number;
 }
+
+export type InventoryMovementType = 0 | 1 | 2; // In, Out, Adjustment
+
+export interface InventoryMovementResponse {
+  readonly id: string;
+  readonly productId: string;
+  readonly type: InventoryMovementType;
+  readonly quantity: number;
+  readonly stockBefore: number;
+  readonly stockAfter: number;
+  readonly reason: string;
+  readonly referenceType: string | null;
+  readonly referenceId: string | null;
+  readonly createdByUserId: string;
+  readonly createdAtUtc: string;
+}
+
+export interface CreateInventoryMovementRequest {
+  readonly productId: string;
+  readonly type: InventoryMovementType;
+  readonly quantity: number;
+  readonly reason: string;
+  readonly referenceType?: string | null;
+  readonly referenceId?: string | null;
+}
+
+export interface PagedInventoryMovements {
+  readonly items: readonly InventoryMovementResponse[];
+  readonly page: number;
+  readonly pageSize: number;
+  readonly totalItems: number;
+  readonly totalPages: number;
+}

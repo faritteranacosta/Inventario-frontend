@@ -7,6 +7,7 @@ import { ProductResponse, SaleResponse } from '../../../../core/models/api.model
 import { SalesApi } from '../../sales.api';
 import { NotificationService } from '../../../../core/notifications/notification.service';
 import { StockAlertsService } from '../../../../core/stock-alerts.service';
+import { ReportsService } from '../../../../core/reports.service';
 import Swal from 'sweetalert2';
 
 interface SaleLine {
@@ -27,6 +28,7 @@ export class SalesPage {
   private readonly productsApi = inject(ProductsApi);
   private readonly notifications = inject(NotificationService);
   private readonly stockAlerts = inject(StockAlertsService);
+  private readonly reports = inject(ReportsService);
   private readonly route = inject(ActivatedRoute, { optional: true });
   protected readonly sales = signal<readonly SaleResponse[]>([]);
   protected readonly products = signal<readonly ProductResponse[]>([]);
@@ -39,6 +41,7 @@ export class SalesPage {
   protected readonly from = signal('');
   protected readonly to = signal('');
   protected readonly activeView = signal<'history' | 'new'>('history');
+  private readonly idempotencyKey = signal<string | null>(null);
 
   constructor() {
     this.loadProducts();
@@ -55,6 +58,13 @@ export class SalesPage {
       next: (response) => this.products.set(response.items),
       error: () => this.errorMessage.set('No pudimos cargar el catálogo para registrar ventas.'),
     });
+  }
+
+  protected exportSales(): void {
+    this.reports.downloadSalesCsv(
+      this.from() || undefined,
+      this.to() ? `${this.to()}T23:59:59Z` : undefined,
+    );
   }
 
   protected load(): void {
@@ -143,6 +153,17 @@ export class SalesPage {
       this.errorMessage.set('Agrega al menos un producto para registrar la venta.');
       return;
     }
+    const invalid = this.lines().some(
+      (line) => line.quantity < 1 || line.quantity > line.product.stock,
+    );
+    if (invalid) {
+      this.errorMessage.set('Ajusta las cantidades: no pueden ser cero ni superar el stock.');
+      return;
+    }
+    if (!this.idempotencyKey()) {
+      this.idempotencyKey.set(crypto.randomUUID());
+    }
+    const key = this.idempotencyKey()!;
     const formattedTotal = new Intl.NumberFormat('es-CO', {
       style: 'currency',
       currency: 'COP',
@@ -160,18 +181,22 @@ export class SalesPage {
       this.saving.set(true);
       this.errorMessage.set(null);
       this.salesApi
-        .create({
-          items: this.lines().map((line) => ({
-            productId: line.product.id,
-            quantity: line.quantity,
-          })),
-        })
+        .create(
+          {
+            items: this.lines().map((line) => ({
+              productId: line.product.id,
+              quantity: line.quantity,
+            })),
+          },
+          key,
+        )
         .subscribe({
           next: (sale) => {
             this.saving.set(false);
             this.lines.set([]);
             this.selectedSale.set(sale);
             this.activeView.set('history');
+            this.idempotencyKey.set(null);
             this.notifications.success('Venta registrada correctamente.');
             this.loadProducts();
             this.load();

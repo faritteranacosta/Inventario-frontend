@@ -9,14 +9,25 @@
 .page-header {
   display: flex;
   justify-content: space-between;
-  align-items: end;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--app-border-color);
 }
 h1 {
   margin: 0;
-  font-size: clamp(2rem, 5vw, 3.75rem);
-  letter-spacing: -0.04em;
+  color: var(--app-primary-600);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.page-header p {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: var(--app-text-color-secondary);
 }
 h2,
 h3 {
@@ -37,12 +48,13 @@ h3 {
 .notice button {
   border: 1px solid var(--app-border-color);
   border-radius: 0.55rem;
-  padding: 0.7rem 0.9rem;
+  padding: 0.5rem 0.85rem;
   background: var(--app-surface-0);
   color: var(--app-primary-700);
   cursor: pointer;
   font: inherit;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 .button--primary {
   border-color: var(--app-primary);

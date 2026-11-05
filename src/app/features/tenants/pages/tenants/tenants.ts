@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MembershipResponse, PlatformTenantResponse } from '../../../../core/models/api.models';
 import { PlatformApi } from '../../platform.api';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-tenants',
@@ -103,31 +104,45 @@ export class TenantsPage {
   protected toggleStatus(tenant: PlatformTenantResponse): void {
     const nextStatus = tenant.status === 'Active' ? 'Suspended' : 'Active';
     const action = nextStatus === 'Suspended' ? 'suspender' : 'reactivar';
-    if (!confirm(`¿Quieres ${action} ${tenant.name}?`)) return;
-    this.api.updateTenantStatus(tenant.id, { status: nextStatus }).subscribe({
-      next: (updated) => {
-        this.tenants.update((items) =>
-          items.map((item) => (item.id === updated.id ? updated : item)),
-        );
-        this.selected.set(updated);
-      },
-      error: () => this.errorMessage.set('No pudimos actualizar el estado del negocio.'),
+    void Swal.fire({
+      title: `¿${action} ${tenant.name}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+      this.api.updateTenantStatus(tenant.id, { status: nextStatus }).subscribe({
+        next: (updated) => {
+          this.tenants.update((items) =>
+            items.map((item) => (item.id === updated.id ? updated : item)),
+          );
+          this.selected.set(updated);
+        },
+        error: () => this.errorMessage.set('No pudimos actualizar el estado del negocio.'),
+      });
     });
+    return;
   }
 
   protected remove(tenant: PlatformTenantResponse): void {
-    if (
-      !confirm(`Esta acción elimina permanentemente ${tenant.name} y todos sus datos. ¿Continuar?`)
-    ) {
-      return;
-    }
-    this.api.removeTenant(tenant.id).subscribe({
-      next: () => {
-        this.selected.set(null);
-        this.members.set([]);
-        this.load();
-      },
-      error: () => this.errorMessage.set('No pudimos eliminar el negocio.'),
+    void Swal.fire({
+      title: `¿Eliminar ${tenant.name}?`,
+      text: 'Esta acción elimina permanentemente el negocio y todos sus datos.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+      this.api.removeTenant(tenant.id).subscribe({
+        next: () => {
+          this.selected.set(null);
+          this.members.set([]);
+          this.load();
+        },
+        error: () => this.errorMessage.set('No pudimos eliminar el negocio.'),
+      });
     });
   }
 
@@ -169,10 +184,18 @@ export class TenantsPage {
   }
 
   protected revokeMember(member: MembershipResponse): void {
-    if (!confirm(`¿Revocar el acceso de ${member.email}?`)) return;
-    this.api.removeMember(member.tenantId, member.userId).subscribe({
-      next: () => this.members.update((items) => items.filter((item) => item.id !== member.id)),
-      error: () => this.errorMessage.set('No pudimos revocar la membresía.'),
+    void Swal.fire({
+      title: `¿Revocar acceso de ${member.email}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Revocar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+      this.api.removeMember(member.tenantId, member.userId).subscribe({
+        next: () => this.members.update((items) => items.filter((item) => item.id !== member.id)),
+        error: () => this.errorMessage.set('No pudimos revocar la membresía.'),
+      });
     });
   }
 }

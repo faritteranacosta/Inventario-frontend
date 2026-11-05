@@ -2,7 +2,6 @@
   <header class="page-header">
     <div>
       <h1>Productos</h1>
-      <p>Consulta existencias y mantén tu catálogo al día.</p>
     </div>
     @if (auth.canManageCatalog()) {
       <button class="button button--primary" type="button" (click)="showForm.set(!showForm())">
@@ -31,9 +30,13 @@
           <button type="button" (click)="closeForm()" aria-label="Cerrar">×</button>
         </div>
         <form [formGroup]="form" (ngSubmit)="save()" novalidate>
-          <label>Nombre <input formControlName="name" /></label>
-          <label>Precio <input type="number" min="0" formControlName="price" /></label>
-          <label>Existencias <input type="number" min="0" formControlName="stock" /></label>
+          <label>Nombre <input formControlName="name" placeholder="Ej. Coca-Cola 355ml" /></label>
+          <label
+            >Precio <input type="number" min="0" formControlName="price" placeholder="Ej. 1500"
+          /></label>
+          <label
+            >Existencias <input type="number" min="0" formControlName="stock" placeholder="Ej. 24"
+          /></label>
           <label>Stock mínimo <input type="number" min="0" formControlName="minimumStock" /></label>
           <label>Código de barras <input formControlName="barcode" /></label>
           <label
@@ -118,6 +121,43 @@
     </div>
   }
 
+  <section class="barcode-panel" aria-labelledby="barcode-title">
+    <h2 id="barcode-title">Buscar por código de barras</h2>
+    <div class="barcode-row">
+      <input
+        [value]="barcodeQuery()"
+        (input)="updateBarcodeQuery(barcodeInput.value)"
+        placeholder="Escanea o ingresa el código"
+        #barcodeInput
+      />
+      <button
+        class="button button--secondary button--compact"
+        type="button"
+        (click)="searchByBarcode()"
+      >
+        Buscar
+      </button>
+      <button class="button button--secondary button--compact" type="button" (click)="startScan()">
+        {{ scanning() ? 'Escaneando…' : 'Escanear cámara' }}
+      </button>
+      @if (scanning()) {
+        <button class="button button--secondary button--compact" type="button" (click)="stopScan()">
+          Detener
+        </button>
+      }
+    </div>
+    @if (barcodeError(); as message) {
+      <p class="field-error" role="alert">{{ message }}</p>
+    }
+    @if (barcodeResult(); as product) {
+      <div class="barcode-result">
+        <strong>{{ product.name }}</strong>
+        <span>Stock: {{ product.stock }}</span>
+        <span>Precio: {{ product.price | currency }}</span>
+      </div>
+    }
+  </section>
+
   <section class="listing">
     <div class="listing__toolbar">
       <label class="search"
@@ -140,7 +180,16 @@
           <option [value]="category.id">{{ category.name }}</option>
         }
       </select>
-      <span class="muted">{{ totalItems() }} productos</span>
+      <div class="toolbar-meta">
+        <span class="muted">{{ totalItems() }} productos</span>
+        <button
+          class="button button--secondary button--compact"
+          type="button"
+          (click)="exportInventory()"
+        >
+          ↓ Inventario CSV
+        </button>
+      </div>
       <div class="view-switcher" role="group" aria-label="Modo de visualización">
         <button
           type="button"

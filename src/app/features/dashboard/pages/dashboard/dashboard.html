@@ -1,50 +1,59 @@
 <main class="dashboard">
   <header class="dashboard__header">
     <div>
-      <h1>Resumen operativo</h1>
-      <p>Una lectura rápida de lo que está pasando en tu negocio.</p>
+      <h1>Resumen</h1>
     </div>
     <div class="dashboard__actions">
-      <a class="button button--secondary" routerLink="/sales" [queryParams]="{ view: 'new' }"
-        >Registrar venta</a
-      >
-      <a class="button button--primary" routerLink="/products"
-        >Agregar producto <span aria-hidden="true">+</span></a
-      >
+      <button class="button button--secondary" type="button" (click)="exportSales()">
+        Exportar ventas
+      </button>
+      <a class="button button--primary" routerLink="/sales" [queryParams]="{ view: 'new' }">
+        Registrar venta
+      </a>
     </div>
   </header>
 
-  <section class="filters" aria-label="Filtros del resumen">
-    <label for="dashboard-from"
-      >Desde<input
-        id="dashboard-from"
-        type="date"
-        [value]="from()"
-        (change)="from.set(fromInput.value)"
-        #fromInput
-    /></label>
-    <label for="dashboard-to"
-      >Hasta<input
-        id="dashboard-to"
-        type="date"
-        [value]="to()"
-        (change)="to.set(toInput.value)"
-        #toInput
-    /></label>
-    <label for="dashboard-group"
-      >Agrupar por<select
-        id="dashboard-group"
-        [value]="groupBy()"
-        (change)="groupBy.set(groupInput.value === 'month' ? 'month' : 'day')"
-        #groupInput
-      >
-        <option value="day">Día</option>
-        <option value="month">Mes</option>
-      </select></label
-    >
-    <button class="button button--secondary" type="button" (click)="load()">
-      Actualizar resumen
-    </button>
+  <section class="filters" aria-label="Periodo del resumen">
+    <div class="filters__intro">
+      <span class="filters__label">Periodo visible</span>
+      <strong>Personaliza el pulso del negocio</strong>
+    </div>
+    <div class="filters__controls">
+      <label for="dashboard-from">
+        <span>Desde</span>
+        <input
+          id="dashboard-from"
+          type="date"
+          [value]="from()"
+          (change)="from.set(fromInput.value)"
+          #fromInput
+        />
+      </label>
+      <span class="filters__arrow" aria-hidden="true">→</span>
+      <label for="dashboard-to">
+        <span>Hasta</span>
+        <input
+          id="dashboard-to"
+          type="date"
+          [value]="to()"
+          (change)="to.set(toInput.value)"
+          #toInput
+        />
+      </label>
+      <label for="dashboard-group">
+        <span>Agrupar</span>
+        <select
+          id="dashboard-group"
+          [value]="groupBy()"
+          (change)="groupBy.set(groupInput.value === 'month' ? 'month' : 'day')"
+          #groupInput
+        >
+          <option value="day">Por día</option>
+          <option value="month">Por mes</option>
+        </select>
+      </label>
+      <button class="button button--filter" type="button" (click)="load()">Actualizar</button>
+    </div>
   </section>
 
   @if (errorMessage(); as message) {
@@ -52,72 +61,139 @@
   }
 
   @if (loading()) {
-    <p class="muted">Cargando indicadores…</p>
+    <div class="loading-state" aria-live="polite">
+      <span class="loading-state__line"></span>
+      <span class="loading-state__line loading-state__line--short"></span>
+      <p>Cargando el pulso de tu negocio…</p>
+    </div>
   } @else if (summary(); as data) {
     <section class="metrics" aria-label="Indicadores de ventas">
-      <article class="metric metric--accent">
-        <span>Ventas acumuladas</span><strong>{{ data.grandTotal | number: '1.2-2' }}</strong
-        ><small>Valor total registrado</small>
+      <article class="metric metric--hero">
+        <div class="metric__topline">
+          <span>Ingresos registrados</span>
+          <span class="metric__signal">Periodo activo</span>
+        </div>
+        <strong>{{ data.grandTotal | currency }}</strong>
+        <small>El valor total de tus ventas en el periodo seleccionado.</small>
       </article>
       <article class="metric">
-        <span>Operaciones</span><strong>{{ data.totalCount }}</strong
-        ><small>Ventas registradas</small>
+        <span>Operaciones</span>
+        <strong>{{ data.totalCount }}</strong>
+        <small>Ventas registradas</small>
       </article>
       <article class="metric">
-        <span>Promedio por venta</span
-        ><strong>{{
+        <span>Ticket promedio</span>
+        <strong>{{
           data.totalCount ? (data.grandTotal / data.totalCount | number: '1.2-2') : '0.00'
-        }}</strong
-        ><small>Ticket promedio</small>
+        }}</strong>
+        <small>Valor medio por operación</small>
       </article>
     </section>
-    <section class="panel">
-      <div class="panel__heading">
-        <div>
-          <h2>Actividad reciente</h2>
-          <p>Ventas agrupadas por día.</p>
+
+    <div class="dashboard__grid">
+      <section class="panel panel--activity">
+        <div class="panel__heading">
+          <div>
+            <p class="panel__eyebrow">Ritmo de ventas</p>
+            <h2>Actividad reciente</h2>
+            <p>Cómo se distribuyeron tus ingresos.</p>
+          </div>
+          <a class="panel__link" routerLink="/sales">Ver todas <span aria-hidden="true">↗</span></a>
         </div>
-        <a routerLink="/sales">Ver todas</a>
-      </div>
-      @if (data.items.length) {
-        <div class="bars" aria-label="Gráfica de ventas">
-          @for (item of data.items; track item.period) {
-            <div class="bar">
-              <span class="bar__value">{{ item.total | number: '1.0-0' }}</span>
-              <div
-                class="bar__fill"
-                [style.height.%]="data.grandTotal ? (item.total / data.grandTotal) * 100 : 0"
-              ></div>
-              <small>{{ item.period | date: 'dd MMM' }}</small>
-            </div>
-          }
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Periodo</th>
-                <th>Operaciones</th>
-                <th>Ingresos</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (item of data.items; track item.period) {
+        @if (data.items.length) {
+          <div class="bars" aria-label="Gráfica de ventas">
+            @for (item of data.items; track item.period) {
+              <div class="bar">
+                <span class="bar__value">{{ item.total | currency }}</span>
+                <div class="bar__track">
+                  <div
+                    class="bar__fill"
+                    [style.height.%]="data.grandTotal ? (item.total / data.grandTotal) * 100 : 0"
+                  ></div>
+                </div>
+                <small>{{
+                  item.period | date: (groupBy() === 'month' ? 'MMM yy' : 'dd MMM')
+                }}</small>
+              </div>
+            }
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
                 <tr>
-                  <td>
-                    {{ item.period | date: (groupBy() === 'month' ? 'MMMM yyyy' : 'dd MMM yyyy') }}
-                  </td>
-                  <td>{{ item.count }}</td>
-                  <td>{{ item.total | currency }}</td>
+                  <th>Periodo</th>
+                  <th>Operaciones</th>
+                  <th>Ingresos</th>
                 </tr>
-              }
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                @for (item of data.items; track item.period) {
+                  <tr>
+                    <td>
+                      {{
+                        item.period | date: (groupBy() === 'month' ? 'MMMM yyyy' : 'dd MMM yyyy')
+                      }}
+                    </td>
+                    <td>{{ item.count }}</td>
+                    <td>{{ item.total | currency }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <p class="empty">Todavía no hay ventas para mostrar en este periodo.</p>
+        }
+      </section>
+
+      <aside class="panel panel--alerts" aria-labelledby="alerts-title">
+        <div class="panel__heading">
+          <div>
+            <p class="panel__eyebrow">Inventario</p>
+            <h2 id="alerts-title">Atención necesaria</h2>
+          </div>
+          <span class="alert-count">{{ alerts().length }}</span>
         </div>
-      } @else {
-        <p class="empty">Todavía no hay ventas para mostrar.</p>
-      }
-    </section>
+        @if (alerts().length) {
+          <ul class="alert-list">
+            @for (alert of alerts(); track alert.productId) {
+              <li class="alert-item">
+                <span class="alert-item__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M12 4 21 20H3L12 4Z"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M12 9v5M12 17.2v.1"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </span>
+                <span class="alert-item__content">
+                  <strong>{{ alert.name }}</strong>
+                  <small>{{ alert.kind === 'OUT' ? 'Sin existencias' : 'Stock bajo' }}</small>
+                </span>
+                <span class="alert-item__stock">{{ alert.stock }}</span>
+              </li>
+            }
+          </ul>
+          <a class="panel__footer-link" routerLink="/products">
+            Revisar inventario <span aria-hidden="true">→</span>
+          </a>
+        } @else {
+          <div class="alerts-empty">
+            <span class="alerts-empty__mark" aria-hidden="true">✓</span>
+            <strong>Todo en orden</strong>
+            <p>No hay productos que requieran atención.</p>
+          </div>
+        }
+      </aside>
+    </div>
   } @else {
     <p class="empty">No hay información disponible todavía.</p>
   }

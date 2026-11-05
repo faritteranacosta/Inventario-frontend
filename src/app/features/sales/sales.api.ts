@@ -23,8 +23,9 @@ export class SalesApi {
     return this.http.get<SaleResponse>(`${this.url}/${id}`);
   }
 
-  create(request: CreateSaleRequest): Observable<SaleResponse> {
-    return this.http.post<SaleResponse>(this.url, request);
+  create(request: CreateSaleRequest, idempotencyKey?: string): Observable<SaleResponse> {
+    const headers = idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : undefined;
+    return this.http.post<SaleResponse>(this.url, request, { headers });
   }
 
   summary(from?: string, to?: string, groupBy = 'day'): Observable<SalesSummaryResponse> {

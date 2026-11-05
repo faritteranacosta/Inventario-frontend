@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -12,6 +13,7 @@ import { NotificationService } from '../../../../core/notifications/notification
 import { resolveImageUrl } from '../../../../core/utils/image';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../../core/auth/auth.service';
+import { ReportsService } from '../../../../core/reports.service';
 
 @Component({
   selector: 'app-products',
@@ -27,6 +29,7 @@ export class ProductsPage {
   private readonly fb = inject(FormBuilder);
   private readonly notifications = inject(NotificationService);
   protected readonly auth = inject(AuthService);
+  private readonly reports = inject(ReportsService);
 
   protected readonly products = signal<readonly ProductResponse[]>([]);
   protected readonly categories = signal<readonly CategoryResponse[]>([]);
@@ -50,14 +53,18 @@ export class ProductsPage {
   protected readonly totalItems = signal(0);
   protected readonly totalPages = signal(0);
   protected readonly alerts = signal<readonly ProductAlertResponse[]>([]);
-  protected readonly form = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(2)]],
-    description: [''],
-    price: [0, [Validators.required, Validators.min(0)]],
-    stock: [0, [Validators.required, Validators.min(0)]],
-    categoryId: ['', Validators.required],
-    minimumStock: [null as number | null],
-    barcode: [''],
+  protected readonly barcodeQuery = signal('');
+  protected readonly barcodeResult = signal<ProductResponse | null>(null);
+  protected readonly barcodeError = signal<string | null>(null);
+  protected readonly scanning = signal(false);
+  protected readonly form = this.fb.group({
+    name: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(2)]),
+    description: this.fb.nonNullable.control(''),
+    price: this.fb.control<number | null>(null, [Validators.required, Validators.min(0)]),
+    stock: this.fb.nonNullable.control(0, [Validators.required, Validators.min(0)]),
+    categoryId: this.fb.nonNullable.control('', Validators.required),
+    minimumStock: this.fb.control<number | null>(null),
+    barcode: this.fb.nonNullable.control(''),
   });
 
   constructor() {
@@ -112,6 +119,82 @@ export class ProductsPage {
     });
   }
 
+  protected exportInventory(): void {
+    this.reports.downloadInventoryCsv();
+  }
+
+  protected updateBarcodeQuery(value: string): void {
+    this.barcodeQuery.set(value);
+    this.barcodeError.set(null);
+  }
+
+  protected searchByBarcode(): void {
+    const code = this.barcodeQuery().trim();
+    if (!code) {
+      this.barcodeError.set('Ingresa un código de barras.');
+      return;
+    }
+    this.barcodeError.set(null);
+    this.productsApi.getByBarcode(code).subscribe({
+      next: (product) => this.barcodeResult.set(product),
+      error: () => {
+        this.barcodeResult.set(null);
+        this.barcodeError.set('No encontramos un producto con ese código.');
+      },
+    });
+  }
+
+  protected startScan(): void {
+    const barcodeDetectorCtor = (window as unknown as Record<string, unknown>)[
+      'BarcodeDetector'
+    ] as
+      | (new (options?: { formats?: string[] }) => {
+          detect: (source: HTMLVideoElement) => Promise<{ rawValue: string }[]>;
+        })
+      | undefined;
+    if (!barcodeDetectorCtor) {
+      this.barcodeError.set('Tu navegador no soporta escaneo por cámara.');
+      return;
+    }
+    this.scanning.set(true);
+    this.barcodeError.set(null);
+    void navigator.mediaDevices
+      .getUserMedia({ video: { facingMode: 'environment' } })
+      .then((stream) => {
+        const video = document.createElement('video');
+        video.srcObject = stream;
+        void video.play();
+        const detector = new barcodeDetectorCtor({ formats: ['ean_13', 'code_128', 'qr_code'] });
+        const scan = (): void => {
+          if (!this.scanning()) return;
+          detector
+            .detect(video)
+            .then((barcodes) => {
+              if (barcodes.length) {
+                this.barcodeQuery.set(barcodes[0].rawValue);
+                this.scanning.set(false);
+                stream.getTracks().forEach((track) => track.stop());
+                this.searchByBarcode();
+                return;
+              }
+              requestAnimationFrame(scan);
+            })
+            .catch(() => {
+              requestAnimationFrame(scan);
+            });
+        };
+        requestAnimationFrame(scan);
+      })
+      .catch(() => {
+        this.scanning.set(false);
+        this.barcodeError.set('No pudimos acceder a la cámara.');
+      });
+  }
+
+  protected stopScan(): void {
+    this.scanning.set(false);
+  }
+
   protected updateSearch(value: string): void {
     this.search.set(value);
     this.page.set(1);
@@ -158,7 +241,7 @@ export class ProductsPage {
       ? this.productsApi.update(this.editingId()!, {
           name: request.name,
           description: request.description,
-          price: request.price,
+          price: request.price ?? 0,
           stock: request.stock,
           categoryId: request.categoryId,
           minimumStock: request.minimumStock ?? null,
@@ -166,6 +249,7 @@ export class ProductsPage {
         })
       : this.productsApi.create({
           ...request,
+          price: request.price ?? 0,
           imageUrl: null,
         });
     operation.subscribe({
@@ -202,7 +286,7 @@ export class ProductsPage {
     this.form.reset({
       name: '',
       description: '',
-      price: 0,
+      price: null,
       stock: 0,
       categoryId: '',
       minimumStock: null,

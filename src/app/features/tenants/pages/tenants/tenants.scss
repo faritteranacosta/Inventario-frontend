@@ -6,20 +6,31 @@
   margin: auto;
   padding: clamp(1rem, 2vw, 2rem) 1.25rem;
 }
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--app-border-color);
+}
 h1 {
   margin: 0;
-  font-size: clamp(2rem, 5vw, 3.75rem);
+  color: var(--app-primary-600);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.2;
 }
 .eyebrow {
-  margin: 0 0 0.35rem;
-  color: var(--app-primary);
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  display: none;
 }
 .page-header p,
 .muted {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
   color: var(--app-text-color-secondary);
 }
 .create-panel,

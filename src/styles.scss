@@ -150,3 +150,26 @@ textarea {
   background: var(--app-primary-200);
   color: var(--app-primary-900);
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--app-primary-300) var(--app-surface-100);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--app-surface-100);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--app-primary-300);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--app-primary-500);
+}
